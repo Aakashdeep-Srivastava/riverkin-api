@@ -1,0 +1,35 @@
+{
+  "_note": "PLACEHOLDER site list. Replace with the real 106-site OneAquaHealth (OAH) list before judging. Site data courtesy of the IEEE OneAquaHealth project (https://oneaquahealth.eu). Every entry here is fabricated and flagged simulated=true.",
+  "_source": "OneAquaHealth (placeholder/simulated)",
+  "_count": 4,
+  "sites": [
+    {
+      "external_id": "oah-sim-0001",
+      "name": "Simulated Brook A",
+      "lat": 38.7223,
+      "lon": -9.1393,
+      "simulated": true
+    },
+    {
+      "external_id": "oah-sim-0002",
+      "name": "Simulated Creek B",
+      "lat": 41.1579,
+      "lon": -8.6291,
+      "simulated": true
+    },
+    {
+      "external_id": "oah-sim-0003",
+      "name": "Simulated Stream C",
+      "lat": 40.4168,
+      "lon": -3.7038,
+      "simulated": true
+    },
+    {
+      "external_id": "oah-sim-0004",
+      "name": "Simulated River D",
+      "lat": 45.4642,
+      "lon": 9.19,
+      "simulated": true
+    }
+  ]
+}

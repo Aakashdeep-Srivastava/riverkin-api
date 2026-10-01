@@ -1,0 +1,45 @@
+# Local dev stack: API + PostGIS + HAPI FHIR.
+# For local use only — no real secrets here (CLAUDE.md hard rule).
+
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      APP_ENV: local
+      DATABASE_URL: postgresql+asyncpg://postgres:postgres@db:5432/riverkin
+      JWT_SECRET: dev-only-not-a-secret
+      CORS_ORIGINS: http://localhost:3000,http://localhost:5173
+      PHOTO_CONTAINER: photos
+      FHIR_BASE_URL: http://fhir:8080/fhir
+      VLM_PROVIDER: none
+    depends_on:
+      db:
+        condition: service_healthy
+      fhir:
+        condition: service_started
+
+  db:
+    image: postgis/postgis:16-3.4
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: riverkin
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  fhir:
+    image: hapiproject/hapi:latest
+    ports:
+      - "8080:8080"
+
+volumes:
+  pgdata:

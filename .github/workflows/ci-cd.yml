@@ -1,0 +1,79 @@
+name: api-ci-cd
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: api-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    services:
+      postgres:
+        image: postgis/postgis:16-3.4
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: riverkin_test
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      DATABASE_URL: postgresql+asyncpg://postgres:postgres@localhost:5432/riverkin_test
+      JWT_SECRET: ci-only-not-a-secret
+      APP_ENV: test
+      VLM_PROVIDER: none
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - run: uv sync --frozen
+      - run: uv run ruff check .
+      - run: uv run alembic upgrade head
+      - run: uv run pytest -q
+
+  deploy:
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    needs: test
+    runs-on: ubuntu-latest
+    environment: production
+    permissions:
+      contents: read
+      id-token: write   # OIDC login to Azure, no stored passwords
+    env:
+      IMAGE: ${{ vars.ACR_NAME }}.azurecr.io/riverkin-api:${{ github.sha }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Build image in Azure Container Registry
+        run: az acr build --registry "${{ vars.ACR_NAME }}" --image "riverkin-api:${{ github.sha }}" .
+
+      - name: Deploy API container app
+        run: |
+          az containerapp update \
+            --name "${{ vars.API_APP }}" \
+            --resource-group "${{ vars.RESOURCE_GROUP }}" \
+            --image "$IMAGE"
+
+      - name: Update scheduled job image
+        run: |
+          az containerapp job update \
+            --name "${{ vars.JOB_APP }}" \
+            --resource-group "${{ vars.RESOURCE_GROUP }}" \
+            --image "$IMAGE"
+
+      - name: Smoke test
+        run: curl --fail --silent --retry 12 --retry-delay 10 --retry-all-errors "${{ vars.API_URL }}/healthz"

@@ -1,0 +1,417 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "RiverKin API",
+    "description": "RiverKin backend \u2014 IEEE OneAquaHealth Global Hackathon 2026 (Track 5).",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/healthz": {
+      "get": {
+        "tags": [
+          "health"
+        ],
+        "summary": "Healthz",
+        "description": "Liveness probe used by the Docker entrypoint and CI smoke test.",
+        "operationId": "healthz_healthz_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "type": "object",
+                  "title": "Response Healthz Healthz Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/sites": {
+      "get": {
+        "tags": [
+          "sites"
+        ],
+        "summary": "List Sites",
+        "description": "List monitored sites with their latest need score.\n\nTODO(PRD): pagination, filtering by catchment/need, real need_score from\napp.scoring.need_score, and the exact response envelope.",
+        "operationId": "list_sites_api_v1_sites_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response List Sites Api V1 Sites Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/sites/{site_id}": {
+      "get": {
+        "tags": [
+          "sites"
+        ],
+        "summary": "Get Site",
+        "description": "Return a single site by id.\n\nTODO(PRD): full site detail incl. recent observations and need breakdown.",
+        "operationId": "get_site_api_v1_sites__site_id__get",
+        "parameters": [
+          {
+            "name": "site_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Site Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Get Site Api V1 Sites  Site Id  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/observations": {
+      "post": {
+        "tags": [
+          "observations"
+        ],
+        "summary": "Create Observation",
+        "description": "Submit a new observation with a photo.\n\nTODO(PRD): accept multipart photo + fields; run blur score, EXIF strip,\nface blur and pHash; enforce geofence (no raw GPS persisted); store\nprocessed photo in Azure Blob; kick off verification via BackgroundTasks.\nSafety refusals must return 403 + ``safety_reason``.",
+        "operationId": "create_observation_api_v1_observations_post",
+        "responses": {
+          "501": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Create Observation Api V1 Observations Post"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/observations/{observation_id}/status": {
+      "get": {
+        "tags": [
+          "observations"
+        ],
+        "summary": "Observation Status",
+        "description": "Receipt + current verification status for an observation.\n\nTODO(PRD): real status machine, reliability score, reward value, and the\nexact receipt response shape.",
+        "operationId": "observation_status_api_v1_observations__observation_id__status_get",
+        "parameters": [
+          {
+            "name": "observation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Observation Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Observation Status Api V1 Observations  Observation Id  Status Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/verify/next": {
+      "get": {
+        "tags": [
+          "verify"
+        ],
+        "summary": "Next Verify Item",
+        "description": "Return the next item for the current verifier.\n\nThe AI only *asks* questions here; humans decide (CLAUDE.md hard rule).\n\nTODO(PRD): real item selection, gold-item injection ratio, and the exact\nitem/question payload shape.",
+        "operationId": "next_verify_item_api_v1_verify_next_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Next Verify Item Api V1 Verify Next Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/verify/{item_id}/vote": {
+      "post": {
+        "tags": [
+          "verify"
+        ],
+        "summary": "Cast Vote",
+        "description": "Record a verification vote for an item.\n\nTODO(PRD): accept the vote payload, score against gold items, update\nobserver/verifier trust via app.scoring.trust_score, and advance the\nverification state machine.",
+        "operationId": "cast_vote_api_v1_verify__item_id__vote_post",
+        "parameters": [
+          {
+            "name": "item_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Item Id"
+            }
+          }
+        ],
+        "responses": {
+          "501": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Cast Vote Api V1 Verify  Item Id  Vote Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/expert/queue": {
+      "get": {
+        "tags": [
+          "expert"
+        ],
+        "summary": "Expert Queue",
+        "description": "List observations escalated to the expert queue.\n\nTODO(PRD): escalation criteria, ordering, expert decision actions, and the\nexact queue item response shape.",
+        "operationId": "expert_queue_api_v1_expert_queue_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Expert Queue Api V1 Expert Queue Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/fhir/observations/{observation_id}": {
+      "get": {
+        "tags": [
+          "fhir"
+        ],
+        "summary": "Get Fhir Observation",
+        "description": "Return the FHIR Bundle for a verified observation.\n\nTODO(PRD): load the real observation, shape to the OAH IG, and POST to the\nHAPI server at settings.FHIR_BASE_URL. For now return a minimal placeholder\nBundle built from no real data.",
+        "operationId": "get_fhir_observation_api_v1_fhir_observations__observation_id__get",
+        "parameters": [
+          {
+            "name": "observation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Observation Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Get Fhir Observation Api V1 Fhir Observations  Observation Id  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/token": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Issue Token",
+        "description": "Issue a JWT for a verified principal.\n\nTODO(PRD): real credential exchange and signed JWT (HS256 with\nsettings.JWT_SECRET), including role/trust claims.",
+        "operationId": "issue_token_api_v1_auth_token_post",
+        "responses": {
+          "501": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Issue Token Api V1 Auth Token Post"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/me": {
+      "get": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Current Principal",
+        "description": "Return the current authenticated principal.\n\nTODO(PRD): decode the bearer JWT and return the real principal + roles.",
+        "operationId": "current_principal_api_v1_auth_me_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Current Principal Api V1 Auth Me Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  }
+}

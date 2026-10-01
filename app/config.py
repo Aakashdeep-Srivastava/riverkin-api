@@ -1,0 +1,59 @@
+"""Application settings, loaded from environment variables (see .env.example).
+
+Every value here maps to an env var documented in CLAUDE.md. Locally these come
+from a git-ignored `.env`; in Azure they come from Key Vault references.
+"""
+
+from __future__ import annotations
+
+from functools import lru_cache
+from typing import Literal
+
+from pydantic_settings import BaseSettings, SettingsConfigDict
+
+
+class Settings(BaseSettings):
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8",
+        extra="ignore",
+    )
+
+    # Core
+    APP_ENV: Literal["local", "test", "production"] = "local"
+
+    # Database (async SQLAlchemy / asyncpg URL).
+    DATABASE_URL: str = (
+        "postgresql+asyncpg://postgres:postgres@localhost:5432/riverkin"
+    )
+
+    # Auth
+    JWT_SECRET: str = "dev-only-not-a-secret"
+
+    # CORS — comma-separated list of allowed origins.
+    CORS_ORIGINS: str = "http://localhost:3000,http://localhost:5173"
+
+    # Azure Blob storage for observation photos.
+    STORAGE_ACCOUNT_URL: str = ""
+    PHOTO_CONTAINER: str = "photos"
+
+    # FHIR (HAPI server base URL).
+    FHIR_BASE_URL: str = "http://localhost:8080/fhir"
+
+    # VLM provider for verify-question generation.
+    VLM_PROVIDER: Literal["none", "moondream", "hosted"] = "none"
+    VLM_API_KEY: str | None = None
+
+    @property
+    def cors_origins_list(self) -> list[str]:
+        """CORS_ORIGINS parsed into a clean list."""
+        return [o.strip() for o in self.CORS_ORIGINS.split(",") if o.strip()]
+
+
+@lru_cache
+def get_settings() -> Settings:
+    """Cached settings accessor (safe to import anywhere)."""
+    return Settings()
+
+
+settings = get_settings()
