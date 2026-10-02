@@ -1,0 +1,63 @@
+{
+  "schema": "riverkin.oah_field_codes.v1",
+  "code_system": "http://hl7.eu/fhir/ig/oah/CodeSystem/temporarySystem-oah-eu",
+  "note": "Maps RiverKin citizen field-check questions to the REAL OneAquaHealth code system (hl7-eu/oah). Codes marked real exist verbatim in the OAH CodeSystem 'TemporaryOahSystem'; codes marked proposed are RiverKin extensions for citizen-only fields the IG does not yet model (the PRD exports these as a proposed Observation.extension).",
+  "fields": [
+    {
+      "riverkin_field": "water_appearance",
+      "question": "What is the water appearance?",
+      "oah_code": "foam",
+      "oah_display": "Foam/colour/smell",
+      "status": "real",
+      "answers": ["clear", "slightly_cloudy", "cloudy", "very_turbid"]
+    },
+    {
+      "riverkin_field": "foam",
+      "question": "Is there foam on the surface?",
+      "oah_code": "foam",
+      "oah_display": "Foam/colour/smell",
+      "status": "real",
+      "answers": ["none", "patches", "lots"]
+    },
+    {
+      "riverkin_field": "flow",
+      "question": "How is the flow?",
+      "oah_code": "hydrology",
+      "oah_display": "Hydrology of the stream",
+      "status": "real",
+      "answers": ["low", "normal", "high"]
+    },
+    {
+      "riverkin_field": "bank_vegetation",
+      "question": "How is the bank vegetation?",
+      "oah_code": "riparianVegetation",
+      "oah_display": "Riparian vegetation",
+      "status": "real",
+      "answers": ["healthy", "sparse", "bare"]
+    },
+    {
+      "riverkin_field": "channel_morphology",
+      "question": "Is the channel natural or built-up?",
+      "oah_code": "morophology",
+      "oah_display": "Morphology of the streams",
+      "status": "real",
+      "answers": ["natural", "partly_modified", "channelized"]
+    },
+    {
+      "riverkin_field": "litter",
+      "question": "Any visible litter or debris?",
+      "oah_code": "litter",
+      "oah_display": "Litter / debris (RiverKin proposed)",
+      "status": "proposed",
+      "answers": ["none", "some", "a_lot"]
+    },
+    {
+      "riverkin_field": "pipe_outfall",
+      "question": "Any pipe or outfall discharging?",
+      "oah_code": "pipe-outfall",
+      "oah_display": "Pipe / outfall discharge (RiverKin proposed)",
+      "status": "proposed",
+      "answers": ["no", "yes", "cant_tell"]
+    }
+  ]
+}
