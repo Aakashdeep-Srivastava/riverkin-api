@@ -2,7 +2,7 @@
 
 - CORS from settings (CORS_ORIGINS comma list)
 - GET /healthz liveness probe
-- /api/v1 routers (sites, observations, verify, expert, fhir, auth)
+- /api/v1 routers (sites, observations, verify, expert, fhir, auth, maps)
 """
 
 from __future__ import annotations
@@ -11,7 +11,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import settings
-from app.routers import auth, expert, fhir, observations, sites, verify
+from app.routers import auth, expert, fhir, maps, observations, sites, verify
 
 app = FastAPI(
     title="RiverKin API",
@@ -34,7 +34,7 @@ async def healthz() -> dict[str, str]:
     return {"status": "ok"}
 
 
-# Perfect 6 routers, all under /api/v1.
+# Perfect 6 routers plus maps token, all under /api/v1.
 API_PREFIX = "/api/v1"
 app.include_router(sites.router, prefix=API_PREFIX)
 app.include_router(observations.router, prefix=API_PREFIX)
@@ -42,3 +42,4 @@ app.include_router(verify.router, prefix=API_PREFIX)
 app.include_router(expert.router, prefix=API_PREFIX)
 app.include_router(fhir.router, prefix=API_PREFIX)
 app.include_router(auth.router, prefix=API_PREFIX)
+app.include_router(maps.router, prefix=API_PREFIX)

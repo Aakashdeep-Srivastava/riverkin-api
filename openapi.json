@@ -355,6 +355,26 @@
           }
         }
       }
+    },
+    "/api/v1/maps/token": {
+      "get": {
+        "tags": [
+          "maps"
+        ],
+        "summary": "Get Maps Token",
+        "description": "Mint an AAD access token for Azure Maps.\n\nReturns ``{token, clientId, expiresOn}`` on success, or 503\n``{\"detail\": \"maps token unavailable\"}`` when no credential/role is\navailable. Fails fast (never hangs) so CI stays deterministic.",
+        "operationId": "get_maps_token_api_v1_maps_token_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {

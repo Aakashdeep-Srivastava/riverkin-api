@@ -44,6 +44,10 @@ class Settings(BaseSettings):
     VLM_PROVIDER: Literal["none", "moondream", "hosted"] = "none"
     VLM_API_KEY: str | None = None
 
+    # Azure Maps — the account uniqueId (client id). Used to mint AAD tokens for
+    # the browser via managed identity; not a secret.
+    AZURE_MAPS_CLIENT_ID: str = ""
+
     @property
     def cors_origins_list(self) -> list[str]:
         """CORS_ORIGINS parsed into a clean list."""
