@@ -15,14 +15,13 @@ async def test_healthz_returns_ok():
     assert resp.json() == {"status": "ok"}
 
 
-async def test_sites_list_is_labelled_simulated():
+async def test_sites_list_returns_array():
+    # /sites is now DB-backed and returns a JSON array of sites.
     transport = httpx.ASGITransport(app=app)
     async with httpx.AsyncClient(transport=transport, base_url="http://test") as client:
         resp = await client.get("/api/v1/sites")
     assert resp.status_code == 200
-    body = resp.json()
-    assert body["simulated"] is True
-    assert isinstance(body["items"], list)
+    assert isinstance(resp.json(), list)
 
 
 async def test_openapi_exposes_api_v1_routes():

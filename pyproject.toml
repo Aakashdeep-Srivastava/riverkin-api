@@ -38,6 +38,8 @@ line-length = 100
 [tool.ruff.lint]
 # E/F = pyflakes+pycodestyle, I = isort, UP = pyupgrade, B = bugbear.
 select = ["E", "F", "I", "UP", "B"]
+# B008: calling Depends()/Query() in argument defaults is the FastAPI idiom.
+ignore = ["B008"]
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"

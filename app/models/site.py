@@ -9,7 +9,7 @@ from __future__ import annotations
 from datetime import datetime
 
 from geoalchemy2 import Geometry
-from sqlalchemy import Boolean, DateTime, Float, String, func
+from sqlalchemy import Boolean, DateTime, Float, Integer, String, func
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.db import Base
@@ -20,19 +20,35 @@ class Site(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
 
-    # Stable external key from the bundled OAH list (e.g. "oah-0001").
+    # Stable OAH site code from the bundled list (e.g. "CB-01", "BN-04").
     external_id: Mapped[str | None] = mapped_column(String(64), unique=True, index=True)
 
     name: Mapped[str] = mapped_column(String(255))
 
-    # PostGIS point (WGS84). Populated after the geofence check only — never
-    # store a raw user GPS fix here (see CLAUDE.md hard rules).
+    # Real OneAquaHealth context.
+    waterbody: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    city: Mapped[str | None] = mapped_column(String(128), index=True, nullable=True)
+    country: Mapped[str | None] = mapped_column(String(128), nullable=True)
+
+    # Convenience lat/lng (WGS84) for the API response; the geometry below is the
+    # spatial source of truth for ST_DWithin geofence queries.
+    lat: Mapped[float | None] = mapped_column(Float, nullable=True)
+    lng: Mapped[float | None] = mapped_column(Float, nullable=True)
     location: Mapped[object | None] = mapped_column(
         Geometry(geometry_type="POINT", srid=4326, spatial_index=False), nullable=True
     )
 
-    # Latest computed need score N_s. See app/scoring.py::need_score.
-    # TODO(PRD): exact score range, decay, and inputs come from the Algorithms section.
+    # Scoring inputs (denormalised; recomputed by the rain/need job).
+    cadence_days: Mapped[int] = mapped_column(Integer, default=14, server_default="14")
+    last_verified_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
+    rain_48h_mm: Mapped[float] = mapped_column(Float, default=0.0, server_default="0")
+    expert_flag_open: Mapped[bool] = mapped_column(
+        Boolean, default=False, server_default="false"
+    )
+
+    # Latest computed need score N_s (app/scoring.py::need_score).
     need_score: Mapped[float] = mapped_column(Float, default=0.0)
 
     # Flag any seeded/placeholder site as simulated (CLAUDE.md hard rule).
@@ -44,6 +60,3 @@ class Site(Base):
     updated_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
     )
-
-    # TODO(PRD): add catchment id, waterbody type, protection status, risk flags,
-    # last_rain_mm, and any denormalised scoring inputs from the PRD Data model.
