@@ -219,7 +219,7 @@
           "observations"
         ],
         "summary": "Upload Photo",
-        "description": "Upload one observation photo.\n\nRuns EXIF strip + Laplacian blur score + face blur + pHash, rejects reused\nimages (pHash distance < 8 against the site's past photos), and stores the\nprocessed bytes. A blurry photo returns 422 ``retake_photo``.",
+        "description": "Upload one observation photo and analyse it.\n\nRuns EXIF strip + Laplacian blur score + face blur + pHash, rejects reused\nimages (pHash distance < 8 against the site's past photos), then runs the\nvision model (scene summary + AI-generated estimate) and a combined\ncapture-authenticity score, and geotags with the site's coarse location. A\nblurry photo returns 422 ``retake_photo``.",
         "operationId": "upload_photo_api_v1_observations__observation_id__photos_post",
         "parameters": [
           {
@@ -252,6 +252,47 @@
                   "additionalProperties": true,
                   "title": "Response Upload Photo Api V1 Observations  Observation Id  Photos Post"
                 }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/observations/{observation_id}/photo": {
+      "get": {
+        "tags": [
+          "observations"
+        ],
+        "summary": "Observation Photo",
+        "description": "Serve the processed (EXIF-stripped, face-blurred) photo for a check.",
+        "operationId": "observation_photo_api_v1_observations__observation_id__photo_get",
+        "parameters": [
+          {
+            "name": "observation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Observation Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
               }
             }
           },
@@ -1200,6 +1241,11 @@
             "type": "string",
             "title": "Kind",
             "default": "upstream"
+          },
+          "captured_live": {
+            "type": "boolean",
+            "title": "Captured Live",
+            "default": false
           }
         },
         "type": "object",
@@ -1926,6 +1972,16 @@
           "date_label": {
             "type": "string",
             "title": "Date Label"
+          },
+          "photo": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ReceiptPhotoOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
           }
         },
         "type": "object",
@@ -1944,6 +2000,96 @@
         ],
         "title": "ReceiptOut",
         "description": "Impact receipt rendered on C6."
+      },
+      "ReceiptPhotoOut": {
+        "properties": {
+          "url": {
+            "type": "string",
+            "title": "Url"
+          },
+          "summary": {
+            "type": "string",
+            "title": "Summary"
+          },
+          "tags": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Tags",
+            "default": []
+          },
+          "model": {
+            "type": "string",
+            "title": "Model"
+          },
+          "used_model": {
+            "type": "boolean",
+            "title": "Used Model"
+          },
+          "ai_generated_likelihood": {
+            "type": "number",
+            "title": "Ai Generated Likelihood"
+          },
+          "authenticity": {
+            "type": "integer",
+            "title": "Authenticity"
+          },
+          "authenticity_reason": {
+            "type": "string",
+            "title": "Authenticity Reason"
+          },
+          "captured_live": {
+            "type": "boolean",
+            "title": "Captured Live"
+          },
+          "geotag_label": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Geotag Label"
+          },
+          "lat": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lat"
+          },
+          "lng": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lng"
+          }
+        },
+        "type": "object",
+        "required": [
+          "url",
+          "summary",
+          "model",
+          "used_model",
+          "ai_generated_likelihood",
+          "authenticity",
+          "authenticity_reason",
+          "captured_live"
+        ],
+        "title": "ReceiptPhotoOut",
+        "description": "The analysed check photo shown on the receipt."
       },
       "RegisterIn": {
         "properties": {

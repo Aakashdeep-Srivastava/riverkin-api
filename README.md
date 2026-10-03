@@ -29,6 +29,16 @@ Azure Blob storage.
 5. Receipt + status: `GET /observations/{id}/status`
 6. FHIR Bundle export (Observation + Provenance), expert queue
 
+**Photo pipeline:** `POST /observations/{id}/photos` (multipart `file`, `kind`,
+`captured_live`) strips EXIF, scores blur (422 retake), blurs faces, rejects
+pHash duplicates (409), then runs a small **Azure AI Foundry vision model**
+(`app/ai/vision.py`; deterministic heuristic fallback when `FOUNDRY_VISION_*`
+is unset) for a scene summary + AI-generated estimate, and a combined
+**capture-authenticity** score (`app/authenticity.py`: live-capture + EXIF +
+pHash novelty + model estimate). The processed image is served from
+`GET /observations/{id}/photo` and summarised on the receipt, geotagged with the
+site's coarse location (never raw device GPS).
+
 Later layers (after the Perfect 6): crews & check-ins, site timeline, metrics,
 auth (guest + Microsoft OIDC), and the **missions engine** —
 `GET /missions` (suggested field missions, most-urgent first, `?city=` filter)

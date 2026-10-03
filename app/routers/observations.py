@@ -12,24 +12,28 @@ receipt. Raw GPS is used once for the geofence and never persisted (PRD privacy)
 from __future__ import annotations
 
 from datetime import UTC, datetime
+from pathlib import Path
 from typing import Any
 
 from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile, status
+from fastapi.responses import FileResponse
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app import receipts, scoring
+from app import authenticity, receipts, scoring
+from app.ai import vision
 from app.ai.questions import FIELD_SPECS, build_verify_items
 from app.db import get_session
 from app.models.observation import Observation
 from app.models.site import Site
 from app.models.verify import VerifyItem, Vote
-from app.photos import PHASH_REUSE_DISTANCE, phash_distance, process_photo
+from app.photos import MEDIA_DIR, PHASH_REUSE_DISTANCE, has_exif, phash_distance, process_photo
 from app.schemas import (
     ObservationCreated,
     ObservationIn,
     ObservationStatusOut,
     ReceiptOut,
+    ReceiptPhotoOut,
 )
 
 router = APIRouter(prefix="/observations", tags=["observations"])
@@ -73,6 +77,27 @@ async def _verifier_count(session: AsyncSession, observation_id: int) -> int:
     return int((await session.execute(stmt)).scalar() or 0)
 
 
+def _build_photo(obs: Observation) -> ReceiptPhotoOut | None:
+    pa = obs.photo_analysis
+    if not pa or not obs.photo_path:
+        return None
+    geo = pa.get("geotag") or {}
+    return ReceiptPhotoOut(
+        url=f"/api/v1/observations/{obs.id}/photo",
+        summary=pa.get("summary", ""),
+        tags=pa.get("tags", []),
+        model=pa.get("model", "heuristic"),
+        used_model=bool(pa.get("used_model", False)),
+        ai_generated_likelihood=float(pa.get("ai_generated_likelihood", 0.5)),
+        authenticity=int(pa.get("authenticity", 50)),
+        authenticity_reason=pa.get("authenticity_reason", ""),
+        captured_live=bool(pa.get("captured_live", False)),
+        geotag_label=geo.get("label"),
+        lat=geo.get("lat"),
+        lng=geo.get("lng"),
+    )
+
+
 def _build_receipt(obs: Observation, site: Site, verifier_count: int) -> ReceiptOut:
     gap_before = obs.gap_days_closed if obs.gap_days_closed is not None else 0
     return ReceiptOut(
@@ -87,6 +112,7 @@ def _build_receipt(obs: Observation, site: Site, verifier_count: int) -> Receipt
         sentinel_line=receipts.sentinel_line(obs.answers or {}),
         state=receipts.state_label(obs.status),
         date_label=receipts.date_label(obs.created_at),
+        photo=_build_photo(obs),
     )
 
 
@@ -163,19 +189,23 @@ async def upload_photo(
     observation_id: int,
     file: UploadFile = File(...),
     kind: str = Form("upstream"),
+    captured_live: bool = Form(False),
     session: AsyncSession = Depends(get_session),
 ) -> dict[str, Any]:
-    """Upload one observation photo.
+    """Upload one observation photo and analyse it.
 
     Runs EXIF strip + Laplacian blur score + face blur + pHash, rejects reused
-    images (pHash distance < 8 against the site's past photos), and stores the
-    processed bytes. A blurry photo returns 422 ``retake_photo``.
+    images (pHash distance < 8 against the site's past photos), then runs the
+    vision model (scene summary + AI-generated estimate) and a combined
+    capture-authenticity score, and geotags with the site's coarse location. A
+    blurry photo returns 422 ``retake_photo``.
     """
     obs = await session.get(Observation, observation_id)
     if obs is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="observation not found")
 
     raw = await file.read()
+    exif_present = has_exif(raw)
     try:
         processed = process_photo(raw, observation_id=observation_id, kind=kind)
     except Exception as exc:  # unreadable / not an image
@@ -190,7 +220,8 @@ async def upload_photo(
             detail={"reason": "retake_photo", "message": "Photo looks blurry — retake it."},
         )
 
-    # Reject reused images from the same site's recent observations (anti-cheat).
+    # Novelty vs the same site's recent photos (anti-cheat). Reject near-reuse.
+    novelty: int | None = None
     if obs.site_id is not None:
         past = (
             await session.execute(
@@ -200,16 +231,47 @@ async def upload_photo(
                 .where(Observation.photo_phash.is_not(None))
             )
         ).scalars().all()
-        for prior in past:
-            if phash_distance(processed.phash, prior) < PHASH_REUSE_DISTANCE:
+        distances = [phash_distance(processed.phash, prior) for prior in past]
+        if distances:
+            novelty = min(distances)
+            if novelty < PHASH_REUSE_DISTANCE:
                 raise HTTPException(
                     status_code=status.HTTP_409_CONFLICT,
                     detail={"reason": "duplicate_photo", "message": "This photo was already used."},
                 )
 
+    # Vision analysis runs on the CLEAN bytes only (EXIF stripped, faces blurred).
+    analysis = await vision.analyze_image(processed.jpeg_bytes)
+    auth = authenticity.score(
+        captured_live=captured_live,
+        exif_present=exif_present,
+        phash_novelty=novelty,
+        model_ai_likelihood=analysis.ai_generated_likelihood,
+    )
+
+    # Coarse, privacy-safe geotag: the geofenced site location (never raw GPS).
+    site = await session.get(Site, obs.site_id) if obs.site_id else None
+    geotag = None
+    if site is not None and site.lat is not None and site.lng is not None:
+        where = ", ".join(p for p in (site.name, site.city) if p)
+        geotag = {"lat": site.lat, "lng": site.lng, "label": f"Within 150 m of {where}"}
+
     obs.photo_path = processed.path
     obs.photo_phash = processed.phash
     obs.photo_count = (obs.photo_count or 0) + 1
+    obs.photo_analysis = {
+        "kind": kind,
+        "summary": analysis.summary,
+        "tags": analysis.tags,
+        "model": analysis.model,
+        "used_model": analysis.used_model,
+        "ai_generated_likelihood": round(analysis.ai_generated_likelihood, 3),
+        "authenticity": auth.confidence,
+        "authenticity_reason": auth.reason,
+        "captured_live": captured_live,
+        "faces_blurred": processed.faces_blurred,
+        "geotag": geotag,
+    }
     await session.commit()
     return {
         "observation_id": observation_id,
@@ -217,7 +279,23 @@ async def upload_photo(
         "blur_score": round(processed.blur_score, 1),
         "faces_blurred": processed.faces_blurred,
         "phash": processed.phash,
+        "analysis": obs.photo_analysis,
     }
+
+
+@router.get("/{observation_id}/photo")
+async def observation_photo(
+    observation_id: int,
+    session: AsyncSession = Depends(get_session),
+) -> FileResponse:
+    """Serve the processed (EXIF-stripped, face-blurred) photo for a check."""
+    obs = await session.get(Observation, observation_id)
+    if obs is None or not obs.photo_path:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="photo not found")
+    full = MEDIA_DIR.parent / obs.photo_path
+    if not Path(full).is_file():
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="photo not found")
+    return FileResponse(full, media_type="image/jpeg")
 
 
 @router.get("/{observation_id}/status", response_model=ObservationStatusOut)

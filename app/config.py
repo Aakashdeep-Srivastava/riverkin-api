@@ -44,6 +44,14 @@ class Settings(BaseSettings):
     VLM_PROVIDER: Literal["none", "moondream", "hosted"] = "none"
     VLM_API_KEY: str | None = None
 
+    # Azure AI Foundry — small, low-cost vision model for photo analysis +
+    # AI-generated likelihood. Empty endpoint/key → deterministic fallback is
+    # used (the flow always works; the real model activates once these are set).
+    FOUNDRY_VISION_ENDPOINT: str = ""  # e.g. https://<resource>.services.ai.azure.com/models
+    FOUNDRY_VISION_KEY: str = ""
+    FOUNDRY_VISION_MODEL: str = "Phi-3.5-vision-instruct"
+    FOUNDRY_API_VERSION: str = "2024-05-01-preview"
+
     # Microsoft (Entra) OIDC for adult sign-in. Empty disables the button.
     MS_CLIENT_ID: str = ""
     MS_CLIENT_SECRET: str = ""

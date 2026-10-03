@@ -133,6 +133,23 @@ class ObservationIn(BaseModel):
     lng: float | None = None
 
 
+class ReceiptPhotoOut(BaseModel):
+    """The analysed check photo shown on the receipt."""
+
+    url: str
+    summary: str
+    tags: list[str] = []
+    model: str
+    used_model: bool
+    ai_generated_likelihood: float
+    authenticity: int
+    authenticity_reason: str
+    captured_live: bool
+    geotag_label: str | None = None
+    lat: float | None = None
+    lng: float | None = None
+
+
 class ReceiptOut(BaseModel):
     """Impact receipt rendered on C6."""
 
@@ -147,6 +164,7 @@ class ReceiptOut(BaseModel):
     sentinel_line: str
     state: str
     date_label: str
+    photo: ReceiptPhotoOut | None = None
 
 
 class ObservationCreated(BaseModel):

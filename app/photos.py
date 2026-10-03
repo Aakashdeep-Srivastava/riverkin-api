@@ -35,6 +35,21 @@ class ProcessedPhoto:
     blur_score: float
     is_blurry: bool
     faces_blurred: int
+    jpeg_bytes: bytes  # clean (EXIF-stripped, face-blurred) bytes — safe to send onward
+
+
+def has_exif(raw: bytes) -> bool:
+    """True if the uploaded bytes carry any EXIF metadata (camera/GPS block).
+
+    A live in-app canvas capture has none; a real camera file usually does; many
+    AI-generated images have none. Used only as a weak authenticity signal — the
+    EXIF itself is always dropped before storage.
+    """
+    try:
+        exif = Image.open(io.BytesIO(raw)).getexif()
+        return bool(exif) and len(exif) > 0
+    except Exception:
+        return False
 
 
 def _blur_score(gray: np.ndarray) -> float:
@@ -87,7 +102,10 @@ def process_photo(raw: bytes, *, observation_id: int, kind: str = "upstream") ->
 
     MEDIA_DIR.mkdir(parents=True, exist_ok=True)
     out_path = MEDIA_DIR / f"obs{observation_id:05d}-{kind}.jpg"
-    Image.fromarray(processed_rgb).save(out_path, format="JPEG", quality=85)
+    clean = Image.fromarray(processed_rgb)
+    clean.save(out_path, format="JPEG", quality=85)
+    buf = io.BytesIO()
+    clean.save(buf, format="JPEG", quality=85)
 
     return ProcessedPhoto(
         path=str(out_path.relative_to(MEDIA_DIR.parent)),
@@ -95,6 +113,7 @@ def process_photo(raw: bytes, *, observation_id: int, kind: str = "upstream") ->
         blur_score=blur,
         is_blurry=blur < BLUR_THRESHOLD,
         faces_blurred=faces_blurred,
+        jpeg_bytes=buf.getvalue(),
     )
 
 

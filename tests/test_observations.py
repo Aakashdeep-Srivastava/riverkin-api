@@ -165,3 +165,38 @@ async def test_photo_upload_blur_and_duplicate_gates():
         )
         assert dup.status_code == 409
         assert dup.json()["detail"]["reason"] == "duplicate_photo"
+
+
+async def test_photo_analysis_authenticity_geotag_and_serving():
+    await seed()
+    async with await _client() as client:
+        code = await _a_site_code(client)
+        obs = await _new_obs(client, code)
+
+        res = await client.post(
+            f"/api/v1/observations/{obs}/photos",
+            files={"file": ("a.jpg", _sharp_jpeg(7), "image/jpeg")},
+            data={"kind": "upstream", "captured_live": "true"},
+        )
+        assert res.status_code == 200
+        analysis = res.json()["analysis"]
+        assert analysis["summary"]
+        assert 0 <= analysis["authenticity"] <= 100
+        assert analysis["captured_live"] is True
+        # A live, novel capture scores well.
+        assert analysis["authenticity"] >= 60
+        assert analysis["geotag"] and analysis["geotag"]["label"].startswith("Within 150 m")
+
+        # The receipt (via status) now carries the photo block.
+        status = (await client.get(f"/api/v1/observations/{obs}/status")).json()
+        photo = status["receipt"]["photo"]
+        assert photo is not None
+        assert photo["url"] == f"/api/v1/observations/{obs}/photo"
+        assert photo["captured_live"] is True
+        assert photo["geotag_label"].startswith("Within 150 m")
+
+        # The processed image is served back as JPEG.
+        img = await client.get(f"/api/v1/observations/{obs}/photo")
+        assert img.status_code == 200
+        assert img.headers["content-type"] == "image/jpeg"
+        assert len(img.content) > 0
