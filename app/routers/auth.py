@@ -24,7 +24,14 @@ from app.config import settings
 from app.db import get_session
 from app.models.user import User
 from app.schemas import AuthToken, LoginIn, RegisterIn, UserOut
-from app.security import create_access_token, decode_token, hash_password, verify_password
+from app.security import (
+    create_access_token,
+    create_oidc_state,
+    decode_token,
+    hash_password,
+    verify_oidc_state,
+    verify_password,
+)
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
@@ -127,13 +134,18 @@ async def auth_config() -> dict:
 # ------------------------------------------------------------------
 @router.get("/microsoft/login")
 async def microsoft_login() -> RedirectResponse:
-    """Kick off Microsoft sign-in. Sets a short-lived state cookie (CSRF)."""
+    """Kick off Microsoft sign-in with a signed, stateless ``state`` (CSRF).
+
+    The state is a short-lived token signed with our own secret, so the callback
+    can validate it without a cookie — robust across local http and strict
+    browsers that drop the cross-site redirect cookie.
+    """
     if not (settings.MS_CLIENT_ID and settings.MS_CLIENT_SECRET):
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Microsoft sign-in is not configured",
         )
-    state = secrets.token_urlsafe(24)
+    state = create_oidc_state(secrets.token_urlsafe(16))
     params = {
         "client_id": settings.MS_CLIENT_ID,
         "response_type": "code",
@@ -143,11 +155,7 @@ async def microsoft_login() -> RedirectResponse:
         "state": state,
     }
     url = MS_AUTHORIZE.format(tenant=settings.MS_TENANT) + "?" + urlencode(params)
-    resp = RedirectResponse(url, status_code=status.HTTP_302_FOUND)
-    resp.set_cookie(
-        "rk_oidc_state", state, max_age=600, httponly=True, samesite="lax", secure=True, path="/"
-    )
-    return resp
+    return RedirectResponse(url, status_code=status.HTTP_302_FOUND)
 
 
 def _fail_redirect(reason: str) -> RedirectResponse:
@@ -165,10 +173,9 @@ async def microsoft_callback(
     """Handle Microsoft's redirect: exchange the code, upsert the user, issue our JWT."""
     code = request.query_params.get("code")
     state = request.query_params.get("state")
-    cookie_state = request.cookies.get("rk_oidc_state")
     if request.query_params.get("error"):
         return _fail_redirect(request.query_params.get("error", "denied"))
-    if not code or not state or state != cookie_state:
+    if not code or not state or not verify_oidc_state(state):
         return _fail_redirect("bad_state")
 
     data = {
@@ -210,9 +217,7 @@ async def microsoft_callback(
         await session.refresh(user)
 
     app_token = create_access_token(user_id=user.id, role=user.role, name=user.display_name)
-    resp = RedirectResponse(
+    return RedirectResponse(
         f"{settings.WEB_URL.rstrip('/')}/auth/complete?token={app_token}",
         status_code=status.HTTP_302_FOUND,
     )
-    resp.delete_cookie("rk_oidc_state", path="/")
-    return resp

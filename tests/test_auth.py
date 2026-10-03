@@ -5,6 +5,7 @@ from __future__ import annotations
 import httpx
 
 from app.main import app
+from app.security import create_oidc_state, verify_oidc_state
 
 
 async def _client() -> httpx.AsyncClient:
@@ -74,6 +75,26 @@ async def test_bad_login_and_invalid_role():
             json={**REG, "email": "x@example.com", "role": "admin"},
         )
         assert bad_role.status_code == 422
+
+
+def test_oidc_state_roundtrip_and_rejects_tampering():
+    state = create_oidc_state("nonce-123")
+    assert verify_oidc_state(state) is True
+    # Garbage / tampered / foreign tokens are rejected.
+    assert verify_oidc_state("not-a-token") is False
+    assert verify_oidc_state(state + "x") is False
+    assert verify_oidc_state("") is False
+
+
+async def test_microsoft_callback_bad_state_redirects_to_error():
+    async with await _client() as client:
+        res = await client.get(
+            "/api/v1/auth/microsoft/callback",
+            params={"code": "abc", "state": "forged"},
+            follow_redirects=False,
+        )
+        assert res.status_code == 302
+        assert "/auth/complete?error=bad_state" in res.headers["location"]
 
 
 async def test_short_password_rejected():

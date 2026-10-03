@@ -713,7 +713,7 @@
           "auth"
         ],
         "summary": "Microsoft Login",
-        "description": "Kick off Microsoft sign-in. Sets a short-lived state cookie (CSRF).",
+        "description": "Kick off Microsoft sign-in with a signed, stateless ``state`` (CSRF).\n\nThe state is a short-lived token signed with our own secret, so the callback\ncan validate it without a cookie \u2014 robust across local http and strict\nbrowsers that drop the cross-site redirect cookie.",
         "operationId": "microsoft_login_api_v1_auth_microsoft_login_get",
         "responses": {
           "200": {

@@ -17,6 +17,7 @@ from app.config import settings
 
 ALGORITHM = "HS256"
 ACCESS_TOKEN_TTL = timedelta(days=7)  # demo-friendly; shorten for production
+OIDC_STATE_TTL = timedelta(minutes=15)  # how long a sign-in attempt stays valid
 
 
 def hash_password(password: str) -> str:
@@ -47,3 +48,30 @@ def decode_token(token: str) -> dict[str, Any] | None:
         return jwt.decode(token, settings.JWT_SECRET, algorithms=[ALGORITHM])
     except JWTError:
         return None
+
+
+def create_oidc_state(nonce: str) -> str:
+    """A short-lived, signed OIDC ``state`` value.
+
+    Signing the state with our own secret lets the callback prove the request
+    was started by us *without* relying on a cookie surviving the cross-site
+    round-trip from Microsoft (which breaks on local http and in strict
+    browsers). This is the CSRF guard for the sign-in flow.
+    """
+    now = datetime.now(UTC)
+    claims = {
+        "nonce": nonce,
+        "typ": "oidc_state",
+        "iat": int(now.timestamp()),
+        "exp": int((now + OIDC_STATE_TTL).timestamp()),
+    }
+    return jwt.encode(claims, settings.JWT_SECRET, algorithm=ALGORITHM)
+
+
+def verify_oidc_state(state: str) -> bool:
+    """True if ``state`` is one of our unexpired, correctly-typed state tokens."""
+    try:
+        claims = jwt.decode(state, settings.JWT_SECRET, algorithms=[ALGORITHM])
+    except JWTError:
+        return False
+    return claims.get("typ") == "oidc_state"
