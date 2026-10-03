@@ -129,7 +129,10 @@ async def auth_config() -> dict:
 async def microsoft_login() -> RedirectResponse:
     """Kick off Microsoft sign-in. Sets a short-lived state cookie (CSRF)."""
     if not (settings.MS_CLIENT_ID and settings.MS_CLIENT_SECRET):
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Microsoft sign-in is not configured")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Microsoft sign-in is not configured",
+        )
     state = secrets.token_urlsafe(24)
     params = {
         "client_id": settings.MS_CLIENT_ID,
