@@ -2,7 +2,37 @@
 
 from __future__ import annotations
 
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr, Field
+
+
+# ============================================================
+# Auth (adult accounts)
+# ============================================================
+class RegisterIn(BaseModel):
+    email: EmailStr
+    password: str = Field(min_length=8, max_length=128)
+    display_name: str = Field(min_length=1, max_length=128)
+    role: str = "keeper"  # keeper | crew_lead | researcher
+    large_text: bool = False
+
+
+class LoginIn(BaseModel):
+    email: EmailStr
+    password: str
+
+
+class UserOut(BaseModel):
+    id: int
+    email: str
+    role: str
+    display_name: str
+    large_text: bool
+
+
+class AuthToken(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+    user: UserOut
 
 
 class SiteOut(BaseModel):

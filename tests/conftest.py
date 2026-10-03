@@ -20,7 +20,7 @@ async def clean_mutable_tables():
         await conn.execute(
             text(
                 "TRUNCATE votes, verify_items, observations, "
-                "checkins, adoptions, crew_members, crews RESTART IDENTITY CASCADE"
+                "checkins, adoptions, crew_members, crews, users RESTART IDENTITY CASCADE"
             )
         )
     yield

@@ -44,6 +44,14 @@ class Settings(BaseSettings):
     VLM_PROVIDER: Literal["none", "moondream", "hosted"] = "none"
     VLM_API_KEY: str | None = None
 
+    # Microsoft (Entra) OIDC for adult sign-in. Empty disables the button.
+    MS_CLIENT_ID: str = ""
+    MS_CLIENT_SECRET: str = ""
+    MS_TENANT: str = "common"  # common = any Microsoft account (org + personal)
+    MS_REDIRECT_URI: str = "http://localhost:8000/api/v1/auth/microsoft/callback"
+    # Where to send the browser back after a successful sign-in.
+    WEB_URL: str = "http://localhost:3000"
+
     # Azure Maps — the account uniqueId (client id). Used to mint AAD tokens for
     # the browser via managed identity; not a secret.
     AZURE_MAPS_CLIENT_ID: str = ""
