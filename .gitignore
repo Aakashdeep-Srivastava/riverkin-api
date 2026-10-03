@@ -26,3 +26,6 @@ htmlcov/
 .idea/
 .vscode/
 .DS_Store
+
+# Processed observation photos (local MVP store)
+media/

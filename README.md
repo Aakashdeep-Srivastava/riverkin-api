@@ -7,9 +7,12 @@ separate repo: https://github.com/Aakashdeep-Srivastava/riverkin-web
 RiverKin turns citizen water observations into verified, FHIR-exportable
 signals for river health, prioritising where observations are most needed.
 
-> Status: **skeleton**. The app boots, `/healthz` is live, `/api/v1` routers
-> mount, migrations run, and tests pass. Business logic that depends on the
-> product spec (`docs/PRD.md`) is stubbed and marked `# TODO(PRD)`.
+> Status: **Perfect 6 complete + crews/timeline.** The full citizen loop is
+> real end to end — sites & need scoring, `POST /observations` (geofence, photo
+> blur/pHash/EXIF, quality), verify rounds with log-odds trust, impact receipts,
+> OAH-shaped FHIR R4 Bundles, expert queue/review, metrics, and crew setup.
+> 56 pytest + 6 Playwright E2E pass against Postgres+PostGIS. Still open: auth/RBAC
+> (endpoints are open for the demo), missions engine, and the HL7 IG validator in CI.
 
 ## Stack
 

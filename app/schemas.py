@@ -36,3 +36,94 @@ class SiteTimelineOut(BaseModel):
     site_id: str
     entries: list[TimelineEntry]
     simulated: bool = True
+
+
+# ============================================================
+# Observations (Perfect 6 #3 + #5)
+# ============================================================
+class ObservationIn(BaseModel):
+    """Field-check submission from C4.
+
+    ``answers`` is keyed by the front-end question id (``q-water`` …), which
+    maps to the OAH field codes in app/ai/questions.py::FIELD_SPECS. ``lat``/
+    ``lng`` are used once for the geofence check and then discarded — raw GPS is
+    never persisted (PRD privacy rule).
+    """
+
+    site_code: str
+    answers: dict[str, str] = {}
+    feeling: str | None = None
+    photo_count: int = 0
+    lat: float | None = None
+    lng: float | None = None
+
+
+class ReceiptOut(BaseModel):
+    """Impact receipt rendered on C6."""
+
+    site_name: str
+    waterbody: str
+    city: str
+    gap_before: int
+    gap_after: int
+    rain_context: str
+    verifier_count: int
+    fhir_id: str | None
+    sentinel_line: str
+    state: str
+    date_label: str
+
+
+class ObservationCreated(BaseModel):
+    """Response to POST /observations — the new id + first receipt."""
+
+    id: int
+    status: str
+    verify_item_count: int
+    receipt: ReceiptOut
+    simulated: bool = True
+
+
+class ObservationStatusOut(BaseModel):
+    """GET /observations/{id}/status — live trust + receipt."""
+
+    id: int
+    status: str
+    trust: float | None
+    verifier_count: int
+    receipt: ReceiptOut
+    simulated: bool = True
+
+
+# ============================================================
+# Verify rounds (Perfect 6 #4)
+# ============================================================
+class VerifyCard(BaseModel):
+    """One verify card for C5. Submitter, tally and gold status are hidden."""
+
+    item_id: int
+    observation_id: int
+    site_name: str
+    field_code: str
+    question: str
+    ai_box: str | None = None
+
+
+class VerifyNextOut(BaseModel):
+    cards: list[VerifyCard]
+    simulated: bool = True
+
+
+class VoteIn(BaseModel):
+    answer: str  # yes | no | cant_tell
+    ms_taken: int | None = None
+    voter_kind: str = "keeper"  # keeper | member | researcher
+    voter_id: str | None = None
+
+
+class VoteResult(BaseModel):
+    recorded: bool
+    observation_id: int
+    observation_status: str
+    trust: float | None
+    simulated: bool = True

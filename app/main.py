@@ -11,7 +11,17 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import settings
-from app.routers import auth, expert, fhir, maps, observations, sites, verify
+from app.routers import (
+    auth,
+    crews,
+    expert,
+    fhir,
+    maps,
+    metrics,
+    observations,
+    sites,
+    verify,
+)
 
 app = FastAPI(
     title="RiverKin API",
@@ -43,3 +53,5 @@ app.include_router(expert.router, prefix=API_PREFIX)
 app.include_router(fhir.router, prefix=API_PREFIX)
 app.include_router(auth.router, prefix=API_PREFIX)
 app.include_router(maps.router, prefix=API_PREFIX)
+app.include_router(metrics.router, prefix=API_PREFIX)
+app.include_router(crews.router, prefix=API_PREFIX)

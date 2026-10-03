@@ -38,17 +38,47 @@
           "sites"
         ],
         "summary": "List Sites",
-        "description": "List monitored sites with their latest need score.\n\nTODO(PRD): pagination, filtering by catchment/need, real need_score from\napp.scoring.need_score, and the exact response envelope.",
+        "description": "All sites, most-urgent first. Optional ``city`` filter.",
         "operationId": "list_sites_api_v1_sites_get",
+        "parameters": [
+          {
+            "name": "city",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "City"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {
-                  "additionalProperties": true,
-                  "type": "object",
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SiteOut"
+                  },
                   "title": "Response List Sites Api V1 Sites Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
                 }
               }
             }
@@ -56,22 +86,21 @@
         }
       }
     },
-    "/api/v1/sites/{site_id}": {
+    "/api/v1/sites/{oah_code}": {
       "get": {
         "tags": [
           "sites"
         ],
         "summary": "Get Site",
-        "description": "Return a single site by id.\n\nTODO(PRD): full site detail incl. recent observations and need breakdown.",
-        "operationId": "get_site_api_v1_sites__site_id__get",
+        "operationId": "get_site_api_v1_sites__oah_code__get",
         "parameters": [
           {
-            "name": "site_id",
+            "name": "oah_code",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "integer",
-              "title": "Site Id"
+              "type": "string",
+              "title": "Oah Code"
             }
           }
         ],
@@ -81,9 +110,50 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "additionalProperties": true,
-                  "title": "Response Get Site Api V1 Sites  Site Id  Get"
+                  "$ref": "#/components/schemas/SiteOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/sites/{oah_code}/timeline": {
+      "get": {
+        "tags": [
+          "sites"
+        ],
+        "summary": "Site Timeline",
+        "description": "Checks, rain context and verifications for a site, newest first (C7).\n\nCombines real submitted observations with the site's rain/last-check context.",
+        "operationId": "site_timeline_api_v1_sites__oah_code__timeline_get",
+        "parameters": [
+          {
+            "name": "oah_code",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Oah Code"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SiteTimelineOut"
                 }
               }
             }
@@ -107,17 +177,90 @@
           "observations"
         ],
         "summary": "Create Observation",
-        "description": "Submit a new observation with a photo.\n\nTODO(PRD): accept multipart photo + fields; run blur score, EXIF strip,\nface blur and pHash; enforce geofence (no raw GPS persisted); store\nprocessed photo in Azure Blob; kick off verification via BackgroundTasks.\nSafety refusals must return 403 + ``safety_reason``.",
+        "description": "Submit a field check: safety + quality gates, then draft verify items.\n\nSafety refusals return 403 + ``safety_reason`` (PRD). A pipe/outfall answer\nroutes the observation straight to expert review.",
         "operationId": "create_observation_api_v1_observations_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ObservationIn"
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
-          "501": {
+          "201": {
             "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {
-                  "additionalProperties": true,
+                  "$ref": "#/components/schemas/ObservationCreated"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/observations/{observation_id}/photos": {
+      "post": {
+        "tags": [
+          "observations"
+        ],
+        "summary": "Upload Photo",
+        "description": "Upload one observation photo.\n\nRuns EXIF strip + Laplacian blur score + face blur + pHash, rejects reused\nimages (pHash distance < 8 against the site's past photos), and stores the\nprocessed bytes. A blurry photo returns 422 ``retake_photo``.",
+        "operationId": "upload_photo_api_v1_observations__observation_id__photos_post",
+        "parameters": [
+          {
+            "name": "observation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Observation Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_upload_photo_api_v1_observations__observation_id__photos_post"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
                   "type": "object",
-                  "title": "Response Create Observation Api V1 Observations Post"
+                  "additionalProperties": true,
+                  "title": "Response Upload Photo Api V1 Observations  Observation Id  Photos Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
                 }
               }
             }
@@ -131,7 +274,7 @@
           "observations"
         ],
         "summary": "Observation Status",
-        "description": "Receipt + current verification status for an observation.\n\nTODO(PRD): real status machine, reliability score, reward value, and the\nexact receipt response shape.",
+        "description": "Live receipt + verification status for one observation.",
         "operationId": "observation_status_api_v1_observations__observation_id__status_get",
         "parameters": [
           {
@@ -150,9 +293,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "additionalProperties": true,
-                  "title": "Response Observation Status Api V1 Observations  Observation Id  Status Get"
+                  "$ref": "#/components/schemas/ObservationStatusOut"
                 }
               }
             }
@@ -175,18 +316,50 @@
         "tags": [
           "verify"
         ],
-        "summary": "Next Verify Item",
-        "description": "Return the next item for the current verifier.\n\nThe AI only *asks* questions here; humans decide (CLAUDE.md hard rule).\n\nTODO(PRD): real item selection, gold-item injection ratio, and the exact\nitem/question payload shape.",
-        "operationId": "next_verify_item_api_v1_verify_next_get",
+        "summary": "Next Verify Items",
+        "description": "Return the next verify cards for this voter.\n\nSkips items the voter already voted on and items whose observation is no\nlonger open. Gold items are included but never marked as gold in the payload.",
+        "operationId": "next_verify_items_api_v1_verify_next_get",
+        "parameters": [
+          {
+            "name": "n",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 20,
+              "minimum": 1,
+              "default": 5,
+              "title": "N"
+            }
+          },
+          {
+            "name": "voter_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "demo-keeper",
+              "title": "Voter Id"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {
-                  "additionalProperties": true,
-                  "type": "object",
-                  "title": "Response Next Verify Item Api V1 Verify Next Get"
+                  "$ref": "#/components/schemas/VerifyNextOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
                 }
               }
             }
@@ -200,7 +373,7 @@
           "verify"
         ],
         "summary": "Cast Vote",
-        "description": "Record a verification vote for an item.\n\nTODO(PRD): accept the vote payload, score against gold items, update\nobserver/verifier trust via app.scoring.trust_score, and advance the\nverification state machine.",
+        "description": "Record a verification vote and recompute the observation's trust + state.",
         "operationId": "cast_vote_api_v1_verify__item_id__vote_post",
         "parameters": [
           {
@@ -213,15 +386,23 @@
             }
           }
         ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VoteIn"
+              }
+            }
+          }
+        },
         "responses": {
-          "501": {
+          "200": {
             "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "additionalProperties": true,
-                  "title": "Response Cast Vote Api V1 Verify  Item Id  Vote Post"
+                  "$ref": "#/components/schemas/VoteResult"
                 }
               }
             }
@@ -245,7 +426,7 @@
           "expert"
         ],
         "summary": "Expert Queue",
-        "description": "List observations escalated to the expert queue.\n\nTODO(PRD): escalation criteria, ordering, expert decision actions, and the\nexact queue item response shape.",
+        "description": "Observations awaiting expert sign-off (pipe/sewage flag or split votes).",
         "operationId": "expert_queue_api_v1_expert_queue_get",
         "responses": {
           "200": {
@@ -253,9 +434,60 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "additionalProperties": true,
-                  "type": "object",
-                  "title": "Response Expert Queue Api V1 Expert Queue Get"
+                  "$ref": "#/components/schemas/ExpertQueueOut"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/expert/{obs_id}/review": {
+      "post": {
+        "tags": [
+          "expert"
+        ],
+        "summary": "Review Observation",
+        "description": "Record an expert decision and advance the FHIR status lifecycle.",
+        "operationId": "review_observation_api_v1_expert__obs_id__review_post",
+        "parameters": [
+          {
+            "name": "obs_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Obs Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReviewIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReviewResult"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
                 }
               }
             }
@@ -269,7 +501,7 @@
           "fhir"
         ],
         "summary": "Get Fhir Observation",
-        "description": "Return the FHIR Bundle for a verified observation.\n\nTODO(PRD): load the real observation, shape to the OAH IG, and POST to the\nHAPI server at settings.FHIR_BASE_URL. For now return a minimal placeholder\nBundle built from no real data.",
+        "description": "Return the FHIR Bundle for one observation (optionally POST to HAPI).",
         "operationId": "get_fhir_observation_api_v1_fhir_observations__observation_id__get",
         "parameters": [
           {
@@ -279,6 +511,16 @@
             "schema": {
               "type": "integer",
               "title": "Observation Id"
+            }
+          },
+          {
+            "name": "post",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Post"
             }
           }
         ],
@@ -375,10 +617,526 @@
           }
         }
       }
+    },
+    "/api/v1/metrics": {
+      "get": {
+        "tags": [
+          "metrics"
+        ],
+        "summary": "Metrics",
+        "operationId": "metrics_api_v1_metrics_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MetricsOut"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/crews": {
+      "post": {
+        "tags": [
+          "crews"
+        ],
+        "summary": "Create Crew",
+        "operationId": "create_crew_api_v1_crews_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CrewIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CrewCreated"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/crews/{crew_id}/members": {
+      "post": {
+        "tags": [
+          "crews"
+        ],
+        "summary": "Add Member",
+        "operationId": "add_member_api_v1_crews__crew_id__members_post",
+        "parameters": [
+          {
+            "name": "crew_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Crew Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MemberIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/crews/{crew_id}/adoptions": {
+      "post": {
+        "tags": [
+          "crews"
+        ],
+        "summary": "Adopt Site",
+        "operationId": "adopt_site_api_v1_crews__crew_id__adoptions_post",
+        "parameters": [
+          {
+            "name": "crew_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Crew Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdoptionIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Adopt Site Api V1 Crews  Crew Id  Adoptions Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/crews/{crew_id}/checkins": {
+      "post": {
+        "tags": [
+          "crews"
+        ],
+        "summary": "Checkin",
+        "operationId": "checkin_api_v1_crews__crew_id__checkins_post",
+        "parameters": [
+          {
+            "name": "crew_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Crew Id"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Checkin Api V1 Crews  Crew Id  Checkins Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/crews/{crew_id}": {
+      "get": {
+        "tags": [
+          "crews"
+        ],
+        "summary": "Get Crew",
+        "operationId": "get_crew_api_v1_crews__crew_id__get",
+        "parameters": [
+          {
+            "name": "crew_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Crew Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CrewView"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
+      "AdoptedSiteOut": {
+        "properties": {
+          "site_code": {
+            "type": "string",
+            "title": "Site Code"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "days_unseen": {
+            "type": "integer",
+            "title": "Days Unseen"
+          },
+          "attention": {
+            "type": "string",
+            "title": "Attention"
+          },
+          "fresh": {
+            "type": "boolean",
+            "title": "Fresh"
+          }
+        },
+        "type": "object",
+        "required": [
+          "site_code",
+          "name",
+          "days_unseen",
+          "attention",
+          "fresh"
+        ],
+        "title": "AdoptedSiteOut"
+      },
+      "AdoptionIn": {
+        "properties": {
+          "site_code": {
+            "type": "string",
+            "title": "Site Code"
+          }
+        },
+        "type": "object",
+        "required": [
+          "site_code"
+        ],
+        "title": "AdoptionIn"
+      },
+      "Body_upload_photo_api_v1_observations__observation_id__photos_post": {
+        "properties": {
+          "file": {
+            "type": "string",
+            "contentMediaType": "application/octet-stream",
+            "title": "File"
+          },
+          "kind": {
+            "type": "string",
+            "title": "Kind",
+            "default": "upstream"
+          }
+        },
+        "type": "object",
+        "required": [
+          "file"
+        ],
+        "title": "Body_upload_photo_api_v1_observations__observation_id__photos_post"
+      },
+      "CrewCreated": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name"
+        ],
+        "title": "CrewCreated"
+      },
+      "CrewIn": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "city": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "City"
+          },
+          "is_minor_crew": {
+            "type": "boolean",
+            "title": "Is Minor Crew",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "title": "CrewIn"
+      },
+      "CrewView": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "city": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "City"
+          },
+          "is_minor_crew": {
+            "type": "boolean",
+            "title": "Is Minor Crew"
+          },
+          "members": {
+            "items": {
+              "$ref": "#/components/schemas/MemberOut"
+            },
+            "type": "array",
+            "title": "Members"
+          },
+          "adopted": {
+            "items": {
+              "$ref": "#/components/schemas/AdoptedSiteOut"
+            },
+            "type": "array",
+            "title": "Adopted"
+          },
+          "coverage_pct": {
+            "type": "integer",
+            "title": "Coverage Pct"
+          },
+          "streak_windows": {
+            "type": "integer",
+            "title": "Streak Windows"
+          },
+          "checkin_active": {
+            "type": "boolean",
+            "title": "Checkin Active"
+          },
+          "simulated": {
+            "type": "boolean",
+            "title": "Simulated",
+            "default": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "city",
+          "is_minor_crew",
+          "members",
+          "adopted",
+          "coverage_pct",
+          "streak_windows",
+          "checkin_active"
+        ],
+        "title": "CrewView"
+      },
+      "ExpertQueueItem": {
+        "properties": {
+          "observation_id": {
+            "type": "integer",
+            "title": "Observation Id"
+          },
+          "site_name": {
+            "type": "string",
+            "title": "Site Name"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "reason": {
+            "type": "string",
+            "title": "Reason"
+          },
+          "pipe_flag": {
+            "type": "boolean",
+            "title": "Pipe Flag"
+          },
+          "trust": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Trust"
+          },
+          "verifier_count": {
+            "type": "integer",
+            "title": "Verifier Count"
+          },
+          "answers": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object",
+            "title": "Answers"
+          }
+        },
+        "type": "object",
+        "required": [
+          "observation_id",
+          "site_name",
+          "status",
+          "reason",
+          "pipe_flag",
+          "trust",
+          "verifier_count",
+          "answers"
+        ],
+        "title": "ExpertQueueItem"
+      },
+      "ExpertQueueOut": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/ExpertQueueItem"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "simulated": {
+            "type": "boolean",
+            "title": "Simulated",
+            "default": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "items"
+        ],
+        "title": "ExpertQueueOut"
+      },
       "HTTPValidationError": {
         "properties": {
           "detail": {
@@ -391,6 +1149,518 @@
         },
         "type": "object",
         "title": "HTTPValidationError"
+      },
+      "MemberIn": {
+        "properties": {
+          "handle": {
+            "type": "string",
+            "title": "Handle"
+          },
+          "role_this_week": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Role This Week"
+          }
+        },
+        "type": "object",
+        "required": [
+          "handle"
+        ],
+        "title": "MemberIn"
+      },
+      "MemberOut": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "handle": {
+            "type": "string",
+            "title": "Handle"
+          },
+          "role_this_week": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Role This Week"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "handle",
+          "role_this_week"
+        ],
+        "title": "MemberOut"
+      },
+      "MetricsOut": {
+        "properties": {
+          "sites_total": {
+            "type": "integer",
+            "title": "Sites Total"
+          },
+          "sites_needing_attention": {
+            "type": "integer",
+            "title": "Sites Needing Attention"
+          },
+          "verified_this_month": {
+            "type": "integer",
+            "title": "Verified This Month"
+          },
+          "open_expert_reviews": {
+            "type": "integer",
+            "title": "Open Expert Reviews"
+          },
+          "coverage_fresh_pct": {
+            "type": "integer",
+            "title": "Coverage Fresh Pct"
+          },
+          "simulated": {
+            "type": "boolean",
+            "title": "Simulated",
+            "default": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "sites_total",
+          "sites_needing_attention",
+          "verified_this_month",
+          "open_expert_reviews",
+          "coverage_fresh_pct"
+        ],
+        "title": "MetricsOut"
+      },
+      "ObservationCreated": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "verify_item_count": {
+            "type": "integer",
+            "title": "Verify Item Count"
+          },
+          "receipt": {
+            "$ref": "#/components/schemas/ReceiptOut"
+          },
+          "simulated": {
+            "type": "boolean",
+            "title": "Simulated",
+            "default": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "status",
+          "verify_item_count",
+          "receipt"
+        ],
+        "title": "ObservationCreated",
+        "description": "Response to POST /observations \u2014 the new id + first receipt."
+      },
+      "ObservationIn": {
+        "properties": {
+          "site_code": {
+            "type": "string",
+            "title": "Site Code"
+          },
+          "answers": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object",
+            "title": "Answers",
+            "default": {}
+          },
+          "feeling": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Feeling"
+          },
+          "photo_count": {
+            "type": "integer",
+            "title": "Photo Count",
+            "default": 0
+          },
+          "lat": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lat"
+          },
+          "lng": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lng"
+          }
+        },
+        "type": "object",
+        "required": [
+          "site_code"
+        ],
+        "title": "ObservationIn",
+        "description": "Field-check submission from C4.\n\n``answers`` is keyed by the front-end question id (``q-water`` \u2026), which\nmaps to the OAH field codes in app/ai/questions.py::FIELD_SPECS. ``lat``/\n``lng`` are used once for the geofence check and then discarded \u2014 raw GPS is\nnever persisted (PRD privacy rule)."
+      },
+      "ObservationStatusOut": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "trust": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Trust"
+          },
+          "verifier_count": {
+            "type": "integer",
+            "title": "Verifier Count"
+          },
+          "receipt": {
+            "$ref": "#/components/schemas/ReceiptOut"
+          },
+          "simulated": {
+            "type": "boolean",
+            "title": "Simulated",
+            "default": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "status",
+          "trust",
+          "verifier_count",
+          "receipt"
+        ],
+        "title": "ObservationStatusOut",
+        "description": "GET /observations/{id}/status \u2014 live trust + receipt."
+      },
+      "ReceiptOut": {
+        "properties": {
+          "site_name": {
+            "type": "string",
+            "title": "Site Name"
+          },
+          "waterbody": {
+            "type": "string",
+            "title": "Waterbody"
+          },
+          "city": {
+            "type": "string",
+            "title": "City"
+          },
+          "gap_before": {
+            "type": "integer",
+            "title": "Gap Before"
+          },
+          "gap_after": {
+            "type": "integer",
+            "title": "Gap After"
+          },
+          "rain_context": {
+            "type": "string",
+            "title": "Rain Context"
+          },
+          "verifier_count": {
+            "type": "integer",
+            "title": "Verifier Count"
+          },
+          "fhir_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fhir Id"
+          },
+          "sentinel_line": {
+            "type": "string",
+            "title": "Sentinel Line"
+          },
+          "state": {
+            "type": "string",
+            "title": "State"
+          },
+          "date_label": {
+            "type": "string",
+            "title": "Date Label"
+          }
+        },
+        "type": "object",
+        "required": [
+          "site_name",
+          "waterbody",
+          "city",
+          "gap_before",
+          "gap_after",
+          "rain_context",
+          "verifier_count",
+          "fhir_id",
+          "sentinel_line",
+          "state",
+          "date_label"
+        ],
+        "title": "ReceiptOut",
+        "description": "Impact receipt rendered on C6."
+      },
+      "ReviewIn": {
+        "properties": {
+          "field_code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Field Code"
+          },
+          "decision": {
+            "type": "string",
+            "title": "Decision"
+          },
+          "new_value": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "New Value"
+          }
+        },
+        "type": "object",
+        "required": [
+          "decision"
+        ],
+        "title": "ReviewIn"
+      },
+      "ReviewResult": {
+        "properties": {
+          "observation_id": {
+            "type": "integer",
+            "title": "Observation Id"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "decision": {
+            "type": "string",
+            "title": "Decision"
+          }
+        },
+        "type": "object",
+        "required": [
+          "observation_id",
+          "status",
+          "decision"
+        ],
+        "title": "ReviewResult"
+      },
+      "SiteOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "waterbody": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Waterbody"
+          },
+          "city": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "City"
+          },
+          "country": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Country"
+          },
+          "lat": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lat"
+          },
+          "lng": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lng"
+          },
+          "days_unseen": {
+            "type": "integer",
+            "title": "Days Unseen"
+          },
+          "rain_48h_mm": {
+            "type": "number",
+            "title": "Rain 48H Mm"
+          },
+          "need_score": {
+            "type": "number",
+            "title": "Need Score"
+          },
+          "attention": {
+            "type": "string",
+            "title": "Attention"
+          },
+          "color": {
+            "type": "string",
+            "title": "Color"
+          },
+          "simulated": {
+            "type": "boolean",
+            "title": "Simulated",
+            "default": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "days_unseen",
+          "rain_48h_mm",
+          "need_score",
+          "attention",
+          "color"
+        ],
+        "title": "SiteOut",
+        "description": "A monitored OAH site with its current attention state.\n\n``id`` is the stable OAH code (string) so the front end can route on it."
+      },
+      "SiteTimelineOut": {
+        "properties": {
+          "site_id": {
+            "type": "string",
+            "title": "Site Id"
+          },
+          "entries": {
+            "items": {
+              "$ref": "#/components/schemas/TimelineEntry"
+            },
+            "type": "array",
+            "title": "Entries"
+          },
+          "simulated": {
+            "type": "boolean",
+            "title": "Simulated",
+            "default": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "site_id",
+          "entries"
+        ],
+        "title": "SiteTimelineOut"
+      },
+      "TimelineEntry": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "title": "Kind"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "at": {
+            "type": "string",
+            "title": "At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "kind",
+          "label",
+          "at"
+        ],
+        "title": "TimelineEntry"
       },
       "ValidationError": {
         "properties": {
@@ -431,6 +1701,152 @@
           "type"
         ],
         "title": "ValidationError"
+      },
+      "VerifyCard": {
+        "properties": {
+          "item_id": {
+            "type": "integer",
+            "title": "Item Id"
+          },
+          "observation_id": {
+            "type": "integer",
+            "title": "Observation Id"
+          },
+          "site_name": {
+            "type": "string",
+            "title": "Site Name"
+          },
+          "field_code": {
+            "type": "string",
+            "title": "Field Code"
+          },
+          "question": {
+            "type": "string",
+            "title": "Question"
+          },
+          "ai_box": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ai Box"
+          }
+        },
+        "type": "object",
+        "required": [
+          "item_id",
+          "observation_id",
+          "site_name",
+          "field_code",
+          "question"
+        ],
+        "title": "VerifyCard",
+        "description": "One verify card for C5. Submitter, tally and gold status are hidden."
+      },
+      "VerifyNextOut": {
+        "properties": {
+          "cards": {
+            "items": {
+              "$ref": "#/components/schemas/VerifyCard"
+            },
+            "type": "array",
+            "title": "Cards"
+          },
+          "simulated": {
+            "type": "boolean",
+            "title": "Simulated",
+            "default": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "cards"
+        ],
+        "title": "VerifyNextOut"
+      },
+      "VoteIn": {
+        "properties": {
+          "answer": {
+            "type": "string",
+            "title": "Answer"
+          },
+          "ms_taken": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ms Taken"
+          },
+          "voter_kind": {
+            "type": "string",
+            "title": "Voter Kind",
+            "default": "keeper"
+          },
+          "voter_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Voter Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "answer"
+        ],
+        "title": "VoteIn"
+      },
+      "VoteResult": {
+        "properties": {
+          "recorded": {
+            "type": "boolean",
+            "title": "Recorded"
+          },
+          "observation_id": {
+            "type": "integer",
+            "title": "Observation Id"
+          },
+          "observation_status": {
+            "type": "string",
+            "title": "Observation Status"
+          },
+          "trust": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Trust"
+          },
+          "simulated": {
+            "type": "boolean",
+            "title": "Simulated",
+            "default": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "recorded",
+          "observation_id",
+          "observation_status",
+          "trust"
+        ],
+        "title": "VoteResult"
       }
     }
   }

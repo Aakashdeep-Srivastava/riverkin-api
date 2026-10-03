@@ -21,6 +21,7 @@ dependencies = [
     "pillow>=10.3",
     "azure-storage-blob>=12.20",
     "azure-identity>=1.17",
+    "python-multipart>=0.0.32",
 ]
 
 [dependency-groups]

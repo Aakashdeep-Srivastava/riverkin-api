@@ -18,6 +18,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app import scoring
 from app.db import get_session
+from app.models.observation import Observation
 from app.models.site import Site
 from app.schemas import SiteOut, SiteTimelineOut
 
@@ -89,17 +90,53 @@ async def site_timeline(
     oah_code: str,
     session: AsyncSession = Depends(get_session),
 ) -> SiteTimelineOut:
-    """Recent checks + rain events for a site.
+    """Checks, rain context and verifications for a site, newest first (C7).
 
-    TODO(PRD): real check/rain/verification entries + field-diff "What changed?".
-    For now returns the last verified check so the C2 preview has something real.
+    Combines real submitted observations with the site's rain/last-check context.
     """
     stmt = select(Site).where(Site.external_id == oah_code)
     site = (await session.execute(stmt)).scalar_one_or_none()
     if site is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="site not found")
-    entries = []
-    if site.last_verified_at is not None:
+
+    entries: list[dict] = []
+
+    # Real submitted observations for this site.
+    obs_rows = (
+        await session.execute(
+            select(Observation)
+            .where(Observation.site_id == site.id)
+            .order_by(Observation.created_at.desc())
+            .limit(20)
+        )
+    ).scalars().all()
+    for obs in obs_rows:
+        verified = obs.status in ("community-verified", "final")
+        label = (
+            "Community-verified check"
+            if verified
+            else "Expert review" if obs.status in ("expert", "queried") else "Field check submitted"
+        )
+        entries.append(
+            {
+                "kind": "verification" if verified else "check",
+                "label": label,
+                "at": obs.created_at.isoformat(),
+            }
+        )
+
+    # Rain context (from the 3-hourly Open-Meteo pull).
+    if site.rain_48h_mm and site.rain_48h_mm >= 20:
+        entries.append(
+            {
+                "kind": "rain",
+                "label": f"{round(site.rain_48h_mm)} mm rain in 48 h",
+                "at": datetime.now(UTC).isoformat(),
+            }
+        )
+
+    # Fall back to the seeded last-verified check so the timeline is never empty.
+    if not obs_rows and site.last_verified_at is not None:
         entries.append(
             {
                 "kind": "check",
@@ -107,4 +144,6 @@ async def site_timeline(
                 "at": site.last_verified_at.isoformat(),
             }
         )
+
+    entries.sort(key=lambda e: e["at"], reverse=True)
     return SiteTimelineOut(site_id=oah_code, entries=entries, simulated=site.simulated)
