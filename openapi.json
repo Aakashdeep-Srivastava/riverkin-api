@@ -550,23 +550,81 @@
         }
       }
     },
-    "/api/v1/auth/token": {
+    "/api/v1/auth/register": {
       "post": {
         "tags": [
           "auth"
         ],
-        "summary": "Issue Token",
-        "description": "Issue a JWT for a verified principal.\n\nTODO(PRD): real credential exchange and signed JWT (HS256 with\nsettings.JWT_SECRET), including role/trust claims.",
-        "operationId": "issue_token_api_v1_auth_token_post",
+        "summary": "Register",
+        "operationId": "register_api_v1_auth_register_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterIn"
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
-          "501": {
+          "201": {
             "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {
-                  "additionalProperties": true,
-                  "type": "object",
-                  "title": "Response Issue Token Api V1 Auth Token Post"
+                  "$ref": "#/components/schemas/AuthToken"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/login": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Login",
+        "operationId": "login_api_v1_auth_login_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthToken"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
                 }
               }
             }
@@ -579,9 +637,60 @@
         "tags": [
           "auth"
         ],
-        "summary": "Current Principal",
-        "description": "Return the current authenticated principal.\n\nTODO(PRD): decode the bearer JWT and return the real principal + roles.",
-        "operationId": "current_principal_api_v1_auth_me_get",
+        "summary": "Me",
+        "operationId": "me_api_v1_auth_me_get",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Me Api V1 Auth Me Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/config": {
+      "get": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Auth Config",
+        "description": "What the sign-in UI should offer (Microsoft button only if configured).",
+        "operationId": "auth_config_api_v1_auth_config_get",
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -590,8 +699,48 @@
                 "schema": {
                   "additionalProperties": true,
                   "type": "object",
-                  "title": "Response Current Principal Api V1 Auth Me Get"
+                  "title": "Response Auth Config Api V1 Auth Config Get"
                 }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/microsoft/login": {
+      "get": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Microsoft Login",
+        "description": "Kick off Microsoft sign-in. Sets a short-lived state cookie (CSRF).",
+        "operationId": "microsoft_login_api_v1_auth_microsoft_login_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/microsoft/callback": {
+      "get": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Microsoft Callback",
+        "description": "Handle Microsoft's redirect: exchange the code, upsert the user, issue our JWT.",
+        "operationId": "microsoft_callback_api_v1_auth_microsoft_callback_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
               }
             }
           }
@@ -871,6 +1020,103 @@
           }
         }
       }
+    },
+    "/api/v1/missions": {
+      "get": {
+        "tags": [
+          "missions"
+        ],
+        "summary": "List Missions",
+        "description": "Suggested field missions, most-urgent first. Optional ``city`` filter.\n\nOnly sites that actually warrant a look are returned (open flag, fresh rain,\npast cadence, or any non-``ok`` attention band).",
+        "operationId": "list_missions_api_v1_missions_get",
+        "parameters": [
+          {
+            "name": "city",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "City"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MissionOut"
+                  },
+                  "title": "Response List Missions Api V1 Missions Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/missions/{oah_code}": {
+      "get": {
+        "tags": [
+          "missions"
+        ],
+        "summary": "Get Mission Brief",
+        "description": "The C3 mission brief for a single site, derived from its current state.",
+        "operationId": "get_mission_brief_api_v1_missions__oah_code__get",
+        "parameters": [
+          {
+            "name": "oah_code",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Oah Code"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MissionBriefOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -920,6 +1166,28 @@
           "site_code"
         ],
         "title": "AdoptionIn"
+      },
+      "AuthToken": {
+        "properties": {
+          "access_token": {
+            "type": "string",
+            "title": "Access Token"
+          },
+          "token_type": {
+            "type": "string",
+            "title": "Token Type",
+            "default": "bearer"
+          },
+          "user": {
+            "$ref": "#/components/schemas/UserOut"
+          }
+        },
+        "type": "object",
+        "required": [
+          "access_token",
+          "user"
+        ],
+        "title": "AuthToken"
       },
       "Body_upload_photo_api_v1_observations__observation_id__photos_post": {
         "properties": {
@@ -1150,6 +1418,25 @@
         "type": "object",
         "title": "HTTPValidationError"
       },
+      "LoginIn": {
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "title": "Email"
+          },
+          "password": {
+            "type": "string",
+            "title": "Password"
+          }
+        },
+        "type": "object",
+        "required": [
+          "email",
+          "password"
+        ],
+        "title": "LoginIn"
+      },
       "MemberIn": {
         "properties": {
           "handle": {
@@ -1241,6 +1528,213 @@
           "coverage_fresh_pct"
         ],
         "title": "MetricsOut"
+      },
+      "MissionBriefOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "site_id": {
+            "type": "string",
+            "title": "Site Id"
+          },
+          "site_name": {
+            "type": "string",
+            "title": "Site Name"
+          },
+          "waterbody": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Waterbody"
+          },
+          "city": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "City"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "window_label": {
+            "type": "string",
+            "title": "Window Label"
+          },
+          "est_minutes": {
+            "type": "string",
+            "title": "Est Minutes"
+          },
+          "safety_line": {
+            "type": "string",
+            "title": "Safety Line"
+          },
+          "steps": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Steps"
+          },
+          "attention": {
+            "type": "string",
+            "title": "Attention"
+          },
+          "color": {
+            "type": "string",
+            "title": "Color"
+          },
+          "need_score": {
+            "type": "number",
+            "title": "Need Score"
+          },
+          "days_unseen": {
+            "type": "integer",
+            "title": "Days Unseen"
+          },
+          "rain_48h_mm": {
+            "type": "number",
+            "title": "Rain 48H Mm"
+          },
+          "distance_km": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Distance Km"
+          },
+          "simulated": {
+            "type": "boolean",
+            "title": "Simulated",
+            "default": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "site_id",
+          "site_name",
+          "name",
+          "window_label",
+          "est_minutes",
+          "safety_line",
+          "steps",
+          "attention",
+          "color",
+          "need_score",
+          "days_unseen",
+          "rain_48h_mm"
+        ],
+        "title": "MissionBriefOut",
+        "description": "The C3 mission brief for a single site."
+      },
+      "MissionOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "site_id": {
+            "type": "string",
+            "title": "Site Id"
+          },
+          "site_name": {
+            "type": "string",
+            "title": "Site Name"
+          },
+          "waterbody": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Waterbody"
+          },
+          "city": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "City"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "summary": {
+            "type": "string",
+            "title": "Summary"
+          },
+          "attention": {
+            "type": "string",
+            "title": "Attention"
+          },
+          "color": {
+            "type": "string",
+            "title": "Color"
+          },
+          "need_score": {
+            "type": "number",
+            "title": "Need Score"
+          },
+          "days_unseen": {
+            "type": "integer",
+            "title": "Days Unseen"
+          },
+          "distance_km": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Distance Km"
+          },
+          "simulated": {
+            "type": "boolean",
+            "title": "Simulated",
+            "default": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "site_id",
+          "site_name",
+          "title",
+          "summary",
+          "attention",
+          "color",
+          "need_score",
+          "days_unseen"
+        ],
+        "title": "MissionOut",
+        "description": "A suggested field mission for the Missions tab list."
       },
       "ObservationCreated": {
         "properties": {
@@ -1450,6 +1944,44 @@
         ],
         "title": "ReceiptOut",
         "description": "Impact receipt rendered on C6."
+      },
+      "RegisterIn": {
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "title": "Email"
+          },
+          "password": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 8,
+            "title": "Password"
+          },
+          "display_name": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Display Name"
+          },
+          "role": {
+            "type": "string",
+            "title": "Role",
+            "default": "keeper"
+          },
+          "large_text": {
+            "type": "boolean",
+            "title": "Large Text",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "email",
+          "password",
+          "display_name"
+        ],
+        "title": "RegisterIn"
       },
       "ReviewIn": {
         "properties": {
@@ -1661,6 +2193,39 @@
           "at"
         ],
         "title": "TimelineEntry"
+      },
+      "UserOut": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "email": {
+            "type": "string",
+            "title": "Email"
+          },
+          "role": {
+            "type": "string",
+            "title": "Role"
+          },
+          "display_name": {
+            "type": "string",
+            "title": "Display Name"
+          },
+          "large_text": {
+            "type": "boolean",
+            "title": "Large Text"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "email",
+          "role",
+          "display_name",
+          "large_text"
+        ],
+        "title": "UserOut"
       },
       "ValidationError": {
         "properties": {

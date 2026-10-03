@@ -69,6 +69,51 @@ class SiteTimelineOut(BaseModel):
 
 
 # ============================================================
+# Missions (FR11) — field tasks derived from sites needing attention
+# ============================================================
+
+
+class MissionOut(BaseModel):
+    """A suggested field mission for the Missions tab list."""
+
+    id: str
+    site_id: str
+    site_name: str
+    waterbody: str | None = None
+    city: str | None = None
+    title: str
+    summary: str
+    attention: str
+    color: str
+    need_score: float
+    days_unseen: int
+    distance_km: float | None = None
+    simulated: bool = True
+
+
+class MissionBriefOut(BaseModel):
+    """The C3 mission brief for a single site."""
+
+    id: str
+    site_id: str
+    site_name: str
+    waterbody: str | None = None
+    city: str | None = None
+    name: str
+    window_label: str
+    est_minutes: str
+    safety_line: str
+    steps: list[str]
+    attention: str
+    color: str
+    need_score: float
+    days_unseen: int
+    rain_48h_mm: float
+    distance_km: float | None = None
+    simulated: bool = True
+
+
+# ============================================================
 # Observations (Perfect 6 #3 + #5)
 # ============================================================
 class ObservationIn(BaseModel):

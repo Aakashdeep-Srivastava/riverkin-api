@@ -29,6 +29,13 @@ Azure Blob storage.
 5. Receipt + status: `GET /observations/{id}/status`
 6. FHIR Bundle export (Observation + Provenance), expert queue
 
+Later layers (after the Perfect 6): crews & check-ins, site timeline, metrics,
+auth (guest + Microsoft OIDC), and the **missions engine** —
+`GET /missions` (suggested field missions, most-urgent first, `?city=` filter)
+and `GET /missions/{oah_code}` (the C3 brief). Missions are derived live from the
+seeded OAH sites using the same need/attention scoring plus the typing rules in
+`app/missions.py` (flag follow-up · after-the-rain · orphan · cadence · monitoring).
+
 ## Local development
 
 ### With Docker Compose (API + PostGIS + HAPI FHIR)

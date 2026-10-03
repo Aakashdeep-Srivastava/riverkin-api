@@ -18,6 +18,7 @@ from app.routers import (
     fhir,
     maps,
     metrics,
+    missions,
     observations,
     sites,
     verify,
@@ -55,3 +56,4 @@ app.include_router(auth.router, prefix=API_PREFIX)
 app.include_router(maps.router, prefix=API_PREFIX)
 app.include_router(metrics.router, prefix=API_PREFIX)
 app.include_router(crews.router, prefix=API_PREFIX)
+app.include_router(missions.router, prefix=API_PREFIX)
