@@ -26,10 +26,19 @@ def upgrade() -> None:
         sa.Column("endpoint", sa.String(length=512), nullable=False),
         sa.Column("p256dh", sa.String(length=256), nullable=False),
         sa.Column("auth", sa.String(length=128), nullable=False),
-        sa.Column("user_id", sa.Integer(), sa.ForeignKey("users.id", ondelete="SET NULL"), nullable=True),
-        sa.Column("created_at", sa.DateTime(timezone=True), server_default=sa.func.now()),
+        sa.Column(
+            "user_id",
+            sa.Integer(),
+            sa.ForeignKey("users.id", ondelete="SET NULL"),
+            nullable=True,
+        ),
+        sa.Column(
+            "created_at", sa.DateTime(timezone=True), server_default=sa.func.now()
+        ),
     )
-    op.create_index("ix_push_subscriptions_endpoint", "push_subscriptions", ["endpoint"], unique=True)
+    op.create_index(
+        "ix_push_subscriptions_endpoint", "push_subscriptions", ["endpoint"], unique=True
+    )
 
 
 def downgrade() -> None:
