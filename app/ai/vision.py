@@ -46,6 +46,9 @@ PROMPT = (
     "\"Is there white foam near the right bank?\" or \"Does the water look muddy "
     'here?"). Vary it to fit the scene. '
     "Set a field's confidence to 0 if you genuinely cannot tell from the image. "
+    'Also add "focus_field": one field key that is most notable in this photo, '
+    'and "evidence_region": {"x":0..1,"y":0..1,"w":0..1,"h":0..1} giving the '
+    "APPROXIMATE normalized box (origin top-left) where that is visible. "
     "No prose, JSON only."
 )
 
@@ -68,6 +71,9 @@ class VisionAnalysis:
     relevance: float = 0.5
     # {field_key: {"value": str, "confidence": float}} — a weak per-field prior.
     fields: dict[str, dict] = field(default_factory=dict)
+    # Approximate box {x,y,w,h in 0..1} the model focused on + which field it's for.
+    evidence_region: dict | None = None
+    focus_field: str | None = None
     model: str = "heuristic"
     used_model: bool = False
 
@@ -204,12 +210,27 @@ async def analyze_image(raw: bytes) -> VisionAnalysis:
                 if isinstance(q, str) and q.strip():
                     fields[key]["question"] = q.strip()[:160]
 
+    # Approximate evidence box (origin top-left, normalised). Validated into [0,1].
+    region = None
+    raw_region = data.get("evidence_region")
+    if isinstance(raw_region, dict):
+        try:
+            box = {k: max(0.0, min(1.0, float(raw_region.get(k, 0)))) for k in ("x", "y", "w", "h")}
+            if box["w"] > 0.02 and box["h"] > 0.02:
+                region = box
+        except (TypeError, ValueError):
+            region = None
+    focus = data.get("focus_field")
+    focus = str(focus) if isinstance(focus, str) and focus in ASSESSABLE_FIELDS else None
+
     return VisionAnalysis(
         summary=str(data.get("summary") or "Water surface photographed from the bank.")[:200],
         tags=[str(t)[:32] for t in tags[:5]],
         ai_generated_likelihood=likelihood,
         relevance=relevance,
         fields=fields,
+        evidence_region=region,
+        focus_field=focus,
         model=settings.FOUNDRY_VISION_MODEL,
         used_model=True,
     )

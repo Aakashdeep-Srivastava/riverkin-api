@@ -101,6 +101,8 @@ def _build_photo(obs: Observation) -> ReceiptPhotoOut | None:
         correlation=pa.get("correlation", []),
         escalated=bool(pa.get("escalated", False)),
         photos_count=int(pa.get("photos_count", 1)),
+        evidence_region=pa.get("evidence_region"),
+        focus_field=pa.get("focus_field"),
     )
 
 
@@ -354,6 +356,8 @@ async def upload_photo(
         ],
         "discrepancy_count": len(corr.discrepancies),
         "escalated": corr.escalate,
+        "evidence_region": analysis.evidence_region,
+        "focus_field": analysis.focus_field,
         "authenticity": min_authenticity,
         "authenticity_reason": auth.reason,
         "captured_live": captured_live,

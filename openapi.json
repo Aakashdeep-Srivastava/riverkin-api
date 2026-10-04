@@ -2513,6 +2513,29 @@
             "type": "integer",
             "title": "Photos Count",
             "default": 1
+          },
+          "evidence_region": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Evidence Region"
+          },
+          "focus_field": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Focus Field"
           }
         },
         "type": "object",

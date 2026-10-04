@@ -162,6 +162,9 @@ class ReceiptPhotoOut(BaseModel):
     correlation: list[dict] = []
     escalated: bool = False
     photos_count: int = 1
+    # Approximate AI focus box {x,y,w,h in 0..1} + the field it highlights.
+    evidence_region: dict | None = None
+    focus_field: str | None = None
 
 
 class ReceiptOut(BaseModel):
