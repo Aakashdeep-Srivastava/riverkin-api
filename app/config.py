@@ -64,6 +64,12 @@ class Settings(BaseSettings):
     # the browser via managed identity; not a secret.
     AZURE_MAPS_CLIENT_ID: str = ""
 
+    # Web Push (VAPID). PUBLIC is the browser applicationServerKey (not secret);
+    # PRIVATE_B64 is base64(PKCS8 PEM) and IS a secret. Empty → push disabled.
+    VAPID_PUBLIC: str = ""
+    VAPID_PRIVATE_B64: str = ""
+    VAPID_SUBJECT: str = "mailto:hello@riverkin.online"
+
     @property
     def cors_origins_list(self) -> list[str]:
         """CORS_ORIGINS parsed into a clean list."""

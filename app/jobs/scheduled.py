@@ -91,6 +91,26 @@ async def run() -> int:
             )
         await session.commit()
         logger.info("recomputed need for %d sites across %d cities", len(sites), len(reps))
+
+        # Reactivation (Track 5): if sites are due after heavy rain, send one
+        # honest digest push to subscribers. Real event, no fake urgency.
+        from app import push
+
+        if push.enabled():
+            after_rain = [
+                s
+                for s in sites
+                if (s.rain_48h_mm or 0) >= scoring.RAIN_THRESHOLD_MM
+                and (s.last_verified_at is None or (now - s.last_verified_at).days >= 3)
+            ]
+            if after_rain:
+                n = len(after_rain)
+                await push.broadcast(
+                    session,
+                    title="After the rain 🌧️",
+                    body=f"{n} river{'s' if n != 1 else ''} need a look after recent rain.",
+                    url="/missions",
+                )
         return len(sites)
 
 
