@@ -20,6 +20,7 @@ from app.routers import (
     maps,
     metrics,
     missions,
+    notifications,
     observations,
     sites,
     verify,
@@ -59,3 +60,4 @@ app.include_router(metrics.router, prefix=API_PREFIX)
 app.include_router(crews.router, prefix=API_PREFIX)
 app.include_router(missions.router, prefix=API_PREFIX)
 app.include_router(community.router, prefix=API_PREFIX)
+app.include_router(notifications.router, prefix=API_PREFIX)
