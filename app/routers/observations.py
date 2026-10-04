@@ -26,8 +26,10 @@ from app.ai.questions import FIELD_SPECS, build_verify_items
 from app.db import get_session
 from app.models.observation import Observation
 from app.models.site import Site
+from app.models.user import User
 from app.models.verify import VerifyItem, Vote
 from app.photos import MEDIA_DIR, PHASH_REUSE_DISTANCE, has_exif, phash_distance, process_photo
+from app.routers.auth import current_user
 from app.schemas import (
     ObservationCreated,
     ObservationIn,
@@ -124,6 +126,7 @@ def _build_receipt(obs: Observation, site: Site, verifier_count: int) -> Receipt
 async def create_observation(
     payload: ObservationIn,
     session: AsyncSession = Depends(get_session),
+    author: User | None = Depends(current_user),
 ) -> ObservationCreated:
     """Submit a field check: safety + quality gates, then draft verify items.
 
@@ -170,6 +173,7 @@ async def create_observation(
         geom_ok=geo_ok,
         quality=quality_q,
         points=points,
+        user_id=author.id if author else None,
         gap_days_closed=_days_unseen(site),
         status="expert" if pipe_flag else "in_verify",
     )

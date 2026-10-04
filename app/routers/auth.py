@@ -22,6 +22,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.config import settings
 from app.db import get_session
+from app.models.observation import Observation
 from app.models.user import User
 from app.schemas import AuthToken, LoginIn, RegisterIn, UserOut
 from app.security import (
@@ -34,6 +35,15 @@ from app.security import (
 )
 
 router = APIRouter(prefix="/auth", tags=["auth"])
+
+# River Score → identity tier thresholds (cumulative River points). Identity,
+# not XP: a role you grow into. Anti-farming is baked into the points (the
+# visit multiplier M decays/caps), so the score can't be spammed up.
+RIVER_TIERS = [
+    ("Observer", 0),
+    ("Explorer", 50),
+    ("River Keeper", 200),
+]
 
 VALID_ROLES = {"keeper", "crew_lead", "researcher"}
 
@@ -121,6 +131,63 @@ async def me(user: User | None = Depends(current_user)) -> dict:
     if user is None:
         return {"authenticated": False}
     return {"authenticated": True, "user": _to_out(user).model_dump()}
+
+
+@router.get("/score")
+async def river_score(
+    user: User | None = Depends(current_user),
+    session: AsyncSession = Depends(get_session),
+) -> dict:
+    """The signed-in user's permanent River Score — Σ River points over their
+    checks (+ a small verified bonus), with their identity tier and progress.
+
+    Guests get 401 here and fall back to a device-local tally in the UI.
+    """
+    if user is None:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="sign in required")
+
+    base = int(
+        (await session.execute(
+            select(func.coalesce(func.sum(Observation.points), 0)).where(
+                Observation.user_id == user.id
+            )
+        )).scalar() or 0
+    )
+    checks = int(
+        (await session.execute(
+            select(func.count(Observation.id)).where(Observation.user_id == user.id)
+        )).scalar() or 0
+    )
+    verified = int(
+        (await session.execute(
+            select(func.count(Observation.id)).where(
+                Observation.user_id == user.id,
+                Observation.status.in_(("community-verified", "final")),
+            )
+        )).scalar() or 0
+    )
+    # Verified checks are worth more: a 25%-per-verified bonus on the base.
+    score = base + round(0.25 * base * (verified / checks)) if checks else 0
+
+    tier_name, _ = RIVER_TIERS[0]
+    next_name: str | None = None
+    to_next = 0
+    for i, (name, at) in enumerate(RIVER_TIERS):
+        if score >= at:
+            tier_name = name
+            if i + 1 < len(RIVER_TIERS):
+                next_name, next_at = RIVER_TIERS[i + 1]
+                to_next = max(0, next_at - score)
+            else:
+                next_name, to_next = None, 0
+    return {
+        "score": score,
+        "checks": checks,
+        "verified": verified,
+        "tier": tier_name,
+        "next_tier": next_name,
+        "to_next": to_next,
+    }
 
 
 @router.get("/config")

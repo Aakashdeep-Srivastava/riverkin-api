@@ -179,15 +179,33 @@
         "summary": "Create Observation",
         "description": "Submit a field check: safety + quality gates, then draft verify items.\n\nSafety refusals return 403 + ``safety_reason`` (PRD). A pipe/outfall answer\nroutes the observation straight to expert review.",
         "operationId": "create_observation_api_v1_observations_post",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/ObservationIn"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "201": {
@@ -707,6 +725,58 @@
                   "type": "object",
                   "additionalProperties": true,
                   "title": "Response Me Api V1 Auth Me Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/score": {
+      "get": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "River Score",
+        "description": "The signed-in user's permanent River Score \u2014 \u03a3 River points over their\nchecks (+ a small verified bonus), with their identity tier and progress.\n\nGuests get 401 here and fall back to a device-local tally in the UI.",
+        "operationId": "river_score_api_v1_auth_score_get",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response River Score Api V1 Auth Score Get"
                 }
               }
             }

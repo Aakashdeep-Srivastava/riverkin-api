@@ -20,6 +20,12 @@ class Observation(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
 
+    # Author (when the check was submitted by a signed-in Keeper). Nullable so
+    # guests stay anonymous; powers the permanent per-user River Score.
+    user_id: Mapped[int | None] = mapped_column(
+        ForeignKey("users.id", ondelete="SET NULL"), index=True, nullable=True
+    )
+
     site_id: Mapped[int | None] = mapped_column(
         ForeignKey("sites.id", ondelete="SET NULL"), index=True, nullable=True
     )
