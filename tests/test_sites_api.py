@@ -45,4 +45,4 @@ async def test_seed_is_idempotent():
     async with httpx.AsyncClient(transport=transport, base_url="http://test") as client:
         resp = await client.get("/api/v1/sites?city=Coimbra")
         assert resp.status_code == 200
-        assert len(resp.json()) == 22  # Coimbra has 22 seeded sites
+        assert len(resp.json()) == 20  # Coimbra has 20 real OAH sites

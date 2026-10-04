@@ -10,6 +10,7 @@ from datetime import datetime
 
 from geoalchemy2 import Geometry
 from sqlalchemy import Boolean, DateTime, Float, Integer, String, func
+from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.db import Base
@@ -34,9 +35,17 @@ class Site(Base):
     # spatial source of truth for ST_DWithin geofence queries.
     lat: Mapped[float | None] = mapped_column(Float, nullable=True)
     lng: Mapped[float | None] = mapped_column(Float, nullable=True)
+    altitude_m: Mapped[float | None] = mapped_column(Float, nullable=True)
     location: Mapped[object | None] = mapped_column(
         Geometry(geometry_type="POINT", srid=4326, spatial_index=False), nullable=True
     )
+
+    # Real OneAquaHealth baseline snapshots (latest sample), stored verbatim:
+    # ecology = biological + chemical quality (macroinvertebrates/diatoms/fish/nitrate);
+    # health_risk = One Health risk scores (pathogen/fecal/ARG + composite).
+    # Source: api.enora-oah.eu. See data/DATA_PROVENANCE.md.
+    ecology: Mapped[dict | None] = mapped_column(JSONB, nullable=True)
+    health_risk: Mapped[dict | None] = mapped_column(JSONB, nullable=True)
 
     # Scoring inputs (denormalised; recomputed by the rain/need job).
     cadence_days: Mapped[int] = mapped_column(Integer, default=14, server_default="14")

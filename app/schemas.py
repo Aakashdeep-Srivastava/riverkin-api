@@ -48,11 +48,20 @@ class SiteOut(BaseModel):
     country: str | None = None
     lat: float | None = None
     lng: float | None = None
+    altitude_m: float | None = None
     days_unseen: int
     rain_48h_mm: float
     need_score: float
     attention: str
     color: str
+    # Real OneAquaHealth baseline (classified by app/oah.py); null when the site
+    # has no published sample. See ``data_attribution``.
+    ecology: dict | None = None
+    health_risk: dict | None = None
+    # Coordinates, identity and ecology/health are REAL (from OAH). Only the
+    # "days since last citizen check" schedule is illustrative — hence this flag.
+    recency_simulated: bool = True
+    data_attribution: str | None = None
     simulated: bool = True
 
 

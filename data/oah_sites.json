@@ -1,1286 +1,2770 @@
 {
-  "schema": "riverkin.oah_sites.v1",
-  "source": "OneAquaHealth (oneaquahealth.eu) 5 research cities; rivers real, per-site coordinates synthesized around real city centres.",
+  "schema": "riverkin.oah_sites.v2",
+  "source": "OneAquaHealth project API (https://api.enora-oah.eu/api/sites/all), retrieved 2026-10-04. Real research monitoring sites: real codes, names, coordinates, altitude. Per-site 'waterbody' = city's primary urban river (label). Latest ecology/health-risk snapshots are real (/api/dashboards/city, /api/resilience-map/health-risks).",
+  "attribution": "Data: OneAquaHealth project (HORIZON, oneaquahealth.eu)",
   "cities": [
     "Coimbra",
     "Toulouse",
-    "Benevento",
     "Ghent",
+    "Benevento",
     "Oslo"
   ],
   "count": 106,
   "sites": [
     {
-      "oah_code": "CB-01",
-      "name": "Mondego — headwater",
+      "oah_code": "C1",
+      "name": "Exploratório",
       "waterbody": "Mondego",
       "city": "Coimbra",
       "country": "Portugal",
-      "location_id": "coimbra",
-      "lat": 40.2113,
-      "lng": -8.4103,
+      "location_id": "co",
+      "lat": 40.19787,
+      "lng": -8.42865,
+      "altitude_m": 20.0,
       "cadence_days": 14,
-      "simulated_coordinates": true
+      "ecology_latest": {
+        "date": "2024-04-05T00:00:00Z",
+        "macroinvertebratesQuality": "",
+        "macroinvertebratesRichness": 15,
+        "diatomsQuality": "Moderate",
+        "diatomsRichness": 31,
+        "fishQuality": "Bad",
+        "nitrate": 0.004,
+        "fishRichness": 2
+      },
+      "health_risk_latest": {
+        "date": "2023-06-28T00:00:00",
+        "pathogen": 0.0746,
+        "fecal": 0.2477,
+        "arg": 0.3374,
+        "score": 0.2199
+      }
     },
     {
-      "oah_code": "CB-02",
-      "name": "Ribeira de Coselhas — upper reach",
-      "waterbody": "Ribeira de Coselhas",
-      "city": "Coimbra",
-      "country": "Portugal",
-      "location_id": "coimbra",
-      "lat": 40.19298,
-      "lng": -8.39706,
-      "cadence_days": 14,
-      "simulated_coordinates": true
-    },
-    {
-      "oah_code": "CB-03",
-      "name": "Ribeira de Eiras — footbridge",
-      "waterbody": "Ribeira de Eiras",
-      "city": "Coimbra",
-      "country": "Portugal",
-      "location_id": "coimbra",
-      "lat": 40.20505,
-      "lng": -8.43819,
-      "cadence_days": 14,
-      "simulated_coordinates": true
-    },
-    {
-      "oah_code": "CB-04",
-      "name": "Ribeira dos Covões — confluence",
-      "waterbody": "Ribeira dos Covões",
-      "city": "Coimbra",
-      "country": "Portugal",
-      "location_id": "coimbra",
-      "lat": 40.21912,
-      "lng": -8.38141,
-      "cadence_days": 14,
-      "simulated_coordinates": true
-    },
-    {
-      "oah_code": "CB-05",
-      "name": "Vale das Flores — city reach",
-      "waterbody": "Vale das Flores",
-      "city": "Coimbra",
-      "country": "Portugal",
-      "location_id": "coimbra",
-      "lat": 40.17179,
-      "lng": -8.4181,
-      "cadence_days": 14,
-      "simulated_coordinates": true
-    },
-    {
-      "oah_code": "CB-06",
-      "name": "Ribeira de Fornos — outfall",
-      "waterbody": "Ribeira de Fornos",
-      "city": "Coimbra",
-      "country": "Portugal",
-      "location_id": "coimbra",
-      "lat": 40.21005,
-      "lng": -8.41631,
-      "cadence_days": 14,
-      "simulated_coordinates": true
-    },
-    {
-      "oah_code": "CB-07",
-      "name": "Ribeira da Arregaça — park reach",
-      "waterbody": "Ribeira da Arregaça",
-      "city": "Coimbra",
-      "country": "Portugal",
-      "location_id": "coimbra",
-      "lat": 40.19967,
-      "lng": -8.39137,
-      "cadence_days": 14,
-      "simulated_coordinates": true
-    },
-    {
-      "oah_code": "CB-08",
-      "name": "Ceira — weir",
-      "waterbody": "Ceira",
-      "city": "Coimbra",
-      "country": "Portugal",
-      "location_id": "coimbra",
-      "lat": 40.19408,
-      "lng": -8.43515,
-      "cadence_days": 14,
-      "simulated_coordinates": true
-    },
-    {
-      "oah_code": "CB-09",
-      "name": "Mondego — old-town reach",
+      "oah_code": "C2",
+      "name": "Estação Cbr-B",
       "waterbody": "Mondego",
       "city": "Coimbra",
       "country": "Portugal",
-      "location_id": "coimbra",
-      "lat": 40.22772,
-      "lng": -8.39781,
+      "location_id": "co",
+      "lat": 40.22483,
+      "lng": -8.44135,
+      "altitude_m": 14.0,
       "cadence_days": 14,
-      "simulated_coordinates": true
+      "ecology_latest": {
+        "date": "2023-06-27T00:00:00Z",
+        "macroinvertebratesQuality": "Bad",
+        "macroinvertebratesRichness": 7,
+        "fishQuality": "Bad",
+        "fishRichness": 0,
+        "diatomsQuality": "Moderate",
+        "diatomsRichness": 39,
+        "nitrate": 0.015
+      },
+      "health_risk_latest": {
+        "date": "2023-06-27T00:00:00",
+        "pathogen": 0.507,
+        "fecal": 0.5072,
+        "arg": 0.2522,
+        "score": 0.4221
+      }
     },
     {
-      "oah_code": "CB-10",
-      "name": "Ribeira de Coselhas — mouth",
-      "waterbody": "Ribeira de Coselhas",
-      "city": "Coimbra",
-      "country": "Portugal",
-      "location_id": "coimbra",
-      "lat": 40.17372,
-      "lng": -8.39321,
-      "cadence_days": 14,
-      "simulated_coordinates": true
-    },
-    {
-      "oah_code": "CB-11",
-      "name": "Ribeira de Eiras — headwater",
-      "waterbody": "Ribeira de Eiras",
-      "city": "Coimbra",
-      "country": "Portugal",
-      "location_id": "coimbra",
-      "lat": 40.20669,
-      "lng": -8.42044,
-      "cadence_days": 14,
-      "simulated_coordinates": true
-    },
-    {
-      "oah_code": "CB-12",
-      "name": "Ribeira dos Covões — upper reach",
-      "waterbody": "Ribeira dos Covões",
-      "city": "Coimbra",
-      "country": "Portugal",
-      "location_id": "coimbra",
-      "lat": 40.20749,
-      "lng": -8.3916,
-      "cadence_days": 14,
-      "simulated_coordinates": true
-    },
-    {
-      "oah_code": "CB-13",
-      "name": "Vale das Flores — footbridge",
-      "waterbody": "Vale das Flores",
-      "city": "Coimbra",
-      "country": "Portugal",
-      "location_id": "coimbra",
-      "lat": 40.186,
-      "lng": -8.42434,
-      "cadence_days": 14,
-      "simulated_coordinates": true
-    },
-    {
-      "oah_code": "CB-14",
-      "name": "Ribeira de Fornos — confluence",
-      "waterbody": "Ribeira de Fornos",
-      "city": "Coimbra",
-      "country": "Portugal",
-      "location_id": "coimbra",
-      "lat": 40.22869,
-      "lng": -8.41811,
-      "cadence_days": 14,
-      "simulated_coordinates": true
-    },
-    {
-      "oah_code": "CB-15",
-      "name": "Ribeira da Arregaça — city reach",
-      "waterbody": "Ribeira da Arregaça",
-      "city": "Coimbra",
-      "country": "Portugal",
-      "location_id": "coimbra",
-      "lat": 40.18489,
-      "lng": -8.37365,
-      "cadence_days": 14,
-      "simulated_coordinates": true
-    },
-    {
-      "oah_code": "CB-16",
-      "name": "Ceira — outfall",
-      "waterbody": "Ceira",
-      "city": "Coimbra",
-      "country": "Portugal",
-      "location_id": "coimbra",
-      "lat": 40.20227,
-      "lng": -8.42141,
-      "cadence_days": 14,
-      "simulated_coordinates": true
-    },
-    {
-      "oah_code": "CB-17",
-      "name": "Mondego — park reach",
+      "oah_code": "C3",
+      "name": "Vale das Flores",
       "waterbody": "Mondego",
       "city": "Coimbra",
       "country": "Portugal",
-      "location_id": "coimbra",
-      "lat": 40.214,
-      "lng": -8.39767,
+      "location_id": "co",
+      "lat": 40.19307,
+      "lng": -8.41945,
+      "altitude_m": 22.0,
       "cadence_days": 14,
-      "simulated_coordinates": true
+      "ecology_latest": {
+        "date": "2023-06-27T00:00:00Z",
+        "macroinvertebratesQuality": "Moderate",
+        "macroinvertebratesRichness": 26,
+        "fishQuality": "Bad",
+        "fishRichness": 3,
+        "diatomsQuality": "Poor",
+        "diatomsRichness": 31,
+        "nitrate": 3.1792
+      },
+      "health_risk_latest": {
+        "date": "2023-06-27T00:00:00",
+        "pathogen": 0.2973,
+        "fecal": 0.2051,
+        "arg": 0.2283,
+        "score": 0.2436
+      }
     },
     {
-      "oah_code": "CB-18",
-      "name": "Ribeira de Coselhas — weir",
-      "waterbody": "Ribeira de Coselhas",
+      "oah_code": "C4",
+      "name": "Eiras",
+      "waterbody": "Mondego",
       "city": "Coimbra",
       "country": "Portugal",
-      "location_id": "coimbra",
-      "lat": 40.18332,
-      "lng": -8.40915,
+      "location_id": "co",
+      "lat": 40.25289,
+      "lng": -8.43659,
+      "altitude_m": 17.0,
       "cadence_days": 14,
-      "simulated_coordinates": true
+      "ecology_latest": {
+        "date": "2023-06-27T00:00:00Z",
+        "macroinvertebratesQuality": "Poor",
+        "macroinvertebratesRichness": 28,
+        "fishQuality": "Poor",
+        "fishRichness": 5,
+        "diatomsQuality": "Good",
+        "diatomsRichness": 19,
+        "nitrate": 0.0016
+      },
+      "health_risk_latest": {
+        "date": "2023-06-27T00:00:00",
+        "pathogen": 0.0496,
+        "fecal": 0.1409,
+        "arg": 0.0339,
+        "score": 0.0748
+      }
     },
     {
-      "oah_code": "CB-19",
-      "name": "Ribeira de Eiras — old-town reach",
-      "waterbody": "Ribeira de Eiras",
+      "oah_code": "C5",
+      "name": "Mina Hospital",
+      "waterbody": "Mondego",
       "city": "Coimbra",
       "country": "Portugal",
-      "location_id": "coimbra",
-      "lat": 40.22173,
-      "lng": -8.43597,
+      "location_id": "co",
+      "lat": 40.2186,
+      "lng": -8.42733,
+      "altitude_m": 27.0,
       "cadence_days": 14,
-      "simulated_coordinates": true
+      "ecology_latest": {
+        "date": "2023-06-29T00:00:00Z",
+        "macroinvertebratesQuality": "Moderate",
+        "macroinvertebratesRichness": 38,
+        "fishQuality": "Moderate",
+        "fishRichness": 3,
+        "diatomsQuality": "Good",
+        "diatomsRichness": 21,
+        "nitrate": 0.6174
+      },
+      "health_risk_latest": {
+        "date": "2023-06-29T00:00:00",
+        "pathogen": 1.0,
+        "fecal": 1.0,
+        "arg": 0.3465,
+        "score": 0.7822
+      }
     },
     {
-      "oah_code": "CB-20",
-      "name": "Ribeira dos Covões — mouth",
-      "waterbody": "Ribeira dos Covões",
+      "oah_code": "C6",
+      "name": "Casa do Sal",
+      "waterbody": "Mondego",
       "city": "Coimbra",
       "country": "Portugal",
-      "location_id": "coimbra",
-      "lat": 40.20182,
-      "lng": -8.36555,
+      "location_id": "co",
+      "lat": 40.21942,
+      "lng": -8.43772,
+      "altitude_m": 16.0,
       "cadence_days": 14,
-      "simulated_coordinates": true
+      "ecology_latest": {
+        "date": "2023-06-29T00:00:00Z",
+        "macroinvertebratesQuality": "Poor",
+        "macroinvertebratesRichness": 18,
+        "fishQuality": "Bad",
+        "fishRichness": 3,
+        "diatomsQuality": "Good",
+        "diatomsRichness": 38,
+        "nitrate": 2.1858
+      },
+      "health_risk_latest": {
+        "date": "2023-06-29T00:00:00",
+        "pathogen": 0.7351,
+        "fecal": 0.6664,
+        "arg": 0.3841,
+        "score": 0.5952
+      }
     },
     {
-      "oah_code": "CB-21",
-      "name": "Vale das Flores — headwater",
-      "waterbody": "Vale das Flores",
+      "oah_code": "C7",
+      "name": "São Romão",
+      "waterbody": "Mondego",
       "city": "Coimbra",
       "country": "Portugal",
-      "location_id": "coimbra",
-      "lat": 40.19817,
-      "lng": -8.4189,
+      "location_id": "co",
+      "lat": 40.22243,
+      "lng": -8.40165,
+      "altitude_m": 53.0,
       "cadence_days": 14,
-      "simulated_coordinates": true
+      "ecology_latest": {
+        "date": "2023-06-29T00:00:00Z",
+        "macroinvertebratesQuality": "Good",
+        "macroinvertebratesRichness": 47,
+        "fishQuality": "Moderate",
+        "fishRichness": 2,
+        "diatomsQuality": "Moderate",
+        "diatomsRichness": 25,
+        "nitrate": 2.6411
+      },
+      "health_risk_latest": {
+        "date": "2023-06-29T00:00:00",
+        "pathogen": 0.1783,
+        "fecal": 0.5702,
+        "arg": 0.0027,
+        "score": 0.2504
+      }
     },
     {
-      "oah_code": "CB-22",
-      "name": "Ribeira de Fornos — upper reach",
-      "waterbody": "Ribeira de Fornos",
+      "oah_code": "C8",
+      "name": "Covões",
+      "waterbody": "Mondego",
       "city": "Coimbra",
       "country": "Portugal",
-      "location_id": "coimbra",
-      "lat": 40.21717,
-      "lng": -8.40768,
+      "location_id": "co",
+      "lat": 40.19133,
+      "lng": -8.46002,
+      "altitude_m": 77.0,
       "cadence_days": 14,
-      "simulated_coordinates": true
+      "ecology_latest": {
+        "date": "2023-06-28T00:00:00Z",
+        "macroinvertebratesQuality": "Moderate",
+        "macroinvertebratesRichness": 35,
+        "fishQuality": "Poor",
+        "fishRichness": 1,
+        "diatomsQuality": "Good",
+        "diatomsRichness": 24,
+        "nitrate": 0.238
+      },
+      "health_risk_latest": {
+        "date": "2023-06-28T00:00:00",
+        "pathogen": 0.406,
+        "fecal": 0.4457,
+        "arg": 0.432,
+        "score": 0.4279
+      }
     },
     {
-      "oah_code": "TL-01",
-      "name": "Garonne — headwater",
+      "oah_code": "C9",
+      "name": "Fornos",
+      "waterbody": "Mondego",
+      "city": "Coimbra",
+      "country": "Portugal",
+      "location_id": "co",
+      "lat": 40.27702,
+      "lng": -8.4272,
+      "altitude_m": 19.0,
+      "cadence_days": 14,
+      "ecology_latest": {
+        "date": "2023-06-27T00:00:00Z",
+        "macroinvertebratesQuality": "Good",
+        "macroinvertebratesRichness": 26,
+        "diatomsQuality": "Good",
+        "fishQuality": "Bad",
+        "fishRichness": 5,
+        "diatomsRichness": 31,
+        "nitrate": 0.6389
+      },
+      "health_risk_latest": {
+        "date": "2023-06-27T00:00:00",
+        "pathogen": 0.1265,
+        "fecal": 0.1443,
+        "arg": 0.3186,
+        "score": 0.1964
+      }
+    },
+    {
+      "oah_code": "C10",
+      "name": "Arregaça",
+      "waterbody": "Mondego",
+      "city": "Coimbra",
+      "country": "Portugal",
+      "location_id": "co",
+      "lat": 40.19776,
+      "lng": -8.41773,
+      "altitude_m": 23.0,
+      "cadence_days": 14,
+      "ecology_latest": {
+        "date": "2023-06-27T00:00:00Z",
+        "macroinvertebratesQuality": "Bad",
+        "macroinvertebratesRichness": 18,
+        "fishQuality": "Bad",
+        "fishRichness": 0,
+        "diatomsQuality": "Bad",
+        "diatomsRichness": 19,
+        "nitrate": 6.0403
+      },
+      "health_risk_latest": {
+        "date": "2023-06-27T00:00:00",
+        "pathogen": 0.05,
+        "fecal": 0.4146,
+        "arg": 0.0906,
+        "score": 0.1851
+      }
+    },
+    {
+      "oah_code": "C11",
+      "name": "Bairro São Miguel",
+      "waterbody": "Mondego",
+      "city": "Coimbra",
+      "country": "Portugal",
+      "location_id": "co",
+      "lat": 40.22752,
+      "lng": -8.43757,
+      "altitude_m": 20.0,
+      "cadence_days": 14,
+      "ecology_latest": {
+        "date": "2023-06-27T00:00:00Z",
+        "macroinvertebratesQuality": "Poor",
+        "macroinvertebratesRichness": 15,
+        "fishQuality": "Bad",
+        "fishRichness": 0,
+        "diatomsQuality": "Bad",
+        "diatomsRichness": 22,
+        "nitrate": 0.0226
+      },
+      "health_risk_latest": {
+        "date": "2023-06-27T00:00:00",
+        "pathogen": 0.0509,
+        "fecal": 0.187,
+        "arg": 0.1456,
+        "score": 0.1278
+      }
+    },
+    {
+      "oah_code": "C12",
+      "name": "Escola Agrária",
+      "waterbody": "Mondego",
+      "city": "Coimbra",
+      "country": "Portugal",
+      "location_id": "co",
+      "lat": 40.20386,
+      "lng": -8.45302,
+      "altitude_m": 42.0,
+      "cadence_days": 14,
+      "ecology_latest": {
+        "date": "2023-06-28T00:00:00Z",
+        "macroinvertebratesQuality": "Moderate",
+        "macroinvertebratesRichness": 27,
+        "fishQuality": "Bad",
+        "fishRichness": 0,
+        "diatomsQuality": "Moderate",
+        "diatomsRichness": 35,
+        "nitrate": 0.8291
+      },
+      "health_risk_latest": {
+        "date": "2023-06-28T00:00:00",
+        "pathogen": 0.4217,
+        "fecal": 0.8051,
+        "arg": 0.3704,
+        "score": 0.5324
+      }
+    },
+    {
+      "oah_code": "C13",
+      "name": "Condeixa",
+      "waterbody": "Mondego",
+      "city": "Coimbra",
+      "country": "Portugal",
+      "location_id": "co",
+      "lat": 40.11106,
+      "lng": -8.49052,
+      "altitude_m": 106.0,
+      "cadence_days": 14,
+      "ecology_latest": {
+        "date": "2023-06-28T00:00:00Z",
+        "macroinvertebratesQuality": "Moderate",
+        "macroinvertebratesRichness": 25,
+        "fishQuality": "Bad",
+        "fishRichness": 2,
+        "diatomsQuality": "Good",
+        "diatomsRichness": 36,
+        "nitrate": 0.6732
+      },
+      "health_risk_latest": {
+        "date": "2023-06-28T00:00:00",
+        "pathogen": 0.1499,
+        "fecal": 0.2287,
+        "arg": 0.2708,
+        "score": 0.2165
+      }
+    },
+    {
+      "oah_code": "C14",
+      "name": "Antanhol",
+      "waterbody": "Mondego",
+      "city": "Coimbra",
+      "country": "Portugal",
+      "location_id": "co",
+      "lat": 40.16719,
+      "lng": -8.47817,
+      "altitude_m": 68.0,
+      "cadence_days": 14,
+      "ecology_latest": {
+        "date": "2023-06-28T00:00:00Z",
+        "macroinvertebratesQuality": "Good",
+        "macroinvertebratesRichness": 35,
+        "fishQuality": "Moderate",
+        "fishRichness": 1,
+        "diatomsQuality": "Good",
+        "diatomsRichness": 21,
+        "nitrate": 0.027
+      },
+      "health_risk_latest": {
+        "date": "2023-06-28T00:00:00",
+        "pathogen": 0.2241,
+        "fecal": 0.1143,
+        "arg": 0.3343,
+        "score": 0.2243
+      }
+    },
+    {
+      "oah_code": "C15",
+      "name": "Copeira",
+      "waterbody": "Mondego",
+      "city": "Coimbra",
+      "country": "Portugal",
+      "location_id": "co",
+      "lat": 40.17943,
+      "lng": -8.42117,
+      "altitude_m": 25.0,
+      "cadence_days": 14,
+      "ecology_latest": {
+        "date": "2023-06-28T00:00:00Z",
+        "macroinvertebratesQuality": "Moderate",
+        "macroinvertebratesRichness": 33,
+        "fishQuality": "Bad",
+        "fishRichness": 5,
+        "diatomsQuality": "Good",
+        "diatomsRichness": 26,
+        "nitrate": 0.0707
+      },
+      "health_risk_latest": {
+        "date": "2023-06-28T00:00:00",
+        "pathogen": 0.3791,
+        "fecal": 0.3851,
+        "arg": 0.2706,
+        "score": 0.3449
+      }
+    },
+    {
+      "oah_code": "C16",
+      "name": "Rio Velho",
+      "waterbody": "Mondego",
+      "city": "Coimbra",
+      "country": "Portugal",
+      "location_id": "co",
+      "lat": 40.22461,
+      "lng": -8.44304,
+      "altitude_m": 15.0,
+      "cadence_days": 14,
+      "ecology_latest": {
+        "date": "2024-07-18T00:00:00Z",
+        "macroinvertebratesQuality": "Bad",
+        "macroinvertebratesRichness": 13,
+        "nitrate": 0.1302,
+        "fishQuality": "Bad",
+        "fishRichness": 0
+      },
+      "health_risk_latest": {
+        "date": "2023-06-27T00:00:00",
+        "pathogen": 0.5063,
+        "fecal": 0.2531,
+        "arg": 0.3008,
+        "score": 0.3534
+      }
+    },
+    {
+      "oah_code": "C17",
+      "name": "Conraria",
+      "waterbody": "Mondego",
+      "city": "Coimbra",
+      "country": "Portugal",
+      "location_id": "co",
+      "lat": 40.17422,
+      "lng": -8.39363,
+      "altitude_m": 27.0,
+      "cadence_days": 14,
+      "ecology_latest": {
+        "date": "2024-07-18T00:00:00Z",
+        "diatomsQuality": "Good",
+        "diatomsRichness": 31,
+        "nitrate": 0.0596,
+        "macroinvertebratesQuality": "Good",
+        "macroinvertebratesRichness": 39,
+        "fishQuality": "Poor",
+        "fishRichness": 4
+      },
+      "health_risk_latest": null
+    },
+    {
+      "oah_code": "C18",
+      "name": "Ponte da Espertina",
+      "waterbody": "Mondego",
+      "city": "Coimbra",
+      "country": "Portugal",
+      "location_id": "co",
+      "lat": 40.25621,
+      "lng": -8.45312,
+      "altitude_m": 14.0,
+      "cadence_days": 14,
+      "ecology_latest": {
+        "date": "2024-05-21T00:00:00Z",
+        "diatomsQuality": "Good",
+        "diatomsRichness": 38,
+        "nitrate": 0.534,
+        "macroinvertebratesQuality": "Moderate",
+        "macroinvertebratesRichness": 25,
+        "fishQuality": "Poor",
+        "fishRichness": 3
+      },
+      "health_risk_latest": null
+    },
+    {
+      "oah_code": "C19",
+      "name": "Escravote",
+      "waterbody": "Mondego",
+      "city": "Coimbra",
+      "country": "Portugal",
+      "location_id": "co",
+      "lat": 40.24812,
+      "lng": -8.41159,
+      "altitude_m": 42.0,
+      "cadence_days": 14,
+      "ecology_latest": {
+        "date": "2024-04-04T00:00:00Z",
+        "diatomsQuality": "Good",
+        "diatomsRichness": 35,
+        "nitrate": 1.5763,
+        "macroinvertebratesQuality": "Good",
+        "macroinvertebratesRichness": 39,
+        "fishQuality": "Bad",
+        "fishRichness": 3
+      },
+      "health_risk_latest": {
+        "date": "2023-06-06T00:00:00",
+        "pathogen": 0.3044,
+        "fecal": 0.4625,
+        "arg": 0.5433,
+        "score": 0.4367
+      }
+    },
+    {
+      "oah_code": "C20",
+      "name": "Corujeira",
+      "waterbody": "Mondego",
+      "city": "Coimbra",
+      "country": "Portugal",
+      "location_id": "co",
+      "lat": 40.21085,
+      "lng": -8.47667,
+      "altitude_m": 14.0,
+      "cadence_days": 14,
+      "ecology_latest": {
+        "date": "2024-04-18T00:00:00Z",
+        "diatomsQuality": "Moderate",
+        "diatomsRichness": 37,
+        "nitrate": 0.4718,
+        "macroinvertebratesQuality": "Poor",
+        "macroinvertebratesRichness": 17,
+        "fishQuality": "Bad",
+        "fishRichness": 3
+      },
+      "health_risk_latest": {
+        "date": "2023-06-06T00:00:00",
+        "pathogen": 0.2243,
+        "fecal": 0.2044,
+        "arg": 0.5623,
+        "score": 0.3304
+      }
+    },
+    {
+      "oah_code": "T21",
+      "name": "Garonne site T21",
       "waterbody": "Garonne",
       "city": "Toulouse",
       "country": "France",
-      "location_id": "toulouse",
-      "lat": 43.6125,
-      "lng": 1.444,
+      "location_id": "to",
+      "lat": 43.59278,
+      "lng": 1.34767,
+      "altitude_m": 162.0,
       "cadence_days": 14,
-      "simulated_coordinates": true
+      "ecology_latest": null,
+      "health_risk_latest": null
     },
     {
-      "oah_code": "TL-02",
-      "name": "Touch — upper reach",
-      "waterbody": "Touch",
-      "city": "Toulouse",
-      "country": "France",
-      "location_id": "toulouse",
-      "lat": 43.59418,
-      "lng": 1.45724,
-      "cadence_days": 14,
-      "simulated_coordinates": true
-    },
-    {
-      "oah_code": "TL-03",
-      "name": "Hers-Mort — footbridge",
-      "waterbody": "Hers-Mort",
-      "city": "Toulouse",
-      "country": "France",
-      "location_id": "toulouse",
-      "lat": 43.60625,
-      "lng": 1.41611,
-      "cadence_days": 14,
-      "simulated_coordinates": true
-    },
-    {
-      "oah_code": "TL-04",
-      "name": "Girou — confluence",
-      "waterbody": "Girou",
-      "city": "Toulouse",
-      "country": "France",
-      "location_id": "toulouse",
-      "lat": 43.62032,
-      "lng": 1.47289,
-      "cadence_days": 14,
-      "simulated_coordinates": true
-    },
-    {
-      "oah_code": "TL-05",
-      "name": "Canal du Midi — city reach",
-      "waterbody": "Canal du Midi",
-      "city": "Toulouse",
-      "country": "France",
-      "location_id": "toulouse",
-      "lat": 43.57299,
-      "lng": 1.4362,
-      "cadence_days": 14,
-      "simulated_coordinates": true
-    },
-    {
-      "oah_code": "TL-06",
-      "name": "Canal de Brienne — outfall",
-      "waterbody": "Canal de Brienne",
-      "city": "Toulouse",
-      "country": "France",
-      "location_id": "toulouse",
-      "lat": 43.61125,
-      "lng": 1.43799,
-      "cadence_days": 14,
-      "simulated_coordinates": true
-    },
-    {
-      "oah_code": "TL-07",
-      "name": "Save — park reach",
-      "waterbody": "Save",
-      "city": "Toulouse",
-      "country": "France",
-      "location_id": "toulouse",
-      "lat": 43.60087,
-      "lng": 1.46293,
-      "cadence_days": 14,
-      "simulated_coordinates": true
-    },
-    {
-      "oah_code": "TL-08",
-      "name": "Garonne — weir",
+      "oah_code": "T24",
+      "name": "Garonne site T24",
       "waterbody": "Garonne",
       "city": "Toulouse",
       "country": "France",
-      "location_id": "toulouse",
-      "lat": 43.59528,
-      "lng": 1.41915,
+      "location_id": "to",
+      "lat": 43.59604,
+      "lng": 1.36671,
+      "altitude_m": 148.0,
       "cadence_days": 14,
-      "simulated_coordinates": true
+      "ecology_latest": null,
+      "health_risk_latest": null
     },
     {
-      "oah_code": "TL-09",
-      "name": "Touch — old-town reach",
-      "waterbody": "Touch",
-      "city": "Toulouse",
-      "country": "France",
-      "location_id": "toulouse",
-      "lat": 43.62892,
-      "lng": 1.45649,
+      "oah_code": "G2",
+      "name": "Zottegem1 (Zo1)",
+      "waterbody": "Leie (Lys)",
+      "city": "Ghent",
+      "country": "Belgium",
+      "location_id": "gh",
+      "lat": 50.85943,
+      "lng": 3.79794,
+      "altitude_m": 38.71,
       "cadence_days": 14,
-      "simulated_coordinates": true
+      "ecology_latest": {
+        "date": "2023-07-26T00:00:00Z",
+        "macroinvertebratesQuality": "Poor",
+        "macroinvertebratesRichness": 15,
+        "diatomsQuality": "Moderate",
+        "diatomsRichness": 48,
+        "nitrate": 1.0371
+      },
+      "health_risk_latest": {
+        "date": "2023-05-24T00:00:00",
+        "pathogen": 0.1242,
+        "fecal": 0.2672,
+        "arg": 0.4669,
+        "score": 0.2861
+      }
     },
     {
-      "oah_code": "TL-10",
-      "name": "Hers-Mort — mouth",
-      "waterbody": "Hers-Mort",
-      "city": "Toulouse",
-      "country": "France",
-      "location_id": "toulouse",
-      "lat": 43.57492,
-      "lng": 1.46109,
+      "oah_code": "BN1",
+      "name": "Capodimonte",
+      "waterbody": "Calore",
+      "city": "Benevento",
+      "country": "Italy",
+      "location_id": "be",
+      "lat": 41.13231,
+      "lng": 14.80039,
+      "altitude_m": 135.0,
       "cadence_days": 14,
-      "simulated_coordinates": true
+      "ecology_latest": {
+        "date": "2023-06-28T00:00:00Z",
+        "diatomsQuality": "Poor",
+        "diatomsRichness": 17,
+        "nitrate": 3.5269
+      },
+      "health_risk_latest": {
+        "date": "2023-06-28T00:00:00",
+        "pathogen": 0.2054,
+        "fecal": 0.2427,
+        "arg": 0.4792,
+        "score": 0.3091
+      }
     },
     {
-      "oah_code": "TL-11",
-      "name": "Girou — headwater",
-      "waterbody": "Girou",
-      "city": "Toulouse",
-      "country": "France",
-      "location_id": "toulouse",
-      "lat": 43.60789,
-      "lng": 1.43386,
+      "oah_code": "BN2",
+      "name": "Cretarossa",
+      "waterbody": "Calore",
+      "city": "Benevento",
+      "country": "Italy",
+      "location_id": "be",
+      "lat": 41.12679,
+      "lng": 14.80333,
+      "altitude_m": 146.0,
       "cadence_days": 14,
-      "simulated_coordinates": true
+      "ecology_latest": {
+        "date": "2023-06-28T00:00:00Z",
+        "nitrate": 3.1349
+      },
+      "health_risk_latest": {
+        "date": "2023-06-28T00:00:00",
+        "pathogen": 0.6456,
+        "fecal": 0.5343,
+        "arg": 1.0,
+        "score": 0.7266
+      }
     },
     {
-      "oah_code": "TL-12",
-      "name": "Canal du Midi — upper reach",
-      "waterbody": "Canal du Midi",
-      "city": "Toulouse",
-      "country": "France",
-      "location_id": "toulouse",
-      "lat": 43.60869,
-      "lng": 1.4627,
+      "oah_code": "BN3",
+      "name": "Ponticelli",
+      "waterbody": "Calore",
+      "city": "Benevento",
+      "country": "Italy",
+      "location_id": "be",
+      "lat": 41.13348,
+      "lng": 14.78614,
+      "altitude_m": 550.0,
       "cadence_days": 14,
-      "simulated_coordinates": true
+      "ecology_latest": {
+        "date": "2023-06-06T00:00:00Z",
+        "diatomsQuality": "Good",
+        "diatomsRichness": 18,
+        "nitrate": 3.1655
+      },
+      "health_risk_latest": {
+        "date": "2023-06-06T00:00:00",
+        "pathogen": 0.3554,
+        "fecal": 0.7104,
+        "arg": 0.0,
+        "score": 0.3553
+      }
     },
     {
-      "oah_code": "TL-13",
-      "name": "Canal de Brienne — footbridge",
-      "waterbody": "Canal de Brienne",
-      "city": "Toulouse",
-      "country": "France",
-      "location_id": "toulouse",
-      "lat": 43.5872,
-      "lng": 1.42996,
+      "oah_code": "BN4",
+      "name": "Serretelle 4",
+      "waterbody": "Calore",
+      "city": "Benevento",
+      "country": "Italy",
+      "location_id": "be",
+      "lat": 41.12414,
+      "lng": 14.74864,
+      "altitude_m": 130.0,
       "cadence_days": 14,
-      "simulated_coordinates": true
+      "ecology_latest": {
+        "date": "2023-07-03T00:00:00Z",
+        "diatomsQuality": "Good",
+        "diatomsRichness": 26,
+        "nitrate": 1.0448
+      },
+      "health_risk_latest": {
+        "date": "2023-07-03T00:00:00",
+        "pathogen": 0.3065,
+        "fecal": 0.4667,
+        "arg": 0.3717,
+        "score": 0.3817
+      }
     },
     {
-      "oah_code": "TL-14",
-      "name": "Save — confluence",
-      "waterbody": "Save",
-      "city": "Toulouse",
-      "country": "France",
-      "location_id": "toulouse",
-      "lat": 43.62989,
-      "lng": 1.43619,
+      "oah_code": "BN5",
+      "name": "Serretelle 5",
+      "waterbody": "Calore",
+      "city": "Benevento",
+      "country": "Italy",
+      "location_id": "be",
+      "lat": 41.10429,
+      "lng": 14.74295,
+      "altitude_m": 182.0,
       "cadence_days": 14,
-      "simulated_coordinates": true
+      "ecology_latest": {
+        "date": "2023-07-03T00:00:00Z",
+        "diatomsQuality": "Poor",
+        "diatomsRichness": 26,
+        "nitrate": 0.7521
+      },
+      "health_risk_latest": {
+        "date": "2023-07-03T00:00:00",
+        "pathogen": 0.0758,
+        "fecal": 0.2193,
+        "arg": 0.3856,
+        "score": 0.2269
+      }
     },
     {
-      "oah_code": "TL-15",
-      "name": "Garonne — city reach",
+      "oah_code": "BN6",
+      "name": "Pezzapiano",
+      "waterbody": "Calore",
+      "city": "Benevento",
+      "country": "Italy",
+      "location_id": "be",
+      "lat": 41.14775,
+      "lng": 14.78437,
+      "altitude_m": 127.0,
+      "cadence_days": 14,
+      "ecology_latest": {
+        "date": "2023-06-28T00:00:00Z",
+        "diatomsQuality": "Poor",
+        "diatomsRichness": 27,
+        "nitrate": 1.8508
+      },
+      "health_risk_latest": {
+        "date": "2023-06-28T00:00:00",
+        "pathogen": 0.2056,
+        "fecal": 0.4619,
+        "arg": 0.3583,
+        "score": 0.342
+      }
+    },
+    {
+      "oah_code": "BN7",
+      "name": "Margiacca",
+      "waterbody": "Calore",
+      "city": "Benevento",
+      "country": "Italy",
+      "location_id": "be",
+      "lat": 41.14905,
+      "lng": 14.81407,
+      "altitude_m": 135.0,
+      "cadence_days": 14,
+      "ecology_latest": {
+        "date": "2023-06-28T00:00:00Z",
+        "diatomsQuality": "Poor",
+        "diatomsRichness": 32,
+        "nitrate": 5.2367
+      },
+      "health_risk_latest": {
+        "date": "2023-06-28T00:00:00",
+        "pathogen": 0.4126,
+        "fecal": 0.5393,
+        "arg": 0.3509,
+        "score": 0.4343
+      }
+    },
+    {
+      "oah_code": "BN8",
+      "name": "Paduli",
+      "waterbody": "Calore",
+      "city": "Benevento",
+      "country": "Italy",
+      "location_id": "be",
+      "lat": 41.15405,
+      "lng": 14.8345,
+      "altitude_m": 204.0,
+      "cadence_days": 14,
+      "ecology_latest": {
+        "date": "2023-07-07T00:00:00Z",
+        "diatomsQuality": "Poor",
+        "diatomsRichness": 19,
+        "nitrate": 0.1982
+      },
+      "health_risk_latest": {
+        "date": "2023-07-07T00:00:00",
+        "pathogen": 0.3383,
+        "fecal": 0.477,
+        "arg": 0.4015,
+        "score": 0.4056
+      }
+    },
+    {
+      "oah_code": "BN9",
+      "name": "Vallone Cornacchie",
+      "waterbody": "Calore",
+      "city": "Benevento",
+      "country": "Italy",
+      "location_id": "be",
+      "lat": 41.11089,
+      "lng": 14.8325,
+      "altitude_m": 126.0,
+      "cadence_days": 14,
+      "ecology_latest": {
+        "date": "2023-06-06T00:00:00Z",
+        "diatomsQuality": "Poor",
+        "diatomsRichness": 26,
+        "nitrate": 4.3237
+      },
+      "health_risk_latest": {
+        "date": "2023-06-06T00:00:00",
+        "pathogen": 0.2515,
+        "fecal": 0.4117,
+        "arg": 0.384,
+        "score": 0.3491
+      }
+    },
+    {
+      "oah_code": "BN10",
+      "name": "Malacagna",
+      "waterbody": "Calore",
+      "city": "Benevento",
+      "country": "Italy",
+      "location_id": "be",
+      "lat": 41.14607,
+      "lng": 14.76353,
+      "altitude_m": 120.0,
+      "cadence_days": 14,
+      "ecology_latest": {
+        "date": "2023-06-07T00:00:00Z",
+        "diatomsQuality": "Good",
+        "diatomsRichness": 21,
+        "nitrate": 4.1843
+      },
+      "health_risk_latest": {
+        "date": "2023-06-07T00:00:00",
+        "pathogen": 0.762,
+        "fecal": 0.8423,
+        "arg": 0.2686,
+        "score": 0.6243
+      }
+    },
+    {
+      "oah_code": "BN11",
+      "name": "Masseria Roseto",
+      "waterbody": "Calore",
+      "city": "Benevento",
+      "country": "Italy",
+      "location_id": "be",
+      "lat": 41.16124,
+      "lng": 14.75972,
+      "altitude_m": 153.0,
+      "cadence_days": 14,
+      "ecology_latest": {
+        "date": "2023-06-06T00:00:00Z",
+        "diatomsQuality": "Good",
+        "diatomsRichness": 28,
+        "nitrate": 1.12
+      },
+      "health_risk_latest": {
+        "date": "2023-06-06T00:00:00",
+        "pathogen": 0.0754,
+        "fecal": 0.2158,
+        "arg": 0.0329,
+        "score": 0.108
+      }
+    },
+    {
+      "oah_code": "BN12",
+      "name": "Vallone S. Vitale",
+      "waterbody": "Calore",
+      "city": "Benevento",
+      "country": "Italy",
+      "location_id": "be",
+      "lat": 41.13628,
+      "lng": 14.73193,
+      "altitude_m": 130.0,
+      "cadence_days": 14,
+      "ecology_latest": {
+        "date": "2023-06-06T00:00:00Z",
+        "diatomsQuality": "Good",
+        "diatomsRichness": 15,
+        "nitrate": 2.25
+      },
+      "health_risk_latest": {
+        "date": "2023-06-06T00:00:00",
+        "pathogen": 0.0748,
+        "fecal": 0.1445,
+        "arg": 0.0491,
+        "score": 0.0895
+      }
+    },
+    {
+      "oah_code": "BN13",
+      "name": "Vallone la Ripa",
+      "waterbody": "Calore",
+      "city": "Benevento",
+      "country": "Italy",
+      "location_id": "be",
+      "lat": 41.11727,
+      "lng": 14.73683,
+      "altitude_m": 245.0,
+      "cadence_days": 14,
+      "ecology_latest": {
+        "date": "2023-07-03T00:00:00Z",
+        "diatomsQuality": "Moderate",
+        "diatomsRichness": 22,
+        "nitrate": 2.0138
+      },
+      "health_risk_latest": {
+        "date": "2023-07-03T00:00:00",
+        "pathogen": 0.1003,
+        "fecal": 0.3295,
+        "arg": 0.2723,
+        "score": 0.234
+      }
+    },
+    {
+      "oah_code": "BN14",
+      "name": "Rocca - Tufara",
+      "waterbody": "Calore",
+      "city": "Benevento",
+      "country": "Italy",
+      "location_id": "be",
+      "lat": 41.06014,
+      "lng": 14.70843,
+      "altitude_m": null,
+      "cadence_days": 14,
+      "ecology_latest": {
+        "date": "2023-06-07T00:00:00Z",
+        "nitrate": 0.5109
+      },
+      "health_risk_latest": {
+        "date": "2024-08-05T00:00:00",
+        "pathogen": 0.1101,
+        "fecal": 0.2119,
+        "arg": 0.181,
+        "score": 0.1676
+      }
+    },
+    {
+      "oah_code": "BN15",
+      "name": "Corvo Tressanti",
+      "waterbody": "Calore",
+      "city": "Benevento",
+      "country": "Italy",
+      "location_id": "be",
+      "lat": 41.06921,
+      "lng": 14.70959,
+      "altitude_m": 148.0,
+      "cadence_days": 14,
+      "ecology_latest": {
+        "date": "2023-06-07T00:00:00Z",
+        "diatomsQuality": "Moderate",
+        "diatomsRichness": 24,
+        "nitrate": 0.0026
+      },
+      "health_risk_latest": {
+        "date": "2023-06-07T00:00:00",
+        "pathogen": 0.3487,
+        "fecal": 0.3778,
+        "arg": 0.3881,
+        "score": 0.3715
+      }
+    },
+    {
+      "oah_code": "BN16",
+      "name": "Ranno",
+      "waterbody": "Calore",
+      "city": "Benevento",
+      "country": "Italy",
+      "location_id": "be",
+      "lat": 41.06923,
+      "lng": 14.70876,
+      "altitude_m": 146.0,
+      "cadence_days": 14,
+      "ecology_latest": {
+        "date": "2023-06-07T00:00:00Z",
+        "diatomsQuality": "Good",
+        "diatomsRichness": 29,
+        "nitrate": 0.3136
+      },
+      "health_risk_latest": {
+        "date": "2023-06-07T00:00:00",
+        "pathogen": 0.1258,
+        "fecal": 0.4229,
+        "arg": 0.1122,
+        "score": 0.2203
+      }
+    },
+    {
+      "oah_code": "BN17",
+      "name": "Lossauro",
+      "waterbody": "Calore",
+      "city": "Benevento",
+      "country": "Italy",
+      "location_id": "be",
+      "lat": 41.13221,
+      "lng": 14.7127,
+      "altitude_m": 284.0,
+      "cadence_days": 14,
+      "ecology_latest": {
+        "date": "2023-07-03T00:00:00Z",
+        "diatomsQuality": "Good",
+        "diatomsRichness": 26,
+        "nitrate": 0.6637
+      },
+      "health_risk_latest": {
+        "date": "2023-07-03T00:00:00",
+        "pathogen": 0.4909,
+        "fecal": 0.6187,
+        "arg": 0.0307,
+        "score": 0.3801
+      }
+    },
+    {
+      "oah_code": "BN18",
+      "name": "Jenga",
+      "waterbody": "Calore",
+      "city": "Benevento",
+      "country": "Italy",
+      "location_id": "be",
+      "lat": 41.15126,
+      "lng": 14.70936,
+      "altitude_m": 100.0,
+      "cadence_days": 14,
+      "ecology_latest": {
+        "date": "2023-06-06T00:00:00Z",
+        "diatomsQuality": "Poor",
+        "diatomsRichness": 19,
+        "nitrate": 0.6445
+      },
+      "health_risk_latest": {
+        "date": "2023-06-06T00:00:00",
+        "pathogen": 0.3149,
+        "fecal": 0.4429,
+        "arg": 0.4485,
+        "score": 0.4021
+      }
+    },
+    {
+      "oah_code": "BN19",
+      "name": "Foeniculum",
+      "waterbody": "Calore",
+      "city": "Benevento",
+      "country": "Italy",
+      "location_id": "be",
+      "lat": 41.185791,
+      "lng": 14.719005,
+      "altitude_m": 267.0,
+      "cadence_days": 14,
+      "ecology_latest": {
+        "date": "2023-07-07T00:00:00Z",
+        "diatomsQuality": "Moderate",
+        "diatomsRichness": 21,
+        "nitrate": 0.0098
+      },
+      "health_risk_latest": {
+        "date": "2023-07-07T00:00:00",
+        "pathogen": 0.2572,
+        "fecal": 0.3391,
+        "arg": 0.1262,
+        "score": 0.2408
+      }
+    },
+    {
+      "oah_code": "BN20",
+      "name": "Lenta",
+      "waterbody": "Calore",
+      "city": "Benevento",
+      "country": "Italy",
+      "location_id": "be",
+      "lat": 41.213825,
+      "lng": 14.68999,
+      "altitude_m": 147.0,
+      "cadence_days": 14,
+      "ecology_latest": {
+        "date": "2023-07-07T00:00:00Z",
+        "macroinvertebratesQuality": "",
+        "diatomsQuality": "High",
+        "diatomsRichness": 13,
+        "fishQuality": "",
+        "nitrate": 0.831
+      },
+      "health_risk_latest": {
+        "date": "2023-07-07T00:00:00",
+        "pathogen": 0.3881,
+        "fecal": 0.5078,
+        "arg": 0.3661,
+        "score": 0.4207
+      }
+    },
+    {
+      "oah_code": "G6",
+      "name": "Zwalm2 (Zw2)",
+      "waterbody": "Leie (Lys)",
+      "city": "Ghent",
+      "country": "Belgium",
+      "location_id": "gh",
+      "lat": 50.87579,
+      "lng": 3.75151,
+      "altitude_m": 18.9,
+      "cadence_days": 14,
+      "ecology_latest": {
+        "date": "2023-07-26T00:00:00Z",
+        "macroinvertebratesQuality": "Bad",
+        "macroinvertebratesRichness": 11,
+        "nitrate": 2.253
+      },
+      "health_risk_latest": {
+        "date": "2023-05-24T00:00:00",
+        "pathogen": 0.1738,
+        "fecal": 0.3113,
+        "arg": 0.175,
+        "score": 0.2201
+      }
+    },
+    {
+      "oah_code": "T1",
+      "name": "Ruisseau du Palays",
       "waterbody": "Garonne",
       "city": "Toulouse",
       "country": "France",
-      "location_id": "toulouse",
-      "lat": 43.58609,
-      "lng": 1.48065,
+      "location_id": "to",
+      "lat": 43.55267,
+      "lng": 1.49147,
+      "altitude_m": 130.0,
       "cadence_days": 14,
-      "simulated_coordinates": true
+      "ecology_latest": {
+        "date": "2023-05-05T00:00:00Z",
+        "macroinvertebratesQuality": "",
+        "diatomsQuality": "Moderate",
+        "diatomsRichness": 36,
+        "fishQuality": "",
+        "nitrate": 1.9156
+      },
+      "health_risk_latest": {
+        "date": "2023-05-05T00:00:00",
+        "pathogen": 0.4012,
+        "fecal": 0.532,
+        "arg": 0.2785,
+        "score": 0.4039
+      }
     },
     {
-      "oah_code": "TL-16",
-      "name": "Touch — outfall",
-      "waterbody": "Touch",
+      "oah_code": "T3",
+      "name": "Ruisseau de Bonneval amont",
+      "waterbody": "Garonne",
       "city": "Toulouse",
       "country": "France",
-      "location_id": "toulouse",
-      "lat": 43.60347,
-      "lng": 1.43289,
+      "location_id": "to",
+      "lat": 43.52756,
+      "lng": 1.47439,
+      "altitude_m": 208.0,
       "cadence_days": 14,
-      "simulated_coordinates": true
+      "ecology_latest": {
+        "date": "2024-07-01T00:00:00Z",
+        "diatomsQuality": "Good",
+        "diatomsRichness": 24,
+        "nitrate": 2.4654,
+        "macroinvertebratesQuality": "Poor",
+        "macroinvertebratesRichness": 19
+      },
+      "health_risk_latest": {
+        "date": "2023-05-05T00:00:00",
+        "pathogen": 0.3248,
+        "fecal": 0.3904,
+        "arg": 0.4614,
+        "score": 0.3922
+      }
     },
     {
-      "oah_code": "TL-17",
-      "name": "Hers-Mort — park reach",
-      "waterbody": "Hers-Mort",
-      "city": "Toulouse",
-      "country": "France",
-      "location_id": "toulouse",
-      "lat": 43.6152,
-      "lng": 1.45663,
-      "cadence_days": 14,
-      "simulated_coordinates": true
-    },
-    {
-      "oah_code": "TL-18",
-      "name": "Girou — weir",
-      "waterbody": "Girou",
-      "city": "Toulouse",
-      "country": "France",
-      "location_id": "toulouse",
-      "lat": 43.58452,
-      "lng": 1.44515,
-      "cadence_days": 14,
-      "simulated_coordinates": true
-    },
-    {
-      "oah_code": "TL-19",
-      "name": "Canal du Midi — old-town reach",
-      "waterbody": "Canal du Midi",
-      "city": "Toulouse",
-      "country": "France",
-      "location_id": "toulouse",
-      "lat": 43.62293,
-      "lng": 1.41833,
-      "cadence_days": 14,
-      "simulated_coordinates": true
-    },
-    {
-      "oah_code": "TL-20",
-      "name": "Canal de Brienne — mouth",
-      "waterbody": "Canal de Brienne",
-      "city": "Toulouse",
-      "country": "France",
-      "location_id": "toulouse",
-      "lat": 43.60302,
-      "lng": 1.48875,
-      "cadence_days": 14,
-      "simulated_coordinates": true
-    },
-    {
-      "oah_code": "TL-21",
-      "name": "Save — headwater",
-      "waterbody": "Save",
-      "city": "Toulouse",
-      "country": "France",
-      "location_id": "toulouse",
-      "lat": 43.59937,
-      "lng": 1.4354,
-      "cadence_days": 14,
-      "simulated_coordinates": true
-    },
-    {
-      "oah_code": "BN-01",
-      "name": "Calore Irpino — headwater",
-      "waterbody": "Calore Irpino",
-      "city": "Benevento",
-      "country": "Italy",
-      "location_id": "benevento",
-      "lat": 41.138,
-      "lng": 14.78,
-      "cadence_days": 14,
-      "simulated_coordinates": true
-    },
-    {
-      "oah_code": "BN-02",
-      "name": "Sabato — upper reach",
-      "waterbody": "Sabato",
-      "city": "Benevento",
-      "country": "Italy",
-      "location_id": "benevento",
-      "lat": 41.11968,
-      "lng": 14.79324,
-      "cadence_days": 14,
-      "simulated_coordinates": true
-    },
-    {
-      "oah_code": "BN-03",
-      "name": "Tammaro — footbridge",
-      "waterbody": "Tammaro",
-      "city": "Benevento",
-      "country": "Italy",
-      "location_id": "benevento",
-      "lat": 41.13175,
-      "lng": 14.75211,
-      "cadence_days": 14,
-      "simulated_coordinates": true
-    },
-    {
-      "oah_code": "BN-04",
-      "name": "San Nicola — confluence",
-      "waterbody": "San Nicola",
-      "city": "Benevento",
-      "country": "Italy",
-      "location_id": "benevento",
-      "lat": 41.14582,
-      "lng": 14.80889,
-      "cadence_days": 14,
-      "simulated_coordinates": true
-    },
-    {
-      "oah_code": "BN-05",
-      "name": "Calore Irpino — city reach",
-      "waterbody": "Calore Irpino",
-      "city": "Benevento",
-      "country": "Italy",
-      "location_id": "benevento",
-      "lat": 41.09849,
-      "lng": 14.7722,
-      "cadence_days": 14,
-      "simulated_coordinates": true
-    },
-    {
-      "oah_code": "BN-06",
-      "name": "Sabato — outfall",
-      "waterbody": "Sabato",
-      "city": "Benevento",
-      "country": "Italy",
-      "location_id": "benevento",
-      "lat": 41.13675,
-      "lng": 14.77399,
-      "cadence_days": 14,
-      "simulated_coordinates": true
-    },
-    {
-      "oah_code": "BN-07",
-      "name": "Tammaro — park reach",
-      "waterbody": "Tammaro",
-      "city": "Benevento",
-      "country": "Italy",
-      "location_id": "benevento",
-      "lat": 41.12637,
-      "lng": 14.79893,
-      "cadence_days": 14,
-      "simulated_coordinates": true
-    },
-    {
-      "oah_code": "BN-08",
-      "name": "San Nicola — weir",
-      "waterbody": "San Nicola",
-      "city": "Benevento",
-      "country": "Italy",
-      "location_id": "benevento",
-      "lat": 41.12078,
-      "lng": 14.75515,
-      "cadence_days": 14,
-      "simulated_coordinates": true
-    },
-    {
-      "oah_code": "BN-09",
-      "name": "Calore Irpino — old-town reach",
-      "waterbody": "Calore Irpino",
-      "city": "Benevento",
-      "country": "Italy",
-      "location_id": "benevento",
-      "lat": 41.15442,
-      "lng": 14.79249,
-      "cadence_days": 14,
-      "simulated_coordinates": true
-    },
-    {
-      "oah_code": "BN-10",
-      "name": "Sabato — mouth",
-      "waterbody": "Sabato",
-      "city": "Benevento",
-      "country": "Italy",
-      "location_id": "benevento",
-      "lat": 41.10042,
-      "lng": 14.79709,
-      "cadence_days": 14,
-      "simulated_coordinates": true
-    },
-    {
-      "oah_code": "BN-11",
-      "name": "Tammaro — headwater",
-      "waterbody": "Tammaro",
-      "city": "Benevento",
-      "country": "Italy",
-      "location_id": "benevento",
-      "lat": 41.13339,
-      "lng": 14.76986,
-      "cadence_days": 14,
-      "simulated_coordinates": true
-    },
-    {
-      "oah_code": "BN-12",
-      "name": "San Nicola — upper reach",
-      "waterbody": "San Nicola",
-      "city": "Benevento",
-      "country": "Italy",
-      "location_id": "benevento",
-      "lat": 41.13419,
-      "lng": 14.7987,
-      "cadence_days": 14,
-      "simulated_coordinates": true
-    },
-    {
-      "oah_code": "BN-13",
-      "name": "Calore Irpino — footbridge",
-      "waterbody": "Calore Irpino",
-      "city": "Benevento",
-      "country": "Italy",
-      "location_id": "benevento",
-      "lat": 41.1127,
-      "lng": 14.76596,
-      "cadence_days": 14,
-      "simulated_coordinates": true
-    },
-    {
-      "oah_code": "BN-14",
-      "name": "Sabato — confluence",
-      "waterbody": "Sabato",
-      "city": "Benevento",
-      "country": "Italy",
-      "location_id": "benevento",
-      "lat": 41.15539,
-      "lng": 14.77219,
-      "cadence_days": 14,
-      "simulated_coordinates": true
-    },
-    {
-      "oah_code": "BN-15",
-      "name": "Tammaro — city reach",
-      "waterbody": "Tammaro",
-      "city": "Benevento",
-      "country": "Italy",
-      "location_id": "benevento",
-      "lat": 41.11159,
-      "lng": 14.81665,
-      "cadence_days": 14,
-      "simulated_coordinates": true
-    },
-    {
-      "oah_code": "BN-16",
-      "name": "San Nicola — outfall",
-      "waterbody": "San Nicola",
-      "city": "Benevento",
-      "country": "Italy",
-      "location_id": "benevento",
-      "lat": 41.12897,
-      "lng": 14.76889,
-      "cadence_days": 14,
-      "simulated_coordinates": true
-    },
-    {
-      "oah_code": "BN-17",
-      "name": "Calore Irpino — park reach",
-      "waterbody": "Calore Irpino",
-      "city": "Benevento",
-      "country": "Italy",
-      "location_id": "benevento",
-      "lat": 41.1407,
-      "lng": 14.79263,
-      "cadence_days": 14,
-      "simulated_coordinates": true
-    },
-    {
-      "oah_code": "BN-18",
-      "name": "Sabato — weir",
-      "waterbody": "Sabato",
-      "city": "Benevento",
-      "country": "Italy",
-      "location_id": "benevento",
-      "lat": 41.11002,
-      "lng": 14.78115,
-      "cadence_days": 14,
-      "simulated_coordinates": true
-    },
-    {
-      "oah_code": "BN-19",
-      "name": "Tammaro — old-town reach",
-      "waterbody": "Tammaro",
-      "city": "Benevento",
-      "country": "Italy",
-      "location_id": "benevento",
-      "lat": 41.14843,
-      "lng": 14.75433,
-      "cadence_days": 14,
-      "simulated_coordinates": true
-    },
-    {
-      "oah_code": "BN-20",
-      "name": "San Nicola — mouth",
-      "waterbody": "San Nicola",
-      "city": "Benevento",
-      "country": "Italy",
-      "location_id": "benevento",
-      "lat": 41.12852,
-      "lng": 14.82475,
-      "cadence_days": 14,
-      "simulated_coordinates": true
-    },
-    {
-      "oah_code": "BN-21",
-      "name": "Calore Irpino — headwater",
-      "waterbody": "Calore Irpino",
-      "city": "Benevento",
-      "country": "Italy",
-      "location_id": "benevento",
-      "lat": 41.12487,
-      "lng": 14.7714,
-      "cadence_days": 14,
-      "simulated_coordinates": true
-    },
-    {
-      "oah_code": "GE-01",
-      "name": "Leie — headwater",
-      "waterbody": "Leie",
+      "oah_code": "G8",
+      "name": "Zwalm4 (Zw4)",
+      "waterbody": "Leie (Lys)",
       "city": "Ghent",
       "country": "Belgium",
-      "location_id": "ghent",
-      "lat": 51.0623,
-      "lng": 3.7174,
+      "location_id": "gh",
+      "lat": 50.87971,
+      "lng": 3.73771,
+      "altitude_m": 18.29,
       "cadence_days": 14,
-      "simulated_coordinates": true
+      "ecology_latest": {
+        "date": "2023-07-26T00:00:00Z",
+        "macroinvertebratesQuality": "Moderate",
+        "macroinvertebratesRichness": 20,
+        "diatomsQuality": "Good",
+        "diatomsRichness": 42,
+        "nitrate": 1.7982
+      },
+      "health_risk_latest": {
+        "date": "2023-05-24T00:00:00",
+        "pathogen": 0.0993,
+        "fecal": 0.2305,
+        "arg": 0.3183,
+        "score": 0.2161
+      }
     },
     {
-      "oah_code": "GE-02",
-      "name": "Schelde — upper reach",
-      "waterbody": "Schelde",
+      "oah_code": "G9",
+      "name": "Zwalm5 (Zw5)",
+      "waterbody": "Leie (Lys)",
       "city": "Ghent",
       "country": "Belgium",
-      "location_id": "ghent",
-      "lat": 51.04398,
-      "lng": 3.73064,
+      "location_id": "gh",
+      "lat": 50.87366,
+      "lng": 3.73125,
+      "altitude_m": 20.12,
       "cadence_days": 14,
-      "simulated_coordinates": true
+      "ecology_latest": {
+        "date": "2023-07-27T00:00:00Z",
+        "macroinvertebratesQuality": "Bad",
+        "macroinvertebratesRichness": 10,
+        "diatomsQuality": "Poor",
+        "diatomsRichness": 46,
+        "nitrate": 3.7779
+      },
+      "health_risk_latest": {
+        "date": "2023-05-24T00:00:00",
+        "pathogen": 0.1492,
+        "fecal": 0.3966,
+        "arg": 0.5202,
+        "score": 0.3553
+      }
     },
     {
-      "oah_code": "GE-03",
-      "name": "Lieve — footbridge",
-      "waterbody": "Lieve",
+      "oah_code": "G10",
+      "name": "Zwalm6 (Zw6)",
+      "waterbody": "Leie (Lys)",
       "city": "Ghent",
       "country": "Belgium",
-      "location_id": "ghent",
-      "lat": 51.05605,
-      "lng": 3.68951,
+      "location_id": "gh",
+      "lat": 50.88344,
+      "lng": 3.71431,
+      "altitude_m": 14.02,
       "cadence_days": 14,
-      "simulated_coordinates": true
+      "ecology_latest": {
+        "date": "2023-07-27T00:00:00Z",
+        "macroinvertebratesQuality": "Poor",
+        "macroinvertebratesRichness": 11,
+        "diatomsQuality": "Good",
+        "diatomsRichness": 31,
+        "nitrate": 1.2734
+      },
+      "health_risk_latest": {
+        "date": "2023-05-24T00:00:00",
+        "pathogen": 0.0248,
+        "fecal": 0.1193,
+        "arg": 0.3591,
+        "score": 0.1677
+      }
     },
     {
-      "oah_code": "GE-04",
-      "name": "Ketelvaart — confluence",
-      "waterbody": "Ketelvaart",
+      "oah_code": "G22",
+      "name": "Zwalm7 (Zw7)",
+      "waterbody": "Leie (Lys)",
       "city": "Ghent",
       "country": "Belgium",
-      "location_id": "ghent",
-      "lat": 51.07012,
-      "lng": 3.74629,
+      "location_id": "gh",
+      "lat": 50.88527,
+      "lng": 3.692821,
+      "altitude_m": 12.19,
       "cadence_days": 14,
-      "simulated_coordinates": true
+      "ecology_latest": {
+        "date": "2023-07-27T00:00:00Z",
+        "macroinvertebratesQuality": "Bad",
+        "macroinvertebratesRichness": 6,
+        "diatomsQuality": "Moderate",
+        "diatomsRichness": 64,
+        "nitrate": 1.1298
+      },
+      "health_risk_latest": {
+        "date": "2023-05-24T00:00:00",
+        "pathogen": 0.1501,
+        "fecal": 0.2921,
+        "arg": 0.1152,
+        "score": 0.1858
+      }
     },
     {
-      "oah_code": "GE-05",
-      "name": "Coupure — city reach",
-      "waterbody": "Coupure",
+      "oah_code": "G11",
+      "name": "Zwalm8 (Zw8)",
+      "waterbody": "Leie (Lys)",
       "city": "Ghent",
       "country": "Belgium",
-      "location_id": "ghent",
-      "lat": 51.02279,
-      "lng": 3.7096,
+      "location_id": "gh",
+      "lat": 50.88437,
+      "lng": 3.68791,
+      "altitude_m": 13.11,
       "cadence_days": 14,
-      "simulated_coordinates": true
+      "ecology_latest": {
+        "date": "2023-07-27T00:00:00Z",
+        "macroinvertebratesQuality": "Poor",
+        "macroinvertebratesRichness": 11,
+        "diatomsQuality": "Good",
+        "diatomsRichness": 15,
+        "nitrate": 1.6615
+      },
+      "health_risk_latest": {
+        "date": "2023-05-24T00:00:00",
+        "pathogen": 0.1253,
+        "fecal": 0.2544,
+        "arg": 0.2956,
+        "score": 0.2251
+      }
     },
     {
-      "oah_code": "GE-06",
-      "name": "Muinkschelde — outfall",
-      "waterbody": "Muinkschelde",
+      "oah_code": "G12",
+      "name": "Zwalm9 (Zw9)",
+      "waterbody": "Leie (Lys)",
       "city": "Ghent",
       "country": "Belgium",
-      "location_id": "ghent",
-      "lat": 51.06105,
-      "lng": 3.71139,
+      "location_id": "gh",
+      "lat": 50.88541,
+      "lng": 3.68606,
+      "altitude_m": 11.89,
       "cadence_days": 14,
-      "simulated_coordinates": true
+      "ecology_latest": {
+        "date": "2023-07-27T00:00:00Z",
+        "macroinvertebratesQuality": "Poor",
+        "macroinvertebratesRichness": 15,
+        "diatomsQuality": "Good",
+        "diatomsRichness": 40,
+        "nitrate": 1.2391
+      },
+      "health_risk_latest": {
+        "date": "2023-05-24T00:00:00",
+        "pathogen": 0.0995,
+        "fecal": 0.2129,
+        "arg": 0.3624,
+        "score": 0.225
+      }
     },
     {
-      "oah_code": "GE-07",
-      "name": "De Reep — park reach",
-      "waterbody": "De Reep",
+      "oah_code": "G13",
+      "name": "Merelbeke1 (Mr1)",
+      "waterbody": "Leie (Lys)",
       "city": "Ghent",
       "country": "Belgium",
-      "location_id": "ghent",
-      "lat": 51.05067,
-      "lng": 3.73633,
+      "location_id": "gh",
+      "lat": 50.97958,
+      "lng": 3.72241,
+      "altitude_m": 4.88,
       "cadence_days": 14,
-      "simulated_coordinates": true
+      "ecology_latest": {
+        "date": "2023-07-27T00:00:00Z",
+        "macroinvertebratesQuality": "Poor",
+        "macroinvertebratesRichness": 15,
+        "diatomsQuality": "Poor",
+        "diatomsRichness": 38,
+        "nitrate": 0.2285
+      },
+      "health_risk_latest": {
+        "date": "2023-05-25T00:00:00",
+        "pathogen": 0.0752,
+        "fecal": 0.2104,
+        "arg": 0.345,
+        "score": 0.2102
+      }
     },
     {
-      "oah_code": "GE-08",
-      "name": "Moervaart — weir",
-      "waterbody": "Moervaart",
+      "oah_code": "G14",
+      "name": "Merelbeke2 (Mr2)",
+      "waterbody": "Leie (Lys)",
       "city": "Ghent",
       "country": "Belgium",
-      "location_id": "ghent",
-      "lat": 51.04508,
-      "lng": 3.69255,
+      "location_id": "gh",
+      "lat": 50.99821,
+      "lng": 3.73925,
+      "altitude_m": 28.04,
       "cadence_days": 14,
-      "simulated_coordinates": true
+      "ecology_latest": {
+        "date": "2023-07-27T00:00:00Z",
+        "macroinvertebratesQuality": "Bad",
+        "macroinvertebratesRichness": 9,
+        "diatomsQuality": "Poor",
+        "diatomsRichness": 42,
+        "nitrate": 0.101
+      },
+      "health_risk_latest": {
+        "date": "2023-05-25T00:00:00",
+        "pathogen": 0.0,
+        "fecal": 0.1323,
+        "arg": 0.3366,
+        "score": 0.1563
+      }
     },
     {
-      "oah_code": "GE-09",
-      "name": "Leie — old-town reach",
-      "waterbody": "Leie",
+      "oah_code": "G15",
+      "name": "Melle1 (Ml1)",
+      "waterbody": "Leie (Lys)",
       "city": "Ghent",
       "country": "Belgium",
-      "location_id": "ghent",
-      "lat": 51.07872,
-      "lng": 3.72989,
+      "location_id": "gh",
+      "lat": 50.98975,
+      "lng": 3.80615,
+      "altitude_m": 5.79,
       "cadence_days": 14,
-      "simulated_coordinates": true
+      "ecology_latest": {
+        "date": "2023-07-28T00:00:00Z",
+        "macroinvertebratesQuality": "Poor",
+        "macroinvertebratesRichness": 15,
+        "diatomsQuality": "Moderate",
+        "diatomsRichness": 20,
+        "nitrate": 1.895
+      },
+      "health_risk_latest": {
+        "date": "2023-05-25T00:00:00",
+        "pathogen": 0.0513,
+        "fecal": 0.1673,
+        "arg": 0.4544,
+        "score": 0.2244
+      }
     },
     {
-      "oah_code": "GE-10",
-      "name": "Schelde — mouth",
-      "waterbody": "Schelde",
+      "oah_code": "G16",
+      "name": "Melle2 (Ml2)",
+      "waterbody": "Leie (Lys)",
       "city": "Ghent",
       "country": "Belgium",
-      "location_id": "ghent",
-      "lat": 51.02472,
-      "lng": 3.73449,
+      "location_id": "gh",
+      "lat": 50.99491,
+      "lng": 3.80568,
+      "altitude_m": 5.79,
       "cadence_days": 14,
-      "simulated_coordinates": true
+      "ecology_latest": {
+        "date": "2023-07-28T00:00:00Z",
+        "macroinvertebratesQuality": "Bad",
+        "macroinvertebratesRichness": 10,
+        "diatomsQuality": "Moderate",
+        "diatomsRichness": 52,
+        "nitrate": 1.9288
+      },
+      "health_risk_latest": {
+        "date": "2023-05-25T00:00:00",
+        "pathogen": 0.2484,
+        "fecal": 0.2897,
+        "arg": 0.3971,
+        "score": 0.3117
+      }
     },
     {
-      "oah_code": "GE-11",
-      "name": "Lieve — headwater",
-      "waterbody": "Lieve",
+      "oah_code": "G17",
+      "name": "Gent1 (G1)",
+      "waterbody": "Leie (Lys)",
       "city": "Ghent",
       "country": "Belgium",
-      "location_id": "ghent",
-      "lat": 51.05769,
-      "lng": 3.70726,
+      "location_id": "gh",
+      "lat": 51.02678,
+      "lng": 3.77389,
+      "altitude_m": 24.08,
       "cadence_days": 14,
-      "simulated_coordinates": true
+      "ecology_latest": {
+        "date": "2023-07-28T00:00:00Z",
+        "macroinvertebratesQuality": "Bad",
+        "macroinvertebratesRichness": 6,
+        "nitrate": 0.5342
+      },
+      "health_risk_latest": null
     },
     {
-      "oah_code": "GE-12",
-      "name": "Ketelvaart — upper reach",
-      "waterbody": "Ketelvaart",
+      "oah_code": "G18",
+      "name": "Gent2 (G2)",
+      "waterbody": "Leie (Lys)",
       "city": "Ghent",
       "country": "Belgium",
-      "location_id": "ghent",
-      "lat": 51.05849,
-      "lng": 3.7361,
+      "location_id": "gh",
+      "lat": 51.05458,
+      "lng": 3.68126,
+      "altitude_m": 20.12,
       "cadence_days": 14,
-      "simulated_coordinates": true
+      "ecology_latest": {
+        "date": "2023-07-28T00:00:00Z",
+        "macroinvertebratesQuality": "Bad",
+        "macroinvertebratesRichness": 11,
+        "nitrate": 1.468
+      },
+      "health_risk_latest": null
     },
     {
-      "oah_code": "GE-13",
-      "name": "Coupure — footbridge",
-      "waterbody": "Coupure",
-      "city": "Ghent",
-      "country": "Belgium",
-      "location_id": "ghent",
-      "lat": 51.037,
-      "lng": 3.70336,
-      "cadence_days": 14,
-      "simulated_coordinates": true
-    },
-    {
-      "oah_code": "GE-14",
-      "name": "Muinkschelde — confluence",
-      "waterbody": "Muinkschelde",
-      "city": "Ghent",
-      "country": "Belgium",
-      "location_id": "ghent",
-      "lat": 51.07969,
-      "lng": 3.70959,
-      "cadence_days": 14,
-      "simulated_coordinates": true
-    },
-    {
-      "oah_code": "GE-15",
-      "name": "De Reep — city reach",
-      "waterbody": "De Reep",
-      "city": "Ghent",
-      "country": "Belgium",
-      "location_id": "ghent",
-      "lat": 51.03589,
-      "lng": 3.75405,
-      "cadence_days": 14,
-      "simulated_coordinates": true
-    },
-    {
-      "oah_code": "GE-16",
-      "name": "Moervaart — outfall",
-      "waterbody": "Moervaart",
-      "city": "Ghent",
-      "country": "Belgium",
-      "location_id": "ghent",
-      "lat": 51.05327,
-      "lng": 3.70629,
-      "cadence_days": 14,
-      "simulated_coordinates": true
-    },
-    {
-      "oah_code": "GE-17",
-      "name": "Leie — park reach",
-      "waterbody": "Leie",
-      "city": "Ghent",
-      "country": "Belgium",
-      "location_id": "ghent",
-      "lat": 51.065,
-      "lng": 3.73003,
-      "cadence_days": 14,
-      "simulated_coordinates": true
-    },
-    {
-      "oah_code": "GE-18",
-      "name": "Schelde — weir",
-      "waterbody": "Schelde",
-      "city": "Ghent",
-      "country": "Belgium",
-      "location_id": "ghent",
-      "lat": 51.03432,
-      "lng": 3.71855,
-      "cadence_days": 14,
-      "simulated_coordinates": true
-    },
-    {
-      "oah_code": "GE-19",
-      "name": "Lieve — old-town reach",
-      "waterbody": "Lieve",
-      "city": "Ghent",
-      "country": "Belgium",
-      "location_id": "ghent",
-      "lat": 51.07273,
-      "lng": 3.69173,
-      "cadence_days": 14,
-      "simulated_coordinates": true
-    },
-    {
-      "oah_code": "GE-20",
-      "name": "Ketelvaart — mouth",
-      "waterbody": "Ketelvaart",
-      "city": "Ghent",
-      "country": "Belgium",
-      "location_id": "ghent",
-      "lat": 51.05282,
-      "lng": 3.76215,
-      "cadence_days": 14,
-      "simulated_coordinates": true
-    },
-    {
-      "oah_code": "GE-21",
-      "name": "Coupure — headwater",
-      "waterbody": "Coupure",
-      "city": "Ghent",
-      "country": "Belgium",
-      "location_id": "ghent",
-      "lat": 51.04917,
-      "lng": 3.7088,
-      "cadence_days": 14,
-      "simulated_coordinates": true
-    },
-    {
-      "oah_code": "OS-01",
-      "name": "Akerselva — headwater",
+      "oah_code": "O17",
+      "name": "Alna – Bryn stasjon",
       "waterbody": "Akerselva",
       "city": "Oslo",
       "country": "Norway",
-      "location_id": "oslo",
+      "location_id": "os",
+      "lat": 59.9078,
+      "lng": 10.8128,
+      "altitude_m": null,
+      "cadence_days": 14,
+      "ecology_latest": {
+        "date": "2024-05-01T00:00:00Z",
+        "macroinvertebratesQuality": "Bad",
+        "macroinvertebratesRichness": 1
+      },
+      "health_risk_latest": {
+        "date": "2023-09-06T00:00:00",
+        "pathogen": 0.3364,
+        "fecal": 0.4261,
+        "arg": 0.497,
+        "score": 0.4198
+      }
+    },
+    {
+      "oah_code": "G1",
+      "name": "Oosterzele1 (O1)",
+      "waterbody": "Leie (Lys)",
+      "city": "Ghent",
+      "country": "Belgium",
+      "location_id": "gh",
+      "lat": 50.94744,
+      "lng": 3.8168,
+      "altitude_m": 54.86,
+      "cadence_days": 14,
+      "ecology_latest": {
+        "date": "2023-07-27T00:00:00Z",
+        "macroinvertebratesQuality": "Bad",
+        "macroinvertebratesRichness": 1,
+        "nitrate": 0.003
+      },
+      "health_risk_latest": null
+    },
+    {
+      "oah_code": "G4",
+      "name": "Zottegem3 (Zo3)",
+      "waterbody": "Leie (Lys)",
+      "city": "Ghent",
+      "country": "Belgium",
+      "location_id": "gh",
+      "lat": 50.87507,
+      "lng": 3.80222,
+      "altitude_m": 39.01,
+      "cadence_days": 14,
+      "ecology_latest": {
+        "date": "2023-07-26T00:00:00Z",
+        "macroinvertebratesQuality": "Poor",
+        "macroinvertebratesRichness": 16,
+        "diatomsQuality": "Moderate",
+        "diatomsRichness": 35,
+        "nitrate": 1.9786
+      },
+      "health_risk_latest": {
+        "date": "2023-05-24T00:00:00",
+        "pathogen": 0.0503,
+        "fecal": 0.1824,
+        "arg": 0.4763,
+        "score": 0.2363
+      }
+    },
+    {
+      "oah_code": "G21",
+      "name": "Zottegem4 (Zo4)",
+      "waterbody": "Leie (Lys)",
+      "city": "Ghent",
+      "country": "Belgium",
+      "location_id": "gh",
+      "lat": 50.89162,
+      "lng": 3.81558,
+      "altitude_m": 48.46,
+      "cadence_days": 14,
+      "ecology_latest": {
+        "date": "2023-07-26T00:00:00Z",
+        "macroinvertebratesQuality": "Poor",
+        "macroinvertebratesRichness": 17,
+        "nitrate": 0.1273
+      },
+      "health_risk_latest": {
+        "date": "2023-05-24T00:00:00",
+        "pathogen": 0.0499,
+        "fecal": 0.3255,
+        "arg": 0.4933,
+        "score": 0.2896
+      }
+    },
+    {
+      "oah_code": "G5",
+      "name": "Zwalm1 (Zw1)",
+      "waterbody": "Leie (Lys)",
+      "city": "Ghent",
+      "country": "Belgium",
+      "location_id": "gh",
+      "lat": 50.87539,
+      "lng": 3.74917,
+      "altitude_m": 20.12,
+      "cadence_days": 14,
+      "ecology_latest": {
+        "date": "2023-07-26T00:00:00Z",
+        "macroinvertebratesQuality": "Poor",
+        "macroinvertebratesRichness": 16,
+        "diatomsQuality": "Poor",
+        "diatomsRichness": 57,
+        "nitrate": 1.0575
+      },
+      "health_risk_latest": {
+        "date": "2023-05-24T00:00:00",
+        "pathogen": 0.0496,
+        "fecal": 0.3549,
+        "arg": 0.313,
+        "score": 0.2392
+      }
+    },
+    {
+      "oah_code": "T2",
+      "name": "Ruisseau de Bonneval aval",
+      "waterbody": "Garonne",
+      "city": "Toulouse",
+      "country": "France",
+      "location_id": "to",
+      "lat": 43.53219,
+      "lng": 1.46332,
+      "altitude_m": 178.0,
+      "cadence_days": 14,
+      "ecology_latest": {
+        "date": "2024-07-01T00:00:00Z",
+        "diatomsQuality": "Good",
+        "diatomsRichness": 30,
+        "nitrate": 1.6862,
+        "macroinvertebratesQuality": "Moderate",
+        "macroinvertebratesRichness": 19
+      },
+      "health_risk_latest": {
+        "date": "2023-05-05T00:00:00",
+        "pathogen": 0.0997,
+        "fecal": 0.126,
+        "arg": 0.414,
+        "score": 0.2132
+      }
+    },
+    {
+      "oah_code": "G19",
+      "name": "Gent3 (G3)",
+      "waterbody": "Leie (Lys)",
+      "city": "Ghent",
+      "country": "Belgium",
+      "location_id": "gh",
+      "lat": 51.02843,
+      "lng": 3.786,
+      "altitude_m": 3.05,
+      "cadence_days": 14,
+      "ecology_latest": {
+        "date": "2023-07-28T00:00:00Z",
+        "macroinvertebratesQuality": "Bad",
+        "macroinvertebratesRichness": 5,
+        "diatomsQuality": "Poor",
+        "diatomsRichness": 31,
+        "nitrate": 0.2092
+      },
+      "health_risk_latest": null
+    },
+    {
+      "oah_code": "G20",
+      "name": "Gent4 (G4)",
+      "waterbody": "Leie (Lys)",
+      "city": "Ghent",
+      "country": "Belgium",
+      "location_id": "gh",
+      "lat": 51.0939,
+      "lng": 3.71687,
+      "altitude_m": 2.74,
+      "cadence_days": 14,
+      "ecology_latest": {
+        "date": "2023-07-28T00:00:00Z",
+        "macroinvertebratesQuality": "Bad",
+        "macroinvertebratesRichness": 4,
+        "diatomsQuality": "Poor",
+        "diatomsRichness": 19,
+        "nitrate": 0.0347
+      },
+      "health_risk_latest": null
+    },
+    {
+      "oah_code": "G3",
+      "name": "Zottegem2 (Zo2)",
+      "waterbody": "Leie (Lys)",
+      "city": "Ghent",
+      "country": "Belgium",
+      "location_id": "gh",
+      "lat": 50.87604,
+      "lng": 3.75174,
+      "altitude_m": 51.21,
+      "cadence_days": 14,
+      "ecology_latest": {
+        "date": "2023-07-26T00:00:00Z",
+        "macroinvertebratesQuality": "Bad",
+        "macroinvertebratesRichness": 10,
+        "diatomsQuality": "Poor",
+        "diatomsRichness": 38,
+        "nitrate": 3.1259
+      },
+      "health_risk_latest": {
+        "date": "2023-05-24T00:00:00",
+        "pathogen": 0.1004,
+        "fecal": 0.3096,
+        "arg": 0.1812,
+        "score": 0.1971
+      }
+    },
+    {
+      "oah_code": "T5",
+      "name": "Marcaissonne aval",
+      "waterbody": "Garonne",
+      "city": "Toulouse",
+      "country": "France",
+      "location_id": "to",
+      "lat": 43.5678,
+      "lng": 1.50937,
+      "altitude_m": 138.0,
+      "cadence_days": 14,
+      "ecology_latest": {
+        "date": "2024-09-23T00:00:00Z",
+        "diatomsQuality": "Bad",
+        "diatomsRichness": 21,
+        "nitrate": 8.0693,
+        "macroinvertebratesQuality": "Poor",
+        "macroinvertebratesRichness": 24
+      },
+      "health_risk_latest": {
+        "date": "2023-05-05T00:00:00",
+        "pathogen": 0.154,
+        "fecal": 0.8464,
+        "arg": 0.2778,
+        "score": 0.426
+      }
+    },
+    {
+      "oah_code": "T6",
+      "name": "Marcaissonne amont",
+      "waterbody": "Garonne",
+      "city": "Toulouse",
+      "country": "France",
+      "location_id": "to",
+      "lat": 43.56755,
+      "lng": 1.51974,
+      "altitude_m": 145.0,
+      "cadence_days": 14,
+      "ecology_latest": {
+        "date": "2024-06-10T00:00:00Z",
+        "diatomsQuality": "Poor",
+        "diatomsRichness": 32,
+        "nitrate": 8.1741,
+        "macroinvertebratesQuality": "Poor",
+        "macroinvertebratesRichness": 10
+      },
+      "health_risk_latest": {
+        "date": "2023-05-05T00:00:00",
+        "pathogen": 0.1502,
+        "fecal": 0.5056,
+        "arg": 0.4162,
+        "score": 0.3573
+      }
+    },
+    {
+      "oah_code": "T7",
+      "name": "Saune",
+      "waterbody": "Garonne",
+      "city": "Toulouse",
+      "country": "France",
+      "location_id": "to",
+      "lat": 43.57873,
+      "lng": 1.53609,
+      "altitude_m": 145.0,
+      "cadence_days": 14,
+      "ecology_latest": {
+        "date": "2024-07-01T00:00:00Z",
+        "nitrate": 4.6126,
+        "macroinvertebratesQuality": "Poor",
+        "macroinvertebratesRichness": 13
+      },
+      "health_risk_latest": {
+        "date": "2023-05-05T00:00:00",
+        "pathogen": 0.0758,
+        "fecal": 0.2074,
+        "arg": 0.2231,
+        "score": 0.1687
+      }
+    },
+    {
+      "oah_code": "T8",
+      "name": "Ruisseau du Grand Port de Mer",
+      "waterbody": "Garonne",
+      "city": "Toulouse",
+      "country": "France",
+      "location_id": "to",
+      "lat": 43.58553,
+      "lng": 1.52861,
+      "altitude_m": 157.0,
+      "cadence_days": 14,
+      "ecology_latest": {
+        "date": "2024-07-01T00:00:00Z",
+        "diatomsQuality": "Good",
+        "diatomsRichness": 21,
+        "nitrate": 1.6138,
+        "macroinvertebratesQuality": "Moderate",
+        "macroinvertebratesRichness": 20
+      },
+      "health_risk_latest": {
+        "date": "2023-05-05T00:00:00",
+        "pathogen": 0.025,
+        "fecal": 0.1995,
+        "arg": 0.2415,
+        "score": 0.1554
+      }
+    },
+    {
+      "oah_code": "T9",
+      "name": "Ruisseau du Roussimort amont",
+      "waterbody": "Garonne",
+      "city": "Toulouse",
+      "country": "France",
+      "location_id": "to",
+      "lat": 43.52152,
+      "lng": 1.34273,
+      "altitude_m": 165.0,
+      "cadence_days": 14,
+      "ecology_latest": {
+        "date": "2024-07-01T00:00:00Z",
+        "diatomsQuality": "Moderate",
+        "diatomsRichness": 41,
+        "nitrate": 3.2026,
+        "macroinvertebratesQuality": "Moderate",
+        "macroinvertebratesRichness": 15
+      },
+      "health_risk_latest": {
+        "date": "2023-05-06T00:00:00",
+        "pathogen": 0.025,
+        "fecal": 0.1039,
+        "arg": 0.2561,
+        "score": 0.1283
+      }
+    },
+    {
+      "oah_code": "T15",
+      "name": "Fossé Mère (ou Ruisseau Le Négogousses)",
+      "waterbody": "Garonne",
+      "city": "Toulouse",
+      "country": "France",
+      "location_id": "to",
+      "lat": 43.5713,
+      "lng": 1.38535,
+      "altitude_m": 157.0,
+      "cadence_days": 14,
+      "ecology_latest": null,
+      "health_risk_latest": null
+    },
+    {
+      "oah_code": "G7",
+      "name": "Zwalm3 (Zw3)",
+      "waterbody": "Leie (Lys)",
+      "city": "Ghent",
+      "country": "Belgium",
+      "location_id": "gh",
+      "lat": 50.86216,
+      "lng": 3.76577,
+      "altitude_m": 23.77,
+      "cadence_days": 14,
+      "ecology_latest": {
+        "date": "2023-07-26T00:00:00Z",
+        "macroinvertebratesQuality": "Poor",
+        "macroinvertebratesRichness": 15,
+        "diatomsQuality": "Moderate",
+        "diatomsRichness": 45,
+        "nitrate": 1.6175
+      },
+      "health_risk_latest": {
+        "date": "2023-05-24T00:00:00",
+        "pathogen": 0.0746,
+        "fecal": 0.2452,
+        "arg": 0.261,
+        "score": 0.1936
+      }
+    },
+    {
+      "oah_code": "O1",
+      "name": "Gaustadbekken-Skådalen",
+      "waterbody": "Akerselva",
+      "city": "Oslo",
+      "country": "Norway",
+      "location_id": "os",
+      "lat": 59.9561,
+      "lng": 10.7153,
+      "altitude_m": null,
+      "cadence_days": 14,
+      "ecology_latest": {
+        "date": "2024-05-29T00:00:00Z",
+        "nitrate": 0.831,
+        "diatomsQuality": "High",
+        "diatomsRichness": 19,
+        "macroinvertebratesQuality": "Good",
+        "macroinvertebratesRichness": 28
+      },
+      "health_risk_latest": {
+        "date": "2023-09-06T00:00:00",
+        "pathogen": 0.0993,
+        "fecal": 0.2919,
+        "arg": 0.3826,
+        "score": 0.2579
+      }
+    },
+    {
+      "oah_code": "O2",
+      "name": "Hoffsbekken",
+      "waterbody": "Akerselva",
+      "city": "Oslo",
+      "country": "Norway",
+      "location_id": "os",
+      "lat": 59.9514,
+      "lng": 10.6806,
+      "altitude_m": null,
+      "cadence_days": 14,
+      "ecology_latest": {
+        "date": "2024-05-31T00:00:00Z",
+        "nitrate": 0.47,
+        "diatomsQuality": "High",
+        "diatomsRichness": 19,
+        "macroinvertebratesQuality": "Moderate",
+        "macroinvertebratesRichness": 24
+      },
+      "health_risk_latest": {
+        "date": "2023-09-06T00:00:00",
+        "pathogen": 0.0495,
+        "fecal": 0.2932,
+        "arg": 0.3814,
+        "score": 0.2414
+      }
+    },
+    {
+      "oah_code": "O3",
+      "name": "Gaustadbekken-Slemdalsveien/RH",
+      "waterbody": "Akerselva",
+      "city": "Oslo",
+      "country": "Norway",
+      "location_id": "os",
+      "lat": 59.9475,
+      "lng": 10.7111,
+      "altitude_m": null,
+      "cadence_days": 14,
+      "ecology_latest": {
+        "date": "2024-05-29T00:00:00Z",
+        "nitrate": 1.204,
+        "diatomsQuality": "High",
+        "diatomsRichness": 10,
+        "macroinvertebratesQuality": "Bad",
+        "macroinvertebratesRichness": 8
+      },
+      "health_risk_latest": {
+        "date": "2023-09-06T00:00:00",
+        "pathogen": 0.1248,
+        "fecal": 0.3136,
+        "arg": 0.3035,
+        "score": 0.2473
+      }
+    },
+    {
+      "oah_code": "O5",
+      "name": "Hoffselva - Møllhausen",
+      "waterbody": "Akerselva",
+      "city": "Oslo",
+      "country": "Norway",
+      "location_id": "os",
+      "lat": 59.9308,
+      "lng": 10.6769,
+      "altitude_m": null,
+      "cadence_days": 14,
+      "ecology_latest": {
+        "date": "2024-05-30T00:00:00Z",
+        "nitrate": 0.86,
+        "diatomsQuality": "Good",
+        "diatomsRichness": 27,
+        "macroinvertebratesQuality": "Moderate",
+        "macroinvertebratesRichness": 26
+      },
+      "health_risk_latest": {
+        "date": "2023-09-06T00:00:00",
+        "pathogen": 0.0248,
+        "fecal": 0.385,
+        "arg": 0.2865,
+        "score": 0.2321
+      }
+    },
+    {
+      "oah_code": "O4",
+      "name": "Makrellbekken - Dronningfossen",
+      "waterbody": "Akerselva",
+      "city": "Oslo",
+      "country": "Norway",
+      "location_id": "os",
+      "lat": 59.9308,
+      "lng": 10.6778,
+      "altitude_m": null,
+      "cadence_days": 14,
+      "ecology_latest": {
+        "date": "2024-05-30T00:00:00Z",
+        "nitrate": 0.467,
+        "diatomsQuality": "High",
+        "diatomsRichness": 29,
+        "macroinvertebratesQuality": "Moderate",
+        "macroinvertebratesRichness": 27
+      },
+      "health_risk_latest": {
+        "date": "2023-09-06T00:00:00",
+        "pathogen": 0.0248,
+        "fecal": 0.2344,
+        "arg": 0.5403,
+        "score": 0.2665
+      }
+    },
+    {
+      "oah_code": "O6",
+      "name": "Ljanselva- Skullerud -",
+      "waterbody": "Akerselva",
+      "city": "Oslo",
+      "country": "Norway",
+      "location_id": "os",
+      "lat": 59.8628,
+      "lng": 10.8458,
+      "altitude_m": null,
+      "cadence_days": 14,
+      "ecology_latest": {
+        "date": "2024-05-31T00:00:00Z",
+        "nitrate": 0.001,
+        "diatomsQuality": "High",
+        "diatomsRichness": 17,
+        "macroinvertebratesQuality": "Moderate",
+        "macroinvertebratesRichness": 22
+      },
+      "health_risk_latest": {
+        "date": "2023-09-06T00:00:00",
+        "pathogen": 0.0752,
+        "fecal": 0.1625,
+        "arg": 0.3025,
+        "score": 0.18
+      }
+    },
+    {
+      "oah_code": "O7",
+      "name": "Ljanselvas mljøpark",
+      "waterbody": "Akerselva",
+      "city": "Oslo",
+      "country": "Norway",
+      "location_id": "os",
+      "lat": 59.8511,
+      "lng": 10.8164,
+      "altitude_m": null,
+      "cadence_days": 14,
+      "ecology_latest": {
+        "date": "2024-05-31T00:00:00Z",
+        "nitrate": 1.365,
+        "diatomsQuality": "Good",
+        "diatomsRichness": 33,
+        "macroinvertebratesQuality": "Moderate",
+        "macroinvertebratesRichness": 15
+      },
+      "health_risk_latest": {
+        "date": "2023-09-06T00:00:00",
+        "pathogen": 0.0993,
+        "fecal": 0.2728,
+        "arg": 0.462,
+        "score": 0.278
+      }
+    },
+    {
+      "oah_code": "O8",
+      "name": "Ljanselva – Nedre Ljan Nordstrand",
+      "waterbody": "Akerselva",
+      "city": "Oslo",
+      "country": "Norway",
+      "location_id": "os",
+      "lat": 59.8433,
+      "lng": 10.7847,
+      "altitude_m": null,
+      "cadence_days": 14,
+      "ecology_latest": {
+        "date": "2024-05-31T00:00:00Z",
+        "nitrate": 1.781,
+        "diatomsQuality": "Good",
+        "diatomsRichness": 36,
+        "macroinvertebratesQuality": "Moderate",
+        "macroinvertebratesRichness": 24
+      },
+      "health_risk_latest": {
+        "date": "2023-09-06T00:00:00",
+        "pathogen": 0.149,
+        "fecal": 0.3018,
+        "arg": 0.4616,
+        "score": 0.3041
+      }
+    },
+    {
+      "oah_code": "O9",
+      "name": "Gaustadbekken -Forskningsparketn",
+      "waterbody": "Akerselva",
+      "city": "Oslo",
+      "country": "Norway",
+      "location_id": "os",
+      "lat": 59.9425,
+      "lng": 10.7181,
+      "altitude_m": null,
+      "cadence_days": 14,
+      "ecology_latest": {
+        "date": "2024-05-29T00:00:00Z",
+        "nitrate": 0.021,
+        "diatomsQuality": "Good",
+        "diatomsRichness": 13,
+        "macroinvertebratesQuality": "Poor",
+        "macroinvertebratesRichness": 16
+      },
+      "health_risk_latest": {
+        "date": "2023-09-06T00:00:00",
+        "pathogen": 0.0,
+        "fecal": 0.0,
+        "arg": 0.3972,
+        "score": 0.1324
+      }
+    },
+    {
+      "oah_code": "O10",
+      "name": "Frognerelva - VInderen",
+      "waterbody": "Akerselva",
+      "city": "Oslo",
+      "country": "Norway",
+      "location_id": "os",
+      "lat": 59.9414,
+      "lng": 10.7097,
+      "altitude_m": null,
+      "cadence_days": 14,
+      "ecology_latest": {
+        "date": "2024-05-29T00:00:00Z",
+        "nitrate": 1.726,
+        "diatomsQuality": "High",
+        "diatomsRichness": 21,
+        "macroinvertebratesQuality": "Moderate",
+        "macroinvertebratesRichness": 23
+      },
+      "health_risk_latest": {
+        "date": "2023-09-06T00:00:00",
+        "pathogen": 0.0249,
+        "fecal": 0.3387,
+        "arg": 0.2706,
+        "score": 0.2114
+      }
+    },
+    {
+      "oah_code": "O11",
+      "name": "Mærradalsbekken - Radiumhospital",
+      "waterbody": "Akerselva",
+      "city": "Oslo",
+      "country": "Norway",
+      "location_id": "os",
+      "lat": 59.9297,
+      "lng": 10.6594,
+      "altitude_m": null,
+      "cadence_days": 14,
+      "ecology_latest": {
+        "date": "2024-05-30T00:00:00Z",
+        "nitrate": 1.322,
+        "diatomsQuality": "Good",
+        "diatomsRichness": 25,
+        "macroinvertebratesQuality": "Moderate",
+        "macroinvertebratesRichness": 16
+      },
+      "health_risk_latest": {
+        "date": "2023-09-06T00:00:00",
+        "pathogen": 0.1734,
+        "fecal": 0.3317,
+        "arg": 0.6038,
+        "score": 0.3696
+      }
+    },
+    {
+      "oah_code": "O12",
+      "name": "Makrellbekken – ring3",
+      "waterbody": "Akerselva",
+      "city": "Oslo",
+      "country": "Norway",
+      "location_id": "os",
+      "lat": 59.9356,
+      "lng": 10.6736,
+      "altitude_m": null,
+      "cadence_days": 14,
+      "ecology_latest": {
+        "date": "2024-05-30T00:00:00Z",
+        "nitrate": 1.142,
+        "diatomsQuality": "Good",
+        "diatomsRichness": 24,
+        "macroinvertebratesQuality": "Poor",
+        "macroinvertebratesRichness": 15
+      },
+      "health_risk_latest": {
+        "date": "2023-09-06T00:00:00",
+        "pathogen": 0.0997,
+        "fecal": 0.3184,
+        "arg": 0.6845,
+        "score": 0.3675
+      }
+    },
+    {
+      "oah_code": "O13",
+      "name": "Mærradalsbekken – Huseby skole",
+      "waterbody": "Akerselva",
+      "city": "Oslo",
+      "country": "Norway",
+      "location_id": "os",
+      "lat": 59.945,
+      "lng": 10.6503,
+      "altitude_m": null,
+      "cadence_days": 14,
+      "ecology_latest": {
+        "date": "2024-05-30T00:00:00Z",
+        "nitrate": 1.617,
+        "diatomsQuality": "Good",
+        "diatomsRichness": 24,
+        "macroinvertebratesQuality": "Moderate",
+        "macroinvertebratesRichness": 19
+      },
+      "health_risk_latest": {
+        "date": "2023-09-06T00:00:00",
+        "pathogen": 0.1242,
+        "fecal": 0.295,
+        "arg": 0.5408,
+        "score": 0.32
+      }
+    },
+    {
+      "oah_code": "O14",
+      "name": "Hovinbekken - Krokliveien",
+      "waterbody": "Akerselva",
+      "city": "Oslo",
+      "country": "Norway",
+      "location_id": "os",
+      "lat": 59.9392,
+      "lng": 10.8214,
+      "altitude_m": null,
+      "cadence_days": 14,
+      "ecology_latest": {
+        "date": "2024-05-29T00:00:00Z",
+        "nitrate": 0.579,
+        "diatomsQuality": "High",
+        "diatomsRichness": 14,
+        "macroinvertebratesQuality": "Poor",
+        "macroinvertebratesRichness": 19
+      },
+      "health_risk_latest": {
+        "date": "2023-09-06T00:00:00",
+        "pathogen": 0.0249,
+        "fecal": 0.112,
+        "arg": 0.6038,
+        "score": 0.2469
+      }
+    },
+    {
+      "oah_code": "O15",
+      "name": "Hovinbekken - Hovin",
+      "waterbody": "Akerselva",
+      "city": "Oslo",
+      "country": "Norway",
+      "location_id": "os",
+      "lat": 59.9206,
+      "lng": 10.8006,
+      "altitude_m": null,
+      "cadence_days": 14,
+      "ecology_latest": {
+        "date": "2024-05-01T00:00:00Z",
+        "macroinvertebratesQuality": "Bad",
+        "macroinvertebratesRichness": 1
+      },
+      "health_risk_latest": {
+        "date": "2023-09-06T00:00:00",
+        "pathogen": 0.0495,
+        "fecal": 0.1143,
+        "arg": 0.4447,
+        "score": 0.2028
+      }
+    },
+    {
+      "oah_code": "O16",
+      "name": "Alna - Kværnerfossene",
+      "waterbody": "Akerselva",
+      "city": "Oslo",
+      "country": "Norway",
+      "location_id": "os",
+      "lat": 59.9044,
+      "lng": 10.7944,
+      "altitude_m": null,
+      "cadence_days": 14,
+      "ecology_latest": {
+        "date": "2024-05-31T00:00:00Z",
+        "nitrate": 1.813,
+        "diatomsQuality": "Good",
+        "diatomsRichness": 23,
+        "macroinvertebratesQuality": "Poor",
+        "macroinvertebratesRichness": 20
+      },
+      "health_risk_latest": {
+        "date": "2023-09-06T00:00:00",
+        "pathogen": 0.251,
+        "fecal": 0.4781,
+        "arg": 0.4964,
+        "score": 0.4085
+      }
+    },
+    {
+      "oah_code": "O18",
+      "name": "Alna – v Tveita / plantasjen-",
+      "waterbody": "Akerselva",
+      "city": "Oslo",
+      "country": "Norway",
+      "location_id": "os",
       "lat": 59.9219,
-      "lng": 10.7522,
+      "lng": 10.8369,
+      "altitude_m": null,
       "cadence_days": 14,
-      "simulated_coordinates": true
+      "ecology_latest": {
+        "date": "2024-05-29T00:00:00Z",
+        "nitrate": 8.681,
+        "diatomsQuality": "Moderate",
+        "diatomsRichness": 21,
+        "macroinvertebratesQuality": "Poor",
+        "macroinvertebratesRichness": 10
+      },
+      "health_risk_latest": {
+        "date": "2023-09-06T00:00:00",
+        "pathogen": 0.1488,
+        "fecal": 0.4071,
+        "arg": 0.4311,
+        "score": 0.329
+      }
     },
     {
-      "oah_code": "OS-02",
-      "name": "Hoffselven — upper reach",
-      "waterbody": "Hoffselven",
-      "city": "Oslo",
-      "country": "Norway",
-      "location_id": "oslo",
-      "lat": 59.90358,
-      "lng": 10.76544,
-      "cadence_days": 14,
-      "simulated_coordinates": true
-    },
-    {
-      "oah_code": "OS-03",
-      "name": "Sognsvannsbekken — footbridge",
-      "waterbody": "Sognsvannsbekken",
-      "city": "Oslo",
-      "country": "Norway",
-      "location_id": "oslo",
-      "lat": 59.91565,
-      "lng": 10.72431,
-      "cadence_days": 14,
-      "simulated_coordinates": true
-    },
-    {
-      "oah_code": "OS-04",
-      "name": "Gaustadbekken — confluence",
-      "waterbody": "Gaustadbekken",
-      "city": "Oslo",
-      "country": "Norway",
-      "location_id": "oslo",
-      "lat": 59.92972,
-      "lng": 10.78109,
-      "cadence_days": 14,
-      "simulated_coordinates": true
-    },
-    {
-      "oah_code": "OS-05",
-      "name": "Holmenbekken — city reach",
-      "waterbody": "Holmenbekken",
-      "city": "Oslo",
-      "country": "Norway",
-      "location_id": "oslo",
-      "lat": 59.88239,
-      "lng": 10.7444,
-      "cadence_days": 14,
-      "simulated_coordinates": true
-    },
-    {
-      "oah_code": "OS-06",
-      "name": "Lysakerelva — outfall",
-      "waterbody": "Lysakerelva",
-      "city": "Oslo",
-      "country": "Norway",
-      "location_id": "oslo",
-      "lat": 59.92065,
-      "lng": 10.74619,
-      "cadence_days": 14,
-      "simulated_coordinates": true
-    },
-    {
-      "oah_code": "OS-07",
-      "name": "Mærradalsbekken — park reach",
-      "waterbody": "Mærradalsbekken",
-      "city": "Oslo",
-      "country": "Norway",
-      "location_id": "oslo",
-      "lat": 59.91027,
-      "lng": 10.77113,
-      "cadence_days": 14,
-      "simulated_coordinates": true
-    },
-    {
-      "oah_code": "OS-08",
-      "name": "Hovinbekken — weir",
-      "waterbody": "Hovinbekken",
-      "city": "Oslo",
-      "country": "Norway",
-      "location_id": "oslo",
-      "lat": 59.90468,
-      "lng": 10.72735,
-      "cadence_days": 14,
-      "simulated_coordinates": true
-    },
-    {
-      "oah_code": "OS-09",
-      "name": "Akerselva — old-town reach",
+      "oah_code": "O19",
+      "name": "Alna - Grorud",
       "waterbody": "Akerselva",
       "city": "Oslo",
       "country": "Norway",
-      "location_id": "oslo",
-      "lat": 59.93832,
-      "lng": 10.76469,
+      "location_id": "os",
+      "lat": 59.9525,
+      "lng": 10.9017,
+      "altitude_m": null,
       "cadence_days": 14,
-      "simulated_coordinates": true
+      "ecology_latest": {
+        "date": "2024-05-30T00:00:00Z",
+        "nitrate": 1.664,
+        "diatomsQuality": "Good",
+        "diatomsRichness": 21,
+        "macroinvertebratesQuality": "Poor",
+        "macroinvertebratesRichness": 12
+      },
+      "health_risk_latest": {
+        "date": "2023-09-06T00:00:00",
+        "pathogen": 0.1739,
+        "fecal": 0.3078,
+        "arg": 0.289,
+        "score": 0.2569
+      }
     },
     {
-      "oah_code": "OS-10",
-      "name": "Hoffselven — mouth",
-      "waterbody": "Hoffselven",
-      "city": "Oslo",
-      "country": "Norway",
-      "location_id": "oslo",
-      "lat": 59.88432,
-      "lng": 10.76929,
-      "cadence_days": 14,
-      "simulated_coordinates": true
-    },
-    {
-      "oah_code": "OS-11",
-      "name": "Sognsvannsbekken — headwater",
-      "waterbody": "Sognsvannsbekken",
-      "city": "Oslo",
-      "country": "Norway",
-      "location_id": "oslo",
-      "lat": 59.91729,
-      "lng": 10.74206,
-      "cadence_days": 14,
-      "simulated_coordinates": true
-    },
-    {
-      "oah_code": "OS-12",
-      "name": "Gaustadbekken — upper reach",
-      "waterbody": "Gaustadbekken",
-      "city": "Oslo",
-      "country": "Norway",
-      "location_id": "oslo",
-      "lat": 59.91809,
-      "lng": 10.7709,
-      "cadence_days": 14,
-      "simulated_coordinates": true
-    },
-    {
-      "oah_code": "OS-13",
-      "name": "Holmenbekken — footbridge",
-      "waterbody": "Holmenbekken",
-      "city": "Oslo",
-      "country": "Norway",
-      "location_id": "oslo",
-      "lat": 59.8966,
-      "lng": 10.73816,
-      "cadence_days": 14,
-      "simulated_coordinates": true
-    },
-    {
-      "oah_code": "OS-14",
-      "name": "Lysakerelva — confluence",
-      "waterbody": "Lysakerelva",
-      "city": "Oslo",
-      "country": "Norway",
-      "location_id": "oslo",
-      "lat": 59.93929,
-      "lng": 10.74439,
-      "cadence_days": 14,
-      "simulated_coordinates": true
-    },
-    {
-      "oah_code": "OS-15",
-      "name": "Mærradalsbekken — city reach",
-      "waterbody": "Mærradalsbekken",
-      "city": "Oslo",
-      "country": "Norway",
-      "location_id": "oslo",
-      "lat": 59.89549,
-      "lng": 10.78885,
-      "cadence_days": 14,
-      "simulated_coordinates": true
-    },
-    {
-      "oah_code": "OS-16",
-      "name": "Hovinbekken — outfall",
-      "waterbody": "Hovinbekken",
-      "city": "Oslo",
-      "country": "Norway",
-      "location_id": "oslo",
-      "lat": 59.91287,
-      "lng": 10.74109,
-      "cadence_days": 14,
-      "simulated_coordinates": true
-    },
-    {
-      "oah_code": "OS-17",
-      "name": "Akerselva — park reach",
+      "oah_code": "O20",
+      "name": "Makrellbekken - Njård",
       "waterbody": "Akerselva",
       "city": "Oslo",
       "country": "Norway",
-      "location_id": "oslo",
-      "lat": 59.9246,
-      "lng": 10.76483,
+      "location_id": "os",
+      "lat": 59.9432,
+      "lng": 10.6736,
+      "altitude_m": null,
       "cadence_days": 14,
-      "simulated_coordinates": true
+      "ecology_latest": {
+        "date": "2024-05-30T00:00:00Z",
+        "nitrate": 1.288,
+        "diatomsQuality": "Good",
+        "diatomsRichness": 22,
+        "macroinvertebratesQuality": "Poor",
+        "macroinvertebratesRichness": 15
+      },
+      "health_risk_latest": {
+        "date": "2023-09-06T00:00:00",
+        "pathogen": 0.1253,
+        "fecal": 0.3354,
+        "arg": 0.4327,
+        "score": 0.2978
+      }
     },
     {
-      "oah_code": "OS-18",
-      "name": "Hoffselven — weir",
-      "waterbody": "Hoffselven",
-      "city": "Oslo",
-      "country": "Norway",
-      "location_id": "oslo",
-      "lat": 59.89392,
-      "lng": 10.75335,
+      "oah_code": "T10",
+      "name": "Canal de Saint Martory",
+      "waterbody": "Garonne",
+      "city": "Toulouse",
+      "country": "France",
+      "location_id": "to",
+      "lat": 43.5322,
+      "lng": 1.32265,
+      "altitude_m": 169.0,
       "cadence_days": 14,
-      "simulated_coordinates": true
+      "ecology_latest": {
+        "date": "2024-07-09T00:00:00Z",
+        "diatomsQuality": "High",
+        "diatomsRichness": 19,
+        "nitrate": 0.3423,
+        "macroinvertebratesQuality": "Bad",
+        "macroinvertebratesRichness": 4
+      },
+      "health_risk_latest": {
+        "date": "2023-05-06T00:00:00",
+        "pathogen": 0.0497,
+        "fecal": 0.0193,
+        "arg": 0.6355,
+        "score": 0.2348
+      }
     },
     {
-      "oah_code": "OS-19",
-      "name": "Sognsvannsbekken — old-town reach",
-      "waterbody": "Sognsvannsbekken",
-      "city": "Oslo",
-      "country": "Norway",
-      "location_id": "oslo",
-      "lat": 59.93233,
-      "lng": 10.72653,
+      "oah_code": "T12",
+      "name": "Fossé de Larramet médian",
+      "waterbody": "Garonne",
+      "city": "Toulouse",
+      "country": "France",
+      "location_id": "to",
+      "lat": 43.54003,
+      "lng": 1.34077,
+      "altitude_m": 164.0,
       "cadence_days": 14,
-      "simulated_coordinates": true
+      "ecology_latest": {
+        "date": "2023-05-06T00:00:00Z",
+        "diatomsQuality": "Bad",
+        "diatomsRichness": 38,
+        "nitrate": 0.4608
+      },
+      "health_risk_latest": {
+        "date": "2023-05-06T00:00:00",
+        "pathogen": 0.0495,
+        "fecal": 0.0918,
+        "arg": 0.6525,
+        "score": 0.2646
+      }
     },
     {
-      "oah_code": "OS-20",
-      "name": "Gaustadbekken — mouth",
-      "waterbody": "Gaustadbekken",
-      "city": "Oslo",
-      "country": "Norway",
-      "location_id": "oslo",
-      "lat": 59.91242,
-      "lng": 10.79695,
+      "oah_code": "T13",
+      "name": "Ruisseau du Roussimort aval",
+      "waterbody": "Garonne",
+      "city": "Toulouse",
+      "country": "France",
+      "location_id": "to",
+      "lat": 43.5353,
+      "lng": 1.37785,
+      "altitude_m": 155.0,
       "cadence_days": 14,
-      "simulated_coordinates": true
+      "ecology_latest": {
+        "date": "2024-07-01T00:00:00Z",
+        "diatomsQuality": "Poor",
+        "diatomsRichness": 35,
+        "nitrate": 1.4931,
+        "macroinvertebratesQuality": "Moderate",
+        "macroinvertebratesRichness": 23
+      },
+      "health_risk_latest": {
+        "date": "2023-05-05T00:00:00",
+        "pathogen": 0.1243,
+        "fecal": 0.3044,
+        "arg": 0.6042,
+        "score": 0.3443
+      }
     },
     {
-      "oah_code": "OS-21",
-      "name": "Holmenbekken — headwater",
-      "waterbody": "Holmenbekken",
-      "city": "Oslo",
-      "country": "Norway",
-      "location_id": "oslo",
-      "lat": 59.90877,
-      "lng": 10.7436,
+      "oah_code": "T14",
+      "name": "Canal agricole (depuis la Saudrune)",
+      "waterbody": "Garonne",
+      "city": "Toulouse",
+      "country": "France",
+      "location_id": "to",
+      "lat": 43.53855,
+      "lng": 1.42074,
+      "altitude_m": 145.0,
       "cadence_days": 14,
-      "simulated_coordinates": true
+      "ecology_latest": {
+        "date": "2024-07-01T00:00:00Z",
+        "diatomsQuality": "Moderate",
+        "diatomsRichness": 44,
+        "nitrate": 1.1477,
+        "macroinvertebratesQuality": "Moderate",
+        "macroinvertebratesRichness": 20
+      },
+      "health_risk_latest": {
+        "date": "2023-05-05T00:00:00",
+        "pathogen": 0.2763,
+        "fecal": 0.5787,
+        "arg": 0.525,
+        "score": 0.46
+      }
+    },
+    {
+      "oah_code": "T17",
+      "name": "Fossé de pluvial avant rejet dans fossé de Larramet",
+      "waterbody": "Garonne",
+      "city": "Toulouse",
+      "country": "France",
+      "location_id": "to",
+      "lat": 43.5786,
+      "lng": 1.35861,
+      "altitude_m": 159.0,
+      "cadence_days": 14,
+      "ecology_latest": {
+        "date": "2024-07-01T00:00:00Z",
+        "diatomsQuality": "Good",
+        "diatomsRichness": 33,
+        "nitrate": 0.001,
+        "macroinvertebratesQuality": "Moderate",
+        "macroinvertebratesRichness": 14
+      },
+      "health_risk_latest": {
+        "date": "2023-05-05T00:00:00",
+        "pathogen": 0.2525,
+        "fecal": 0.9979,
+        "arg": 0.3341,
+        "score": 0.5282
+      }
+    },
+    {
+      "oah_code": "T18",
+      "name": "Ousseau",
+      "waterbody": "Garonne",
+      "city": "Toulouse",
+      "country": "France",
+      "location_id": "to",
+      "lat": 43.57882,
+      "lng": 1.35262,
+      "altitude_m": 153.0,
+      "cadence_days": 14,
+      "ecology_latest": {
+        "date": "2024-07-11T00:00:00Z",
+        "diatomsQuality": "Good",
+        "diatomsRichness": 36,
+        "nitrate": 0.7195,
+        "macroinvertebratesQuality": "Good",
+        "macroinvertebratesRichness": 27
+      },
+      "health_risk_latest": {
+        "date": "2023-05-05T00:00:00",
+        "pathogen": 0.2995,
+        "fecal": 0.3628,
+        "arg": 0.3494,
+        "score": 0.3372
+      }
+    },
+    {
+      "oah_code": "T19",
+      "name": "Touch",
+      "waterbody": "Garonne",
+      "city": "Toulouse",
+      "country": "France",
+      "location_id": "to",
+      "lat": 43.58253,
+      "lng": 1.35047,
+      "altitude_m": 140.0,
+      "cadence_days": 14,
+      "ecology_latest": {
+        "date": "2024-07-11T00:00:00Z",
+        "diatomsQuality": "Good",
+        "diatomsRichness": 39,
+        "nitrate": 3.8439,
+        "macroinvertebratesQuality": "Good",
+        "macroinvertebratesRichness": 40
+      },
+      "health_risk_latest": {
+        "date": "2023-05-05T00:00:00",
+        "pathogen": 0.0248,
+        "fecal": 0.1091,
+        "arg": 0.3021,
+        "score": 0.1453
+      }
+    },
+    {
+      "oah_code": "T20",
+      "name": "Canal de Moulin",
+      "waterbody": "Garonne",
+      "city": "Toulouse",
+      "country": "France",
+      "location_id": "to",
+      "lat": 43.5828,
+      "lng": 1.3493,
+      "altitude_m": 150.0,
+      "cadence_days": 14,
+      "ecology_latest": {
+        "date": "2024-07-01T00:00:00Z",
+        "diatomsQuality": "Moderate",
+        "diatomsRichness": 36,
+        "nitrate": 0.7779,
+        "macroinvertebratesQuality": "Bad",
+        "macroinvertebratesRichness": 7
+      },
+      "health_risk_latest": {
+        "date": "2023-05-05T00:00:00",
+        "pathogen": 0.3798,
+        "fecal": 0.431,
+        "arg": 0.5091,
+        "score": 0.44
+      }
+    },
+    {
+      "oah_code": "T4",
+      "name": "Hers",
+      "waterbody": "Garonne",
+      "city": "Toulouse",
+      "country": "France",
+      "location_id": "to",
+      "lat": 43.56499,
+      "lng": 1.49464,
+      "altitude_m": 140.0,
+      "cadence_days": 14,
+      "ecology_latest": {
+        "date": "2024-07-10T00:00:00Z",
+        "diatomsQuality": "Good",
+        "diatomsRichness": 29,
+        "nitrate": 6.6093,
+        "macroinvertebratesQuality": "Moderate",
+        "macroinvertebratesRichness": 27
+      },
+      "health_risk_latest": {
+        "date": "2023-05-05T00:00:00",
+        "pathogen": 0.1242,
+        "fecal": 0.5135,
+        "arg": 0.1303,
+        "score": 0.256
+      }
+    },
+    {
+      "oah_code": "T11",
+      "name": "Fossé de Larramet amont",
+      "waterbody": "Garonne",
+      "city": "Toulouse",
+      "country": "France",
+      "location_id": "to",
+      "lat": 43.52992,
+      "lng": 1.32597,
+      "altitude_m": 172.0,
+      "cadence_days": 14,
+      "ecology_latest": {
+        "date": "2024-07-01T00:00:00Z",
+        "diatomsQuality": "Poor",
+        "diatomsRichness": 20,
+        "nitrate": 0.4103,
+        "macroinvertebratesQuality": "Bad",
+        "macroinvertebratesRichness": 9
+      },
+      "health_risk_latest": {
+        "date": "2023-05-06T00:00:00",
+        "pathogen": 0.4285,
+        "fecal": 0.5475,
+        "arg": 0.334,
+        "score": 0.4367
+      }
+    },
+    {
+      "oah_code": "T25",
+      "name": "Ruisseau de l’Armurié",
+      "waterbody": "Garonne",
+      "city": "Toulouse",
+      "country": "France",
+      "location_id": "to",
+      "lat": 43.64862,
+      "lng": 1.51501,
+      "altitude_m": 137.0,
+      "cadence_days": 14,
+      "ecology_latest": {
+        "date": "2024-07-11T00:00:00Z",
+        "diatomsQuality": "Moderate",
+        "diatomsRichness": 43,
+        "nitrate": 7.4776,
+        "macroinvertebratesQuality": "Poor",
+        "macroinvertebratesRichness": 15
+      },
+      "health_risk_latest": {
+        "date": "2023-05-05T00:00:00",
+        "pathogen": 0.1266,
+        "fecal": 0.4027,
+        "arg": 0.5096,
+        "score": 0.3463
+      }
+    },
+    {
+      "oah_code": "T16",
+      "name": "Fossé de Larramet aval",
+      "waterbody": "Garonne",
+      "city": "Toulouse",
+      "country": "France",
+      "location_id": "to",
+      "lat": 43.57895,
+      "lng": 1.35929,
+      "altitude_m": 159.0,
+      "cadence_days": 14,
+      "ecology_latest": {
+        "date": "2023-05-05T00:00:00Z",
+        "diatomsQuality": "Moderate",
+        "diatomsRichness": 37,
+        "nitrate": 0.3069
+      },
+      "health_risk_latest": {
+        "date": "2023-05-05T00:00:00",
+        "pathogen": 0.0248,
+        "fecal": 0.3325,
+        "arg": 0.2866,
+        "score": 0.2146
+      }
+    },
+    {
+      "oah_code": "T22",
+      "name": "Ruisseau de l’Armurié",
+      "waterbody": "Garonne",
+      "city": "Toulouse",
+      "country": "France",
+      "location_id": "to",
+      "lat": 43.59608,
+      "lng": 1.36657,
+      "altitude_m": 150.0,
+      "cadence_days": 14,
+      "ecology_latest": {
+        "date": "2024-07-11T00:00:00Z",
+        "diatomsQuality": "Moderate",
+        "diatomsRichness": 40,
+        "nitrate": 1.0744,
+        "macroinvertebratesQuality": "Moderate",
+        "macroinvertebratesRichness": 22
+      },
+      "health_risk_latest": {
+        "date": "2023-05-05T00:00:00",
+        "pathogen": 0.1988,
+        "fecal": 0.3252,
+        "arg": 0.5428,
+        "score": 0.3556
+      }
     }
   ]
 }

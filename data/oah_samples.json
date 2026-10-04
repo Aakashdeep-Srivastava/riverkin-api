@@ -1,0 +1,3208 @@
+{
+  "schema": "riverkin.oah_samples.v1",
+  "source": "OneAquaHealth API /api/dashboards/city + /api/resilience-map/health-risks, retrieved 2026-10-04",
+  "attribution": "Data: OneAquaHealth project (HORIZON, oneaquahealth.eu)",
+  "ecology": [
+    {
+      "site_code": "T5",
+      "date": "2024-09-23T00:00:00Z",
+      "macro_quality": "Poor",
+      "macro_richness": 24,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "C16",
+      "date": "2024-07-18T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": "Bad",
+      "fish_richness": 0,
+      "nitrate": null
+    },
+    {
+      "site_code": "C17",
+      "date": "2024-07-18T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": "Poor",
+      "fish_richness": 4,
+      "nitrate": null
+    },
+    {
+      "site_code": "T18",
+      "date": "2024-07-11T00:00:00Z",
+      "macro_quality": "Good",
+      "macro_richness": 27,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "T19",
+      "date": "2024-07-11T00:00:00Z",
+      "macro_quality": "Good",
+      "macro_richness": 40,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "T22",
+      "date": "2024-07-11T00:00:00Z",
+      "macro_quality": "Moderate",
+      "macro_richness": 22,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "T25",
+      "date": "2024-07-11T00:00:00Z",
+      "macro_quality": "Poor",
+      "macro_richness": 15,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "T4",
+      "date": "2024-07-10T00:00:00Z",
+      "macro_quality": "Moderate",
+      "macro_richness": 27,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "T10",
+      "date": "2024-07-09T00:00:00Z",
+      "macro_quality": "Bad",
+      "macro_richness": 4,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "T11",
+      "date": "2024-07-01T00:00:00Z",
+      "macro_quality": "Bad",
+      "macro_richness": 9,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "T13",
+      "date": "2024-07-01T00:00:00Z",
+      "macro_quality": "Moderate",
+      "macro_richness": 23,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "T14",
+      "date": "2024-07-01T00:00:00Z",
+      "macro_quality": "Moderate",
+      "macro_richness": 20,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "T17",
+      "date": "2024-07-01T00:00:00Z",
+      "macro_quality": "Moderate",
+      "macro_richness": 14,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "T2",
+      "date": "2024-07-01T00:00:00Z",
+      "macro_quality": "Moderate",
+      "macro_richness": 19,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "T20",
+      "date": "2024-07-01T00:00:00Z",
+      "macro_quality": "Bad",
+      "macro_richness": 7,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "T3",
+      "date": "2024-07-01T00:00:00Z",
+      "macro_quality": "Poor",
+      "macro_richness": 19,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "T7",
+      "date": "2024-07-01T00:00:00Z",
+      "macro_quality": "Poor",
+      "macro_richness": 13,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "T8",
+      "date": "2024-07-01T00:00:00Z",
+      "macro_quality": "Moderate",
+      "macro_richness": 20,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "T9",
+      "date": "2024-07-01T00:00:00Z",
+      "macro_quality": "Moderate",
+      "macro_richness": 15,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "T6",
+      "date": "2024-06-10T00:00:00Z",
+      "macro_quality": "Poor",
+      "macro_richness": 10,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "O2",
+      "date": "2024-05-31T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "High",
+      "diatom_richness": 19,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "O6",
+      "date": "2024-05-31T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "High",
+      "diatom_richness": 17,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "O7",
+      "date": "2024-05-31T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Good",
+      "diatom_richness": 33,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "O8",
+      "date": "2024-05-31T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Good",
+      "diatom_richness": 36,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "O16",
+      "date": "2024-05-31T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Good",
+      "diatom_richness": 23,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "O16",
+      "date": "2024-05-31T00:00:00Z",
+      "macro_quality": "Poor",
+      "macro_richness": 20,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "O2",
+      "date": "2024-05-31T00:00:00Z",
+      "macro_quality": "Moderate",
+      "macro_richness": 24,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "O6",
+      "date": "2024-05-31T00:00:00Z",
+      "macro_quality": "Moderate",
+      "macro_richness": 22,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "O7",
+      "date": "2024-05-31T00:00:00Z",
+      "macro_quality": "Moderate",
+      "macro_richness": 15,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "O8",
+      "date": "2024-05-31T00:00:00Z",
+      "macro_quality": "Moderate",
+      "macro_richness": 24,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "O4",
+      "date": "2024-05-30T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "High",
+      "diatom_richness": 29,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "O5",
+      "date": "2024-05-30T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Good",
+      "diatom_richness": 27,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "O11",
+      "date": "2024-05-30T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Good",
+      "diatom_richness": 25,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "O12",
+      "date": "2024-05-30T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Good",
+      "diatom_richness": 24,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "O13",
+      "date": "2024-05-30T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Good",
+      "diatom_richness": 24,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "O19",
+      "date": "2024-05-30T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Good",
+      "diatom_richness": 21,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "O20",
+      "date": "2024-05-30T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Good",
+      "diatom_richness": 22,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "O11",
+      "date": "2024-05-30T00:00:00Z",
+      "macro_quality": "Moderate",
+      "macro_richness": 16,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "O12",
+      "date": "2024-05-30T00:00:00Z",
+      "macro_quality": "Poor",
+      "macro_richness": 15,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "O13",
+      "date": "2024-05-30T00:00:00Z",
+      "macro_quality": "Moderate",
+      "macro_richness": 19,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "O19",
+      "date": "2024-05-30T00:00:00Z",
+      "macro_quality": "Poor",
+      "macro_richness": 12,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "O20",
+      "date": "2024-05-30T00:00:00Z",
+      "macro_quality": "Poor",
+      "macro_richness": 15,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "O4",
+      "date": "2024-05-30T00:00:00Z",
+      "macro_quality": "Moderate",
+      "macro_richness": 27,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "O5",
+      "date": "2024-05-30T00:00:00Z",
+      "macro_quality": "Moderate",
+      "macro_richness": 26,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "O1",
+      "date": "2024-05-29T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "High",
+      "diatom_richness": 19,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "O3",
+      "date": "2024-05-29T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "High",
+      "diatom_richness": 10,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "O9",
+      "date": "2024-05-29T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Good",
+      "diatom_richness": 13,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "O10",
+      "date": "2024-05-29T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "High",
+      "diatom_richness": 21,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "O14",
+      "date": "2024-05-29T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "High",
+      "diatom_richness": 14,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "O18",
+      "date": "2024-05-29T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Moderate",
+      "diatom_richness": 21,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "O1",
+      "date": "2024-05-29T00:00:00Z",
+      "macro_quality": "Good",
+      "macro_richness": 28,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "O10",
+      "date": "2024-05-29T00:00:00Z",
+      "macro_quality": "Moderate",
+      "macro_richness": 23,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "O14",
+      "date": "2024-05-29T00:00:00Z",
+      "macro_quality": "Poor",
+      "macro_richness": 19,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "O18",
+      "date": "2024-05-29T00:00:00Z",
+      "macro_quality": "Poor",
+      "macro_richness": 10,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "O3",
+      "date": "2024-05-29T00:00:00Z",
+      "macro_quality": "Bad",
+      "macro_richness": 8,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "O9",
+      "date": "2024-05-29T00:00:00Z",
+      "macro_quality": "Poor",
+      "macro_richness": 16,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "C18",
+      "date": "2024-05-21T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": "Poor",
+      "fish_richness": 3,
+      "nitrate": null
+    },
+    {
+      "site_code": "O15",
+      "date": "2024-05-01T00:00:00Z",
+      "macro_quality": "Bad",
+      "macro_richness": 1,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "O17",
+      "date": "2024-05-01T00:00:00Z",
+      "macro_quality": "Bad",
+      "macro_richness": 1,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "C20",
+      "date": "2024-04-18T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": "Bad",
+      "fish_richness": 3,
+      "nitrate": null
+    },
+    {
+      "site_code": "C1",
+      "date": "2024-04-05T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": "Bad",
+      "fish_richness": 2,
+      "nitrate": null
+    },
+    {
+      "site_code": "C19",
+      "date": "2024-04-04T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": "Bad",
+      "fish_richness": 3,
+      "nitrate": null
+    },
+    {
+      "site_code": "O1",
+      "date": "2023-09-06T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 0.831
+    },
+    {
+      "site_code": "O2",
+      "date": "2023-09-06T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 0.47
+    },
+    {
+      "site_code": "O3",
+      "date": "2023-09-06T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 1.204
+    },
+    {
+      "site_code": "O4",
+      "date": "2023-09-06T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 0.467
+    },
+    {
+      "site_code": "O5",
+      "date": "2023-09-06T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 0.86
+    },
+    {
+      "site_code": "O6",
+      "date": "2023-09-06T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 0.001
+    },
+    {
+      "site_code": "O7",
+      "date": "2023-09-06T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 1.365
+    },
+    {
+      "site_code": "O8",
+      "date": "2023-09-06T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 1.781
+    },
+    {
+      "site_code": "O9",
+      "date": "2023-09-06T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 0.021
+    },
+    {
+      "site_code": "O10",
+      "date": "2023-09-06T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 1.726
+    },
+    {
+      "site_code": "O11",
+      "date": "2023-09-06T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 1.322
+    },
+    {
+      "site_code": "O12",
+      "date": "2023-09-06T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 1.142
+    },
+    {
+      "site_code": "O13",
+      "date": "2023-09-06T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 1.617
+    },
+    {
+      "site_code": "O14",
+      "date": "2023-09-06T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 0.579
+    },
+    {
+      "site_code": "O16",
+      "date": "2023-09-06T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 1.813
+    },
+    {
+      "site_code": "O18",
+      "date": "2023-09-06T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 8.681
+    },
+    {
+      "site_code": "O19",
+      "date": "2023-09-06T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 1.664
+    },
+    {
+      "site_code": "O20",
+      "date": "2023-09-06T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 1.288
+    },
+    {
+      "site_code": "G15",
+      "date": "2023-07-28T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Moderate",
+      "diatom_richness": 20,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 1.895
+    },
+    {
+      "site_code": "G16",
+      "date": "2023-07-28T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Moderate",
+      "diatom_richness": 52,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 1.9288
+    },
+    {
+      "site_code": "G17",
+      "date": "2023-07-28T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 0.5342
+    },
+    {
+      "site_code": "G18",
+      "date": "2023-07-28T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 1.468
+    },
+    {
+      "site_code": "G19",
+      "date": "2023-07-28T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Poor",
+      "diatom_richness": 31,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 0.2092
+    },
+    {
+      "site_code": "G20",
+      "date": "2023-07-28T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Poor",
+      "diatom_richness": 19,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 0.0347
+    },
+    {
+      "site_code": "G1",
+      "date": "2023-07-27T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 0.003
+    },
+    {
+      "site_code": "G9",
+      "date": "2023-07-27T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Poor",
+      "diatom_richness": 46,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 3.7779
+    },
+    {
+      "site_code": "G10",
+      "date": "2023-07-27T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Good",
+      "diatom_richness": 31,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 1.2734
+    },
+    {
+      "site_code": "G22",
+      "date": "2023-07-27T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Moderate",
+      "diatom_richness": 64,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 1.1298
+    },
+    {
+      "site_code": "G11",
+      "date": "2023-07-27T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Good",
+      "diatom_richness": 15,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 1.6615
+    },
+    {
+      "site_code": "G12",
+      "date": "2023-07-27T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Good",
+      "diatom_richness": 40,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 1.2391
+    },
+    {
+      "site_code": "G13",
+      "date": "2023-07-27T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Poor",
+      "diatom_richness": 38,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 0.2285
+    },
+    {
+      "site_code": "G14",
+      "date": "2023-07-27T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Poor",
+      "diatom_richness": 42,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 0.101
+    },
+    {
+      "site_code": "G2",
+      "date": "2023-07-26T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Moderate",
+      "diatom_richness": 48,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 1.0371
+    },
+    {
+      "site_code": "G3",
+      "date": "2023-07-26T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Poor",
+      "diatom_richness": 38,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 3.1259
+    },
+    {
+      "site_code": "G4",
+      "date": "2023-07-26T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Moderate",
+      "diatom_richness": 35,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 1.9786
+    },
+    {
+      "site_code": "G21",
+      "date": "2023-07-26T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 0.1273
+    },
+    {
+      "site_code": "G5",
+      "date": "2023-07-26T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Poor",
+      "diatom_richness": 57,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 1.0575
+    },
+    {
+      "site_code": "G6",
+      "date": "2023-07-26T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 2.253
+    },
+    {
+      "site_code": "G7",
+      "date": "2023-07-26T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Moderate",
+      "diatom_richness": 45,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 1.6175
+    },
+    {
+      "site_code": "G8",
+      "date": "2023-07-26T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Good",
+      "diatom_richness": 42,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 1.7982
+    },
+    {
+      "site_code": "BN8",
+      "date": "2023-07-07T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Poor",
+      "diatom_richness": 19,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 0.1982
+    },
+    {
+      "site_code": "BN19",
+      "date": "2023-07-07T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Moderate",
+      "diatom_richness": 21,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 0.0098
+    },
+    {
+      "site_code": "BN20",
+      "date": "2023-07-07T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "High",
+      "diatom_richness": 13,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 0.831
+    },
+    {
+      "site_code": "BN4",
+      "date": "2023-07-03T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Good",
+      "diatom_richness": 26,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 1.0448
+    },
+    {
+      "site_code": "BN5",
+      "date": "2023-07-03T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Poor",
+      "diatom_richness": 26,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 0.7521
+    },
+    {
+      "site_code": "BN13",
+      "date": "2023-07-03T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Moderate",
+      "diatom_richness": 22,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 2.0138
+    },
+    {
+      "site_code": "BN17",
+      "date": "2023-07-03T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Good",
+      "diatom_richness": 26,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 0.6637
+    },
+    {
+      "site_code": "BN20",
+      "date": "2023-07-01T00:00:00Z",
+      "macro_quality": "",
+      "macro_richness": null,
+      "diatom_quality": "High",
+      "diatom_richness": 13,
+      "fish_quality": "",
+      "fish_richness": null,
+      "nitrate": 0.831
+    },
+    {
+      "site_code": "C5",
+      "date": "2023-06-29T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Good",
+      "diatom_richness": 21,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 0.6174
+    },
+    {
+      "site_code": "C6",
+      "date": "2023-06-29T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Good",
+      "diatom_richness": 38,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 2.1858
+    },
+    {
+      "site_code": "C7",
+      "date": "2023-06-29T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Moderate",
+      "diatom_richness": 25,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 2.6411
+    },
+    {
+      "site_code": "C8",
+      "date": "2023-06-28T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Good",
+      "diatom_richness": 24,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 0.238
+    },
+    {
+      "site_code": "C12",
+      "date": "2023-06-28T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Moderate",
+      "diatom_richness": 35,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 0.8291
+    },
+    {
+      "site_code": "C13",
+      "date": "2023-06-28T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Good",
+      "diatom_richness": 36,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 0.6732
+    },
+    {
+      "site_code": "C14",
+      "date": "2023-06-28T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Good",
+      "diatom_richness": 21,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 0.027
+    },
+    {
+      "site_code": "C15",
+      "date": "2023-06-28T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Good",
+      "diatom_richness": 26,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 0.0707
+    },
+    {
+      "site_code": "BN1",
+      "date": "2023-06-28T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Poor",
+      "diatom_richness": 17,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 3.5269
+    },
+    {
+      "site_code": "BN2",
+      "date": "2023-06-28T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 3.1349
+    },
+    {
+      "site_code": "BN6",
+      "date": "2023-06-28T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Poor",
+      "diatom_richness": 27,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 1.8508
+    },
+    {
+      "site_code": "BN7",
+      "date": "2023-06-28T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Poor",
+      "diatom_richness": 32,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 5.2367
+    },
+    {
+      "site_code": "C2",
+      "date": "2023-06-27T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Moderate",
+      "diatom_richness": 39,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 0.015
+    },
+    {
+      "site_code": "C3",
+      "date": "2023-06-27T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Poor",
+      "diatom_richness": 31,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 3.1792
+    },
+    {
+      "site_code": "C4",
+      "date": "2023-06-27T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Good",
+      "diatom_richness": 19,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 0.0016
+    },
+    {
+      "site_code": "C9",
+      "date": "2023-06-27T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Good",
+      "diatom_richness": 31,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 0.6389
+    },
+    {
+      "site_code": "C10",
+      "date": "2023-06-27T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Bad",
+      "diatom_richness": 19,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 6.0403
+    },
+    {
+      "site_code": "C11",
+      "date": "2023-06-27T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Bad",
+      "diatom_richness": 22,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 0.0226
+    },
+    {
+      "site_code": "C16",
+      "date": "2023-06-27T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 0.1302
+    },
+    {
+      "site_code": "BN10",
+      "date": "2023-06-07T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Good",
+      "diatom_richness": 21,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 4.1843
+    },
+    {
+      "site_code": "BN14",
+      "date": "2023-06-07T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 0.5109
+    },
+    {
+      "site_code": "BN15",
+      "date": "2023-06-07T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Moderate",
+      "diatom_richness": 24,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 0.0026
+    },
+    {
+      "site_code": "BN16",
+      "date": "2023-06-07T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Good",
+      "diatom_richness": 29,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 0.3136
+    },
+    {
+      "site_code": "C17",
+      "date": "2023-06-06T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Good",
+      "diatom_richness": 31,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 0.0596
+    },
+    {
+      "site_code": "C18",
+      "date": "2023-06-06T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Good",
+      "diatom_richness": 38,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 0.534
+    },
+    {
+      "site_code": "C19",
+      "date": "2023-06-06T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Good",
+      "diatom_richness": 35,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 1.5763
+    },
+    {
+      "site_code": "C20",
+      "date": "2023-06-06T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Moderate",
+      "diatom_richness": 37,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 0.4718
+    },
+    {
+      "site_code": "BN3",
+      "date": "2023-06-06T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Good",
+      "diatom_richness": 18,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 3.1655
+    },
+    {
+      "site_code": "BN9",
+      "date": "2023-06-06T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Poor",
+      "diatom_richness": 26,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 4.3237
+    },
+    {
+      "site_code": "BN11",
+      "date": "2023-06-06T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Good",
+      "diatom_richness": 28,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 1.12
+    },
+    {
+      "site_code": "BN12",
+      "date": "2023-06-06T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Good",
+      "diatom_richness": 15,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 2.25
+    },
+    {
+      "site_code": "BN18",
+      "date": "2023-06-06T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Poor",
+      "diatom_richness": 19,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 0.6445
+    },
+    {
+      "site_code": "C17",
+      "date": "2023-06-06T00:00:00Z",
+      "macro_quality": "Good",
+      "macro_richness": 39,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "C18",
+      "date": "2023-06-06T00:00:00Z",
+      "macro_quality": "Moderate",
+      "macro_richness": 25,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "C19",
+      "date": "2023-06-06T00:00:00Z",
+      "macro_quality": "Good",
+      "macro_richness": 39,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "C20",
+      "date": "2023-06-06T00:00:00Z",
+      "macro_quality": "Poor",
+      "macro_richness": 17,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "C1",
+      "date": "2023-06-01T00:00:00Z",
+      "macro_quality": "",
+      "macro_richness": null,
+      "diatom_quality": "Moderate",
+      "diatom_richness": 31,
+      "fish_quality": "",
+      "fish_richness": null,
+      "nitrate": 0.004
+    },
+    {
+      "site_code": "T9",
+      "date": "2023-05-06T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Moderate",
+      "diatom_richness": 41,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 3.2026
+    },
+    {
+      "site_code": "T10",
+      "date": "2023-05-06T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "High",
+      "diatom_richness": 19,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 0.3423
+    },
+    {
+      "site_code": "T11",
+      "date": "2023-05-06T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Poor",
+      "diatom_richness": 20,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 0.4103
+    },
+    {
+      "site_code": "T12",
+      "date": "2023-05-06T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Bad",
+      "diatom_richness": 38,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 0.4608
+    },
+    {
+      "site_code": "T1",
+      "date": "2023-05-05T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Moderate",
+      "diatom_richness": 36,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 1.9156
+    },
+    {
+      "site_code": "T2",
+      "date": "2023-05-05T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Good",
+      "diatom_richness": 30,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 1.6862
+    },
+    {
+      "site_code": "T3",
+      "date": "2023-05-05T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Good",
+      "diatom_richness": 24,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 2.4654
+    },
+    {
+      "site_code": "T4",
+      "date": "2023-05-05T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Good",
+      "diatom_richness": 29,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 6.6093
+    },
+    {
+      "site_code": "T5",
+      "date": "2023-05-05T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Bad",
+      "diatom_richness": 21,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 8.0693
+    },
+    {
+      "site_code": "T6",
+      "date": "2023-05-05T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Poor",
+      "diatom_richness": 32,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 8.1741
+    },
+    {
+      "site_code": "T7",
+      "date": "2023-05-05T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 4.6126
+    },
+    {
+      "site_code": "T8",
+      "date": "2023-05-05T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Good",
+      "diatom_richness": 21,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 1.6138
+    },
+    {
+      "site_code": "T13",
+      "date": "2023-05-05T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Poor",
+      "diatom_richness": 35,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 1.4931
+    },
+    {
+      "site_code": "T14",
+      "date": "2023-05-05T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Moderate",
+      "diatom_richness": 44,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 1.1477
+    },
+    {
+      "site_code": "T16",
+      "date": "2023-05-05T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Moderate",
+      "diatom_richness": 37,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 0.3069
+    },
+    {
+      "site_code": "T17",
+      "date": "2023-05-05T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Good",
+      "diatom_richness": 33,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 0.001
+    },
+    {
+      "site_code": "T18",
+      "date": "2023-05-05T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Good",
+      "diatom_richness": 36,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 0.7195
+    },
+    {
+      "site_code": "T19",
+      "date": "2023-05-05T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Good",
+      "diatom_richness": 39,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 3.8439
+    },
+    {
+      "site_code": "T20",
+      "date": "2023-05-05T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Moderate",
+      "diatom_richness": 36,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 0.7779
+    },
+    {
+      "site_code": "T22",
+      "date": "2023-05-05T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Moderate",
+      "diatom_richness": 40,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 1.0744
+    },
+    {
+      "site_code": "T25",
+      "date": "2023-05-05T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": "Moderate",
+      "diatom_richness": 43,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": 7.4776
+    },
+    {
+      "site_code": "T1",
+      "date": "2023-05-01T00:00:00Z",
+      "macro_quality": "",
+      "macro_richness": null,
+      "diatom_quality": "Moderate",
+      "diatom_richness": 36,
+      "fish_quality": "",
+      "fish_richness": null,
+      "nitrate": 1.9156
+    },
+    {
+      "site_code": "G1",
+      "date": "2023-05-01T00:00:00Z",
+      "macro_quality": "Bad",
+      "macro_richness": 1,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "G10",
+      "date": "2023-05-01T00:00:00Z",
+      "macro_quality": "Poor",
+      "macro_richness": 11,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "G11",
+      "date": "2023-05-01T00:00:00Z",
+      "macro_quality": "Poor",
+      "macro_richness": 11,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "G12",
+      "date": "2023-05-01T00:00:00Z",
+      "macro_quality": "Poor",
+      "macro_richness": 15,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "G13",
+      "date": "2023-05-01T00:00:00Z",
+      "macro_quality": "Poor",
+      "macro_richness": 15,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "G14",
+      "date": "2023-05-01T00:00:00Z",
+      "macro_quality": "Bad",
+      "macro_richness": 9,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "G15",
+      "date": "2023-05-01T00:00:00Z",
+      "macro_quality": "Poor",
+      "macro_richness": 15,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "G16",
+      "date": "2023-05-01T00:00:00Z",
+      "macro_quality": "Bad",
+      "macro_richness": 10,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "G17",
+      "date": "2023-05-01T00:00:00Z",
+      "macro_quality": "Bad",
+      "macro_richness": 6,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "G18",
+      "date": "2023-05-01T00:00:00Z",
+      "macro_quality": "Bad",
+      "macro_richness": 11,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "G19",
+      "date": "2023-05-01T00:00:00Z",
+      "macro_quality": "Bad",
+      "macro_richness": 5,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "G2",
+      "date": "2023-05-01T00:00:00Z",
+      "macro_quality": "Poor",
+      "macro_richness": 15,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "G20",
+      "date": "2023-05-01T00:00:00Z",
+      "macro_quality": "Bad",
+      "macro_richness": 4,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "G21",
+      "date": "2023-05-01T00:00:00Z",
+      "macro_quality": "Poor",
+      "macro_richness": 17,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "G22",
+      "date": "2023-05-01T00:00:00Z",
+      "macro_quality": "Bad",
+      "macro_richness": 6,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "G3",
+      "date": "2023-05-01T00:00:00Z",
+      "macro_quality": "Bad",
+      "macro_richness": 10,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "G4",
+      "date": "2023-05-01T00:00:00Z",
+      "macro_quality": "Poor",
+      "macro_richness": 16,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "G5",
+      "date": "2023-05-01T00:00:00Z",
+      "macro_quality": "Poor",
+      "macro_richness": 16,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "G6",
+      "date": "2023-05-01T00:00:00Z",
+      "macro_quality": "Bad",
+      "macro_richness": 11,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "G7",
+      "date": "2023-05-01T00:00:00Z",
+      "macro_quality": "Poor",
+      "macro_richness": 15,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "G8",
+      "date": "2023-05-01T00:00:00Z",
+      "macro_quality": "Moderate",
+      "macro_richness": 20,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "G9",
+      "date": "2023-05-01T00:00:00Z",
+      "macro_quality": "Bad",
+      "macro_richness": 10,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "C12",
+      "date": "2023-04-18T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": "Bad",
+      "fish_richness": 0,
+      "nitrate": null
+    },
+    {
+      "site_code": "C14",
+      "date": "2023-04-18T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": "Moderate",
+      "fish_richness": 1,
+      "nitrate": null
+    },
+    {
+      "site_code": "C15",
+      "date": "2023-04-18T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": "Bad",
+      "fish_richness": 5,
+      "nitrate": null
+    },
+    {
+      "site_code": "C2",
+      "date": "2023-04-17T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": "Bad",
+      "fish_richness": 0,
+      "nitrate": null
+    },
+    {
+      "site_code": "C4",
+      "date": "2023-04-17T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": "Poor",
+      "fish_richness": 5,
+      "nitrate": null
+    },
+    {
+      "site_code": "C11",
+      "date": "2023-04-17T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": "Bad",
+      "fish_richness": 0,
+      "nitrate": null
+    },
+    {
+      "site_code": "C6",
+      "date": "2022-06-30T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": "Bad",
+      "fish_richness": 3,
+      "nitrate": null
+    },
+    {
+      "site_code": "C8",
+      "date": "2022-06-30T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": "Poor",
+      "fish_richness": 1,
+      "nitrate": null
+    },
+    {
+      "site_code": "C9",
+      "date": "2022-06-30T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": "Bad",
+      "fish_richness": 5,
+      "nitrate": null
+    },
+    {
+      "site_code": "C10",
+      "date": "2022-06-30T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": "Bad",
+      "fish_richness": 0,
+      "nitrate": null
+    },
+    {
+      "site_code": "C3",
+      "date": "2022-06-29T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": "Bad",
+      "fish_richness": 3,
+      "nitrate": null
+    },
+    {
+      "site_code": "C5",
+      "date": "2022-06-29T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": "Moderate",
+      "fish_richness": 3,
+      "nitrate": null
+    },
+    {
+      "site_code": "C7",
+      "date": "2022-06-29T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": "Moderate",
+      "fish_richness": 2,
+      "nitrate": null
+    },
+    {
+      "site_code": "C13",
+      "date": "2022-06-29T00:00:00Z",
+      "macro_quality": null,
+      "macro_richness": null,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": "Bad",
+      "fish_richness": 2,
+      "nitrate": null
+    },
+    {
+      "site_code": "C12",
+      "date": "2022-05-05T00:00:00Z",
+      "macro_quality": "Moderate",
+      "macro_richness": 27,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "C15",
+      "date": "2022-05-05T00:00:00Z",
+      "macro_quality": "Moderate",
+      "macro_richness": 33,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "C8",
+      "date": "2022-05-05T00:00:00Z",
+      "macro_quality": "Moderate",
+      "macro_richness": 35,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "C11",
+      "date": "2022-05-04T00:00:00Z",
+      "macro_quality": "Poor",
+      "macro_richness": 15,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "C16",
+      "date": "2022-05-04T00:00:00Z",
+      "macro_quality": "Bad",
+      "macro_richness": 13,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "C6",
+      "date": "2022-05-04T00:00:00Z",
+      "macro_quality": "Poor",
+      "macro_richness": 18,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "C13",
+      "date": "2022-05-03T00:00:00Z",
+      "macro_quality": "Moderate",
+      "macro_richness": 25,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "C14",
+      "date": "2022-05-03T00:00:00Z",
+      "macro_quality": "Good",
+      "macro_richness": 35,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "C4",
+      "date": "2022-04-21T00:00:00Z",
+      "macro_quality": "Poor",
+      "macro_richness": 28,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "C5",
+      "date": "2022-04-21T00:00:00Z",
+      "macro_quality": "Moderate",
+      "macro_richness": 38,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "C7",
+      "date": "2022-04-21T00:00:00Z",
+      "macro_quality": "Good",
+      "macro_richness": 47,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "C10",
+      "date": "2022-04-20T00:00:00Z",
+      "macro_quality": "Bad",
+      "macro_richness": 18,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "C2",
+      "date": "2022-04-20T00:00:00Z",
+      "macro_quality": "Bad",
+      "macro_richness": 7,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "C3",
+      "date": "2022-04-19T00:00:00Z",
+      "macro_quality": "Moderate",
+      "macro_richness": 26,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "C9",
+      "date": "2022-04-01T00:00:00Z",
+      "macro_quality": "Good",
+      "macro_richness": 26,
+      "diatom_quality": "",
+      "diatom_richness": null,
+      "fish_quality": "",
+      "fish_richness": null,
+      "nitrate": null
+    },
+    {
+      "site_code": "C1",
+      "date": "2020-06-01T00:00:00Z",
+      "macro_quality": "Bad",
+      "macro_richness": 15,
+      "diatom_quality": null,
+      "diatom_richness": null,
+      "fish_quality": null,
+      "fish_richness": null,
+      "nitrate": null
+    }
+  ],
+  "health_risk": [
+    {
+      "site_code": "BN1",
+      "date": "2023-06-28T00:00:00",
+      "pathogen": 0.2054,
+      "fecal": 0.2427,
+      "arg": 0.4792,
+      "score": 0.3091
+    },
+    {
+      "site_code": "BN2",
+      "date": "2023-06-28T00:00:00",
+      "pathogen": 0.6456,
+      "fecal": 0.5343,
+      "arg": 1.0,
+      "score": 0.7266
+    },
+    {
+      "site_code": "BN3",
+      "date": "2023-06-06T00:00:00",
+      "pathogen": 0.3554,
+      "fecal": 0.7104,
+      "arg": 0.0,
+      "score": 0.3553
+    },
+    {
+      "site_code": "BN4",
+      "date": "2023-07-03T00:00:00",
+      "pathogen": 0.3065,
+      "fecal": 0.4667,
+      "arg": 0.3717,
+      "score": 0.3817
+    },
+    {
+      "site_code": "BN5",
+      "date": "2023-07-03T00:00:00",
+      "pathogen": 0.0758,
+      "fecal": 0.2193,
+      "arg": 0.3856,
+      "score": 0.2269
+    },
+    {
+      "site_code": "BN6",
+      "date": "2023-06-28T00:00:00",
+      "pathogen": 0.2056,
+      "fecal": 0.4619,
+      "arg": 0.3583,
+      "score": 0.342
+    },
+    {
+      "site_code": "BN7",
+      "date": "2023-06-28T00:00:00",
+      "pathogen": 0.4126,
+      "fecal": 0.5393,
+      "arg": 0.3509,
+      "score": 0.4343
+    },
+    {
+      "site_code": "BN8",
+      "date": "2023-07-07T00:00:00",
+      "pathogen": 0.3383,
+      "fecal": 0.477,
+      "arg": 0.4015,
+      "score": 0.4056
+    },
+    {
+      "site_code": "BN9",
+      "date": "2023-06-06T00:00:00",
+      "pathogen": 0.2515,
+      "fecal": 0.4117,
+      "arg": 0.384,
+      "score": 0.3491
+    },
+    {
+      "site_code": "BN10",
+      "date": "2023-06-07T00:00:00",
+      "pathogen": 0.762,
+      "fecal": 0.8423,
+      "arg": 0.2686,
+      "score": 0.6243
+    },
+    {
+      "site_code": "BN11",
+      "date": "2023-06-06T00:00:00",
+      "pathogen": 0.0754,
+      "fecal": 0.2158,
+      "arg": 0.0329,
+      "score": 0.108
+    },
+    {
+      "site_code": "BN12",
+      "date": "2023-06-06T00:00:00",
+      "pathogen": 0.0748,
+      "fecal": 0.1445,
+      "arg": 0.0491,
+      "score": 0.0895
+    },
+    {
+      "site_code": "BN13",
+      "date": "2023-07-03T00:00:00",
+      "pathogen": 0.1003,
+      "fecal": 0.3295,
+      "arg": 0.2723,
+      "score": 0.234
+    },
+    {
+      "site_code": "BN14",
+      "date": "2024-08-05T00:00:00",
+      "pathogen": 0.1101,
+      "fecal": 0.2119,
+      "arg": 0.181,
+      "score": 0.1676
+    },
+    {
+      "site_code": "BN15",
+      "date": "2023-06-07T00:00:00",
+      "pathogen": 0.3487,
+      "fecal": 0.3778,
+      "arg": 0.3881,
+      "score": 0.3715
+    },
+    {
+      "site_code": "BN16",
+      "date": "2023-06-07T00:00:00",
+      "pathogen": 0.1258,
+      "fecal": 0.4229,
+      "arg": 0.1122,
+      "score": 0.2203
+    },
+    {
+      "site_code": "BN17",
+      "date": "2023-07-03T00:00:00",
+      "pathogen": 0.4909,
+      "fecal": 0.6187,
+      "arg": 0.0307,
+      "score": 0.3801
+    },
+    {
+      "site_code": "BN18",
+      "date": "2023-06-06T00:00:00",
+      "pathogen": 0.3149,
+      "fecal": 0.4429,
+      "arg": 0.4485,
+      "score": 0.4021
+    },
+    {
+      "site_code": "BN19",
+      "date": "2023-07-07T00:00:00",
+      "pathogen": 0.2572,
+      "fecal": 0.3391,
+      "arg": 0.1262,
+      "score": 0.2408
+    },
+    {
+      "site_code": "BN20",
+      "date": "2023-07-07T00:00:00",
+      "pathogen": 0.3881,
+      "fecal": 0.5078,
+      "arg": 0.3661,
+      "score": 0.4207
+    },
+    {
+      "site_code": "C1",
+      "date": "2023-06-28T00:00:00",
+      "pathogen": 0.0746,
+      "fecal": 0.2477,
+      "arg": 0.3374,
+      "score": 0.2199
+    },
+    {
+      "site_code": "C2",
+      "date": "2023-06-27T00:00:00",
+      "pathogen": 0.507,
+      "fecal": 0.5072,
+      "arg": 0.2522,
+      "score": 0.4221
+    },
+    {
+      "site_code": "C3",
+      "date": "2023-06-27T00:00:00",
+      "pathogen": 0.2973,
+      "fecal": 0.2051,
+      "arg": 0.2283,
+      "score": 0.2436
+    },
+    {
+      "site_code": "C4",
+      "date": "2023-06-27T00:00:00",
+      "pathogen": 0.0496,
+      "fecal": 0.1409,
+      "arg": 0.0339,
+      "score": 0.0748
+    },
+    {
+      "site_code": "C5",
+      "date": "2023-06-29T00:00:00",
+      "pathogen": 1.0,
+      "fecal": 1.0,
+      "arg": 0.3465,
+      "score": 0.7822
+    },
+    {
+      "site_code": "C6",
+      "date": "2023-06-29T00:00:00",
+      "pathogen": 0.7351,
+      "fecal": 0.6664,
+      "arg": 0.3841,
+      "score": 0.5952
+    },
+    {
+      "site_code": "C7",
+      "date": "2023-06-29T00:00:00",
+      "pathogen": 0.1783,
+      "fecal": 0.5702,
+      "arg": 0.0027,
+      "score": 0.2504
+    },
+    {
+      "site_code": "C8",
+      "date": "2023-06-28T00:00:00",
+      "pathogen": 0.406,
+      "fecal": 0.4457,
+      "arg": 0.432,
+      "score": 0.4279
+    },
+    {
+      "site_code": "C9",
+      "date": "2023-06-27T00:00:00",
+      "pathogen": 0.1265,
+      "fecal": 0.1443,
+      "arg": 0.3186,
+      "score": 0.1964
+    },
+    {
+      "site_code": "C10",
+      "date": "2023-06-27T00:00:00",
+      "pathogen": 0.05,
+      "fecal": 0.4146,
+      "arg": 0.0906,
+      "score": 0.1851
+    },
+    {
+      "site_code": "C11",
+      "date": "2023-06-27T00:00:00",
+      "pathogen": 0.0509,
+      "fecal": 0.187,
+      "arg": 0.1456,
+      "score": 0.1278
+    },
+    {
+      "site_code": "C12",
+      "date": "2023-06-28T00:00:00",
+      "pathogen": 0.4217,
+      "fecal": 0.8051,
+      "arg": 0.3704,
+      "score": 0.5324
+    },
+    {
+      "site_code": "C13",
+      "date": "2023-06-28T00:00:00",
+      "pathogen": 0.1499,
+      "fecal": 0.2287,
+      "arg": 0.2708,
+      "score": 0.2165
+    },
+    {
+      "site_code": "C14",
+      "date": "2023-06-28T00:00:00",
+      "pathogen": 0.2241,
+      "fecal": 0.1143,
+      "arg": 0.3343,
+      "score": 0.2243
+    },
+    {
+      "site_code": "C15",
+      "date": "2023-06-28T00:00:00",
+      "pathogen": 0.3791,
+      "fecal": 0.3851,
+      "arg": 0.2706,
+      "score": 0.3449
+    },
+    {
+      "site_code": "C16",
+      "date": "2023-06-27T00:00:00",
+      "pathogen": 0.5063,
+      "fecal": 0.2531,
+      "arg": 0.3008,
+      "score": 0.3534
+    },
+    {
+      "site_code": "C19",
+      "date": "2023-06-06T00:00:00",
+      "pathogen": 0.3044,
+      "fecal": 0.4625,
+      "arg": 0.5433,
+      "score": 0.4367
+    },
+    {
+      "site_code": "C20",
+      "date": "2023-06-06T00:00:00",
+      "pathogen": 0.2243,
+      "fecal": 0.2044,
+      "arg": 0.5623,
+      "score": 0.3304
+    },
+    {
+      "site_code": "G2",
+      "date": "2023-05-24T00:00:00",
+      "pathogen": 0.1242,
+      "fecal": 0.2672,
+      "arg": 0.4669,
+      "score": 0.2861
+    },
+    {
+      "site_code": "G3",
+      "date": "2023-05-24T00:00:00",
+      "pathogen": 0.1004,
+      "fecal": 0.3096,
+      "arg": 0.1812,
+      "score": 0.1971
+    },
+    {
+      "site_code": "G4",
+      "date": "2023-05-24T00:00:00",
+      "pathogen": 0.0503,
+      "fecal": 0.1824,
+      "arg": 0.4763,
+      "score": 0.2363
+    },
+    {
+      "site_code": "G5",
+      "date": "2023-05-24T00:00:00",
+      "pathogen": 0.0496,
+      "fecal": 0.3549,
+      "arg": 0.313,
+      "score": 0.2392
+    },
+    {
+      "site_code": "G6",
+      "date": "2023-05-24T00:00:00",
+      "pathogen": 0.1738,
+      "fecal": 0.3113,
+      "arg": 0.175,
+      "score": 0.2201
+    },
+    {
+      "site_code": "G7",
+      "date": "2023-05-24T00:00:00",
+      "pathogen": 0.0746,
+      "fecal": 0.2452,
+      "arg": 0.261,
+      "score": 0.1936
+    },
+    {
+      "site_code": "G8",
+      "date": "2023-05-24T00:00:00",
+      "pathogen": 0.0993,
+      "fecal": 0.2305,
+      "arg": 0.3183,
+      "score": 0.2161
+    },
+    {
+      "site_code": "G9",
+      "date": "2023-05-24T00:00:00",
+      "pathogen": 0.1492,
+      "fecal": 0.3966,
+      "arg": 0.5202,
+      "score": 0.3553
+    },
+    {
+      "site_code": "G10",
+      "date": "2023-05-24T00:00:00",
+      "pathogen": 0.0248,
+      "fecal": 0.1193,
+      "arg": 0.3591,
+      "score": 0.1677
+    },
+    {
+      "site_code": "G11",
+      "date": "2023-05-24T00:00:00",
+      "pathogen": 0.1253,
+      "fecal": 0.2544,
+      "arg": 0.2956,
+      "score": 0.2251
+    },
+    {
+      "site_code": "G12",
+      "date": "2023-05-24T00:00:00",
+      "pathogen": 0.0995,
+      "fecal": 0.2129,
+      "arg": 0.3624,
+      "score": 0.225
+    },
+    {
+      "site_code": "G13",
+      "date": "2023-05-25T00:00:00",
+      "pathogen": 0.0752,
+      "fecal": 0.2104,
+      "arg": 0.345,
+      "score": 0.2102
+    },
+    {
+      "site_code": "G14",
+      "date": "2023-05-25T00:00:00",
+      "pathogen": 0.0,
+      "fecal": 0.1323,
+      "arg": 0.3366,
+      "score": 0.1563
+    },
+    {
+      "site_code": "G15",
+      "date": "2023-05-25T00:00:00",
+      "pathogen": 0.0513,
+      "fecal": 0.1673,
+      "arg": 0.4544,
+      "score": 0.2244
+    },
+    {
+      "site_code": "G16",
+      "date": "2023-05-25T00:00:00",
+      "pathogen": 0.2484,
+      "fecal": 0.2897,
+      "arg": 0.3971,
+      "score": 0.3117
+    },
+    {
+      "site_code": "G21",
+      "date": "2023-05-24T00:00:00",
+      "pathogen": 0.0499,
+      "fecal": 0.3255,
+      "arg": 0.4933,
+      "score": 0.2896
+    },
+    {
+      "site_code": "G22",
+      "date": "2023-05-24T00:00:00",
+      "pathogen": 0.1501,
+      "fecal": 0.2921,
+      "arg": 0.1152,
+      "score": 0.1858
+    },
+    {
+      "site_code": "O1",
+      "date": "2023-09-06T00:00:00",
+      "pathogen": 0.0993,
+      "fecal": 0.2919,
+      "arg": 0.3826,
+      "score": 0.2579
+    },
+    {
+      "site_code": "O2",
+      "date": "2023-09-06T00:00:00",
+      "pathogen": 0.0495,
+      "fecal": 0.2932,
+      "arg": 0.3814,
+      "score": 0.2414
+    },
+    {
+      "site_code": "O3",
+      "date": "2023-09-06T00:00:00",
+      "pathogen": 0.1248,
+      "fecal": 0.3136,
+      "arg": 0.3035,
+      "score": 0.2473
+    },
+    {
+      "site_code": "O4",
+      "date": "2023-09-06T00:00:00",
+      "pathogen": 0.0248,
+      "fecal": 0.2344,
+      "arg": 0.5403,
+      "score": 0.2665
+    },
+    {
+      "site_code": "O5",
+      "date": "2023-09-06T00:00:00",
+      "pathogen": 0.0248,
+      "fecal": 0.385,
+      "arg": 0.2865,
+      "score": 0.2321
+    },
+    {
+      "site_code": "O6",
+      "date": "2023-09-06T00:00:00",
+      "pathogen": 0.0752,
+      "fecal": 0.1625,
+      "arg": 0.3025,
+      "score": 0.18
+    },
+    {
+      "site_code": "O7",
+      "date": "2023-09-06T00:00:00",
+      "pathogen": 0.0993,
+      "fecal": 0.2728,
+      "arg": 0.462,
+      "score": 0.278
+    },
+    {
+      "site_code": "O8",
+      "date": "2023-09-06T00:00:00",
+      "pathogen": 0.149,
+      "fecal": 0.3018,
+      "arg": 0.4616,
+      "score": 0.3041
+    },
+    {
+      "site_code": "O9",
+      "date": "2023-09-06T00:00:00",
+      "pathogen": 0.0,
+      "fecal": 0.0,
+      "arg": 0.3972,
+      "score": 0.1324
+    },
+    {
+      "site_code": "O10",
+      "date": "2023-09-06T00:00:00",
+      "pathogen": 0.0249,
+      "fecal": 0.3387,
+      "arg": 0.2706,
+      "score": 0.2114
+    },
+    {
+      "site_code": "O11",
+      "date": "2023-09-06T00:00:00",
+      "pathogen": 0.1734,
+      "fecal": 0.3317,
+      "arg": 0.6038,
+      "score": 0.3696
+    },
+    {
+      "site_code": "O12",
+      "date": "2023-09-06T00:00:00",
+      "pathogen": 0.0997,
+      "fecal": 0.3184,
+      "arg": 0.6845,
+      "score": 0.3675
+    },
+    {
+      "site_code": "O13",
+      "date": "2023-09-06T00:00:00",
+      "pathogen": 0.1242,
+      "fecal": 0.295,
+      "arg": 0.5408,
+      "score": 0.32
+    },
+    {
+      "site_code": "O14",
+      "date": "2023-09-06T00:00:00",
+      "pathogen": 0.0249,
+      "fecal": 0.112,
+      "arg": 0.6038,
+      "score": 0.2469
+    },
+    {
+      "site_code": "O15",
+      "date": "2023-09-06T00:00:00",
+      "pathogen": 0.0495,
+      "fecal": 0.1143,
+      "arg": 0.4447,
+      "score": 0.2028
+    },
+    {
+      "site_code": "O16",
+      "date": "2023-09-06T00:00:00",
+      "pathogen": 0.251,
+      "fecal": 0.4781,
+      "arg": 0.4964,
+      "score": 0.4085
+    },
+    {
+      "site_code": "O17",
+      "date": "2023-09-06T00:00:00",
+      "pathogen": 0.3364,
+      "fecal": 0.4261,
+      "arg": 0.497,
+      "score": 0.4198
+    },
+    {
+      "site_code": "O18",
+      "date": "2023-09-06T00:00:00",
+      "pathogen": 0.1488,
+      "fecal": 0.4071,
+      "arg": 0.4311,
+      "score": 0.329
+    },
+    {
+      "site_code": "O19",
+      "date": "2023-09-06T00:00:00",
+      "pathogen": 0.1739,
+      "fecal": 0.3078,
+      "arg": 0.289,
+      "score": 0.2569
+    },
+    {
+      "site_code": "O20",
+      "date": "2023-09-06T00:00:00",
+      "pathogen": 0.1253,
+      "fecal": 0.3354,
+      "arg": 0.4327,
+      "score": 0.2978
+    },
+    {
+      "site_code": "T1",
+      "date": "2023-05-05T00:00:00",
+      "pathogen": 0.4012,
+      "fecal": 0.532,
+      "arg": 0.2785,
+      "score": 0.4039
+    },
+    {
+      "site_code": "T2",
+      "date": "2023-05-05T00:00:00",
+      "pathogen": 0.0997,
+      "fecal": 0.126,
+      "arg": 0.414,
+      "score": 0.2132
+    },
+    {
+      "site_code": "T3",
+      "date": "2023-05-05T00:00:00",
+      "pathogen": 0.3248,
+      "fecal": 0.3904,
+      "arg": 0.4614,
+      "score": 0.3922
+    },
+    {
+      "site_code": "T4",
+      "date": "2023-05-05T00:00:00",
+      "pathogen": 0.1242,
+      "fecal": 0.5135,
+      "arg": 0.1303,
+      "score": 0.256
+    },
+    {
+      "site_code": "T5",
+      "date": "2023-05-05T00:00:00",
+      "pathogen": 0.154,
+      "fecal": 0.8464,
+      "arg": 0.2778,
+      "score": 0.426
+    },
+    {
+      "site_code": "T6",
+      "date": "2023-05-05T00:00:00",
+      "pathogen": 0.1502,
+      "fecal": 0.5056,
+      "arg": 0.4162,
+      "score": 0.3573
+    },
+    {
+      "site_code": "T7",
+      "date": "2023-05-05T00:00:00",
+      "pathogen": 0.0758,
+      "fecal": 0.2074,
+      "arg": 0.2231,
+      "score": 0.1687
+    },
+    {
+      "site_code": "T8",
+      "date": "2023-05-05T00:00:00",
+      "pathogen": 0.025,
+      "fecal": 0.1995,
+      "arg": 0.2415,
+      "score": 0.1554
+    },
+    {
+      "site_code": "T9",
+      "date": "2023-05-06T00:00:00",
+      "pathogen": 0.025,
+      "fecal": 0.1039,
+      "arg": 0.2561,
+      "score": 0.1283
+    },
+    {
+      "site_code": "T10",
+      "date": "2023-05-06T00:00:00",
+      "pathogen": 0.0497,
+      "fecal": 0.0193,
+      "arg": 0.6355,
+      "score": 0.2348
+    },
+    {
+      "site_code": "T11",
+      "date": "2023-05-06T00:00:00",
+      "pathogen": 0.4285,
+      "fecal": 0.5475,
+      "arg": 0.334,
+      "score": 0.4367
+    },
+    {
+      "site_code": "T12",
+      "date": "2023-05-06T00:00:00",
+      "pathogen": 0.0495,
+      "fecal": 0.0918,
+      "arg": 0.6525,
+      "score": 0.2646
+    },
+    {
+      "site_code": "T13",
+      "date": "2023-05-05T00:00:00",
+      "pathogen": 0.1243,
+      "fecal": 0.3044,
+      "arg": 0.6042,
+      "score": 0.3443
+    },
+    {
+      "site_code": "T14",
+      "date": "2023-05-05T00:00:00",
+      "pathogen": 0.2763,
+      "fecal": 0.5787,
+      "arg": 0.525,
+      "score": 0.46
+    },
+    {
+      "site_code": "T16",
+      "date": "2023-05-05T00:00:00",
+      "pathogen": 0.0248,
+      "fecal": 0.3325,
+      "arg": 0.2866,
+      "score": 0.2146
+    },
+    {
+      "site_code": "T17",
+      "date": "2023-05-05T00:00:00",
+      "pathogen": 0.2525,
+      "fecal": 0.9979,
+      "arg": 0.3341,
+      "score": 0.5282
+    },
+    {
+      "site_code": "T18",
+      "date": "2023-05-05T00:00:00",
+      "pathogen": 0.2995,
+      "fecal": 0.3628,
+      "arg": 0.3494,
+      "score": 0.3372
+    },
+    {
+      "site_code": "T19",
+      "date": "2023-05-05T00:00:00",
+      "pathogen": 0.0248,
+      "fecal": 0.1091,
+      "arg": 0.3021,
+      "score": 0.1453
+    },
+    {
+      "site_code": "T20",
+      "date": "2023-05-05T00:00:00",
+      "pathogen": 0.3798,
+      "fecal": 0.431,
+      "arg": 0.5091,
+      "score": 0.44
+    },
+    {
+      "site_code": "T22",
+      "date": "2023-05-05T00:00:00",
+      "pathogen": 0.1988,
+      "fecal": 0.3252,
+      "arg": 0.5428,
+      "score": 0.3556
+    },
+    {
+      "site_code": "T25",
+      "date": "2023-05-05T00:00:00",
+      "pathogen": 0.1266,
+      "fecal": 0.4027,
+      "arg": 0.5096,
+      "score": 0.3463
+    }
+  ]
+}

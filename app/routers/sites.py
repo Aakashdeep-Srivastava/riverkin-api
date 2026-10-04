@@ -16,7 +16,7 @@ from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app import scoring
+from app import oah, scoring
 from app.db import get_session
 from app.models.observation import Observation
 from app.models.site import Site
@@ -25,6 +25,9 @@ from app.schemas import SiteOut, SiteTimelineOut
 router = APIRouter(prefix="/sites", tags=["sites"])
 
 ORPHAN_DAYS = 999
+
+# Shown anywhere OAH baseline data surfaces (ODbL/OAH attribution, see README).
+OAH_ATTRIBUTION = "Site, ecology & health-risk data: OneAquaHealth project (oneaquahealth.eu)"
 
 
 def _days_unseen(site: Site) -> int:
@@ -45,6 +48,7 @@ def _to_out(site: Site) -> SiteOut:
         country=site.country,
         lat=site.lat,
         lng=site.lng,
+        altitude_m=site.altitude_m,
         days_unseen=days,
         rain_48h_mm=site.rain_48h_mm or 0.0,
         need_score=round(need, 4),
@@ -54,6 +58,10 @@ def _to_out(site: Site) -> SiteOut:
         color=scoring.need_color(
             need, expert_flag_open=site.expert_flag_open, days_since_check=float(days)
         ),
+        ecology=oah.ecology_status(site.ecology),
+        health_risk=oah.health_risk_band(site.health_risk),
+        recency_simulated=site.simulated,
+        data_attribution=OAH_ATTRIBUTION,
         simulated=site.simulated,
     )
 
@@ -122,6 +130,30 @@ async def site_timeline(
                 "kind": "verification" if verified else "check",
                 "label": label,
                 "at": obs.created_at.isoformat(),
+            }
+        )
+
+    # Real OAH biological/chemical baseline sample (the project's own data).
+    eco = oah.ecology_status(site.ecology)
+    if eco and eco.get("date"):
+        status_txt = eco["status"] or "sampled"
+        element = eco.get("worst_element") or "biology"
+        entries.append(
+            {
+                "kind": "baseline",
+                "label": f"OAH ecological status: {status_txt} ({element})",
+                "at": eco["date"],
+            }
+        )
+
+    # Real OAH One Health risk assessment.
+    hr = oah.health_risk_band(site.health_risk)
+    if hr and hr.get("date"):
+        entries.append(
+            {
+                "kind": "baseline",
+                "label": f"OAH One Health risk: {hr['band']} ({hr['score']})",
+                "at": hr["date"],
             }
         )
 

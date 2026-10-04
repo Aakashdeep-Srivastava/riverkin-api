@@ -1562,7 +1562,7 @@
           "simulated": {
             "type": "boolean",
             "title": "Simulated",
-            "default": true
+            "default": false
           }
         },
         "type": "object",
@@ -2252,6 +2252,17 @@
             ],
             "title": "Lng"
           },
+          "altitude_m": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Altitude M"
+          },
           "days_unseen": {
             "type": "integer",
             "title": "Days Unseen"
@@ -2271,6 +2282,46 @@
           "color": {
             "type": "string",
             "title": "Color"
+          },
+          "ecology": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ecology"
+          },
+          "health_risk": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Health Risk"
+          },
+          "recency_simulated": {
+            "type": "boolean",
+            "title": "Recency Simulated",
+            "default": true
+          },
+          "data_attribution": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Data Attribution"
           },
           "simulated": {
             "type": "boolean",

@@ -33,13 +33,39 @@ Real urban waterways in each city, sourced via public references:
 - **Oslo:** Akerselva, Hoffselven, Sognsvannsbekken, Gaustadbekken,
   Holmenbekken, Lysakerelva, Mærradalsbekken, Hovinbekken.
 
-## Per-site coordinates — SYNTHESIZED (labelled)
+## Per-site data — REAL (OneAquaHealth project API) — as of 2026-10-04
 
-OAH has **not published** the exact coordinates of the ~100 citizen sites.
-`oah_sites.json` therefore places 106 sites deterministically around each real
-city centre, along the real rivers (`gen_sites.py`, golden-angle spread, no
-RNG → reproducible). `simulated_coordinates: true` on every row; the UI shows
-"Simulated, illustrative" per the PRD hard rule.
+`oah_sites.json` (schema `riverkin.oah_sites.v2`) is now generated from the
+**OneAquaHealth project's own API**, `https://api.enora-oah.eu` (the backend
+behind the OAH City Dashboards & Resilience Map). The following are **real**:
+
+- **Sites & coordinates:** `GET /api/sites/all` → the real 106 research
+  monitoring sites with their real codes (`C1`…`O20`), names, latitude,
+  longitude and altitude. Coimbra 20, Toulouse 24, Ghent 22, Benevento 20,
+  Oslo 20. (Two unnamed Toulouse points get a `"<river> site <code>"` label.)
+- **Ecology baseline** (`ecology_latest`): `GET /api/dashboards/city` →
+  biological + chemical quality per site — macroinvertebrate/diatom/fish
+  quality class (WFD High→Bad) + richness, and nitrate. Latest sample per site.
+- **One Health risk** (`health_risk_latest`): `GET /api/resilience-map/health-risks`
+  → scaled pathogen / faecal / antibiotic-resistance (ARG) risk + composite
+  `healthRiskScore`. Latest assessment per site.
+- Full sample time-series kept in `oah_samples.json` (221 ecology rows + 96
+  health-risk rows) for the site timeline.
+
+`waterbody` is set to each city's **primary urban river** as a label (Mondego,
+Garonne, Leie/Lys, Calore, Akerselva). Attribution surfaced in-app and here:
+**"Data: OneAquaHealth project (HORIZON, oneaquahealth.eu)."** The API is
+unversioned and publishes no licence; for production use / the gated
+`/api/measurements` endpoints, request permission + a citation at
+`office@oneaquahealth.eu`.
+
+### Still SYNTHESIZED (labelled)
+
+OAH has **not published** citizen *check dates*, so the "days since last citizen
+check" that drives the attention map is a deterministic spread (no RNG,
+reproducible). Each site row is flagged `simulated: true` in the DB and exposed
+as **`recency_simulated: true`** in the API — only the schedule is illustrative;
+coordinates, identity, ecology and health risk are real.
 
 ## Field codes — REAL (OAH CodeSystem)
 

@@ -27,7 +27,9 @@ class MetricsOut(BaseModel):
     verified_this_month: int
     open_expert_reviews: int
     coverage_fresh_pct: int
-    simulated: bool = True
+    # KPIs are computed live from real OAH sites + submitted observations; only
+    # the per-site "last check" schedule is illustrative (see SiteOut.recency_simulated).
+    simulated: bool = False
 
 
 async def _count(session: AsyncSession, stmt) -> int:

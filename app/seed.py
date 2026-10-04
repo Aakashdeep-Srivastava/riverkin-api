@@ -1,10 +1,13 @@
 """Seed the sites table from the bundled OneAquaHealth site list.
 
 Run once at deploy (Docker CMD) and safe to re-run (idempotent upsert on the
-OAH code). Reads ``data/oah_sites.json`` — 106 real OAH sites across the five
-research cities; see data/DATA_PROVENANCE.md. Because OAH has not published
-real last-check dates, we synthesize a deterministic spread so the attention
-map is "alive"; every seeded row is flagged ``simulated=True``.
+OAH code). Reads ``data/oah_sites.json`` (v2) — the 106 REAL OAH sites across
+the five research cities with their real codes, names, coordinates, altitude and
+latest ecology + One Health risk snapshots, pulled from api.enora-oah.eu; see
+data/DATA_PROVENANCE.md. The only synthesized part is the "days since last
+citizen check" schedule (OAH has not published citizen check dates), so the map
+is "alive"; that recency is flagged ``simulated=True`` on each row and labelled
+in the API as ``recency_simulated``.
 
     python -m app.seed
 """
@@ -18,7 +21,7 @@ from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
 from geoalchemy2 import WKTElement
-from sqlalchemy import func
+from sqlalchemy import delete, func
 from sqlalchemy.dialects.postgresql import insert
 
 from app import scoring
@@ -73,12 +76,17 @@ def _rows() -> list[dict]:
                 "country": s.get("country"),
                 "lat": s["lat"],
                 "lng": s["lng"],
+                "altitude_m": s.get("altitude_m"),
                 "location": WKTElement(f"POINT({s['lng']} {s['lat']})", srid=4326),
+                "ecology": s.get("ecology_latest"),
+                "health_risk": s.get("health_risk_latest"),
                 "cadence_days": cadence,
                 "last_verified_at": syn["last_verified_at"],
                 "rain_48h_mm": syn["rain"],
                 "expert_flag_open": syn["flag"],
                 "need_score": syn["need"],
+                # Coordinates/identity/ecology are real; only the check schedule
+                # is illustrative — surfaced as ``recency_simulated`` by the API.
                 "simulated": True,
             }
         )
@@ -100,7 +108,10 @@ async def seed() -> int:
                     "country",
                     "lat",
                     "lng",
+                    "altitude_m",
                     "location",
+                    "ecology",
+                    "health_risk",
                     "cadence_days",
                     "last_verified_at",
                     "rain_48h_mm",
@@ -114,6 +125,14 @@ async def seed() -> int:
                 index_elements=["external_id"], set_=update_cols
             )
             await session.execute(stmt)
+
+        # Prune any sites from an earlier seed whose code is no longer bundled
+        # (e.g. the pre-v2 synthesized "CB-01" codes). observations.site_id is
+        # ON DELETE SET NULL, so this is safe.
+        codes = [r["external_id"] for r in rows]
+        await session.execute(
+            delete(Site).where(Site.external_id.not_in(codes))
+        )
         await session.commit()
     logger.info("seeded %d OAH sites", len(rows))
     return len(rows)
