@@ -177,6 +177,7 @@ class ReceiptOut(BaseModel):
     sentinel_line: str
     state: str
     date_label: str
+    points: int = 0  # River points earned for this check (River Value)
     photo: ReceiptPhotoOut | None = None
 
 

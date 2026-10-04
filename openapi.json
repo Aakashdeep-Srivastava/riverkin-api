@@ -2258,6 +2258,11 @@
             "type": "string",
             "title": "Date Label"
           },
+          "points": {
+            "type": "integer",
+            "title": "Points",
+            "default": 0
+          },
           "photo": {
             "anyOf": [
               {

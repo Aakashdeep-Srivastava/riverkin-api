@@ -42,6 +42,10 @@ class Observation(Base):
     trust: Mapped[float | None] = mapped_column(Float, nullable=True)
     reliability_score: Mapped[float | None] = mapped_column(Float, nullable=True)
 
+    # River points earned for this check = River Value V (usefulness-weighted
+    # reward, app/scoring.py::value_score), captured at submit so it's stable.
+    points: Mapped[int] = mapped_column(Integer, default=0, server_default="0")
+
     # Processed photo (blur/EXIF-stripped) + pHash. No raw GPS ever persisted.
     photo_path: Mapped[str | None] = mapped_column(String(512), nullable=True)
     photo_phash: Mapped[str | None] = mapped_column(String(64), nullable=True)

@@ -115,6 +115,7 @@ def _build_receipt(obs: Observation, site: Site, verifier_count: int) -> Receipt
         sentinel_line=receipts.sentinel_line(obs.answers or {}),
         state=receipts.state_label(obs.status),
         date_label=receipts.date_label(obs.created_at),
+        points=obs.points or 0,
         photo=_build_photo(obs),
     )
 
@@ -155,6 +156,11 @@ async def create_observation(
     photo_ok = payload.photo_count >= 2
     quality_q = scoring.quality(completeness, photo_ok=photo_ok, geo_ok=geo_ok)
 
+    # River points = River Value V (usefulness-weighted reward): more for sites
+    # that needed a look, scaled by quality. First check per site → full value.
+    first_visit = scoring.visit_multiplier(0, is_first_in_72h=True)
+    points = round(scoring.value_score(site.need_score or 0.0, quality_q, first_visit))
+
     obs = Observation(
         site_id=site.id,
         answers=answers,
@@ -163,6 +169,7 @@ async def create_observation(
         pipe_flag=pipe_flag,
         geom_ok=geo_ok,
         quality=quality_q,
+        points=points,
         gap_days_closed=_days_unseen(site),
         status="expert" if pipe_flag else "in_verify",
     )
