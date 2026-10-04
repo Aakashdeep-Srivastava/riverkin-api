@@ -33,12 +33,20 @@ FUNNEL = [
 ]
 
 ALLOWED = set(FUNNEL) | {
+    "guest_entered",
     "map_engaged",
+    "question_answered",
+    "camera_opened",
     "photo_captured",
+    "photo_rejected",
     "receipt_viewed",
+    "verification_started",
+    "challenge_viewed",
+    "crew_viewed",
+    "identity_viewed",
     "notification_opened",
     "share_clicked",
-    "identity_viewed",
+    "session_ended",
 }
 
 
