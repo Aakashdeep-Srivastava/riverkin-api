@@ -16,6 +16,7 @@ from app.routers import (
     auth,
     community,
     crews,
+    events,
     expert,
     fhir,
     maps,
@@ -89,3 +90,4 @@ app.include_router(missions.router, prefix=API_PREFIX)
 app.include_router(community.router, prefix=API_PREFIX)
 app.include_router(notifications.router, prefix=API_PREFIX)
 app.include_router(push.router, prefix=API_PREFIX)
+app.include_router(events.router, prefix=API_PREFIX)
