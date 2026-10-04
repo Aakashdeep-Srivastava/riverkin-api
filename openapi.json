@@ -1866,6 +1866,54 @@
             "type": "integer",
             "title": "Coverage Fresh Pct"
           },
+          "ai_human_agreement_pct": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ai Human Agreement Pct"
+          },
+          "ai_human_agreement_n": {
+            "type": "integer",
+            "title": "Ai Human Agreement N",
+            "default": 0
+          },
+          "median_verify_seconds": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Median Verify Seconds"
+          },
+          "verify_votes_n": {
+            "type": "integer",
+            "title": "Verify Votes N",
+            "default": 0
+          },
+          "revisit_rate_pct": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Revisit Rate Pct"
+          },
+          "revisit_eligible_n": {
+            "type": "integer",
+            "title": "Revisit Eligible N",
+            "default": 0
+          },
           "simulated": {
             "type": "boolean",
             "title": "Simulated",
