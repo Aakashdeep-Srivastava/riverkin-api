@@ -100,6 +100,7 @@ def _build_photo(obs: Observation) -> ReceiptPhotoOut | None:
         relevance=pa.get("relevance"),
         correlation=pa.get("correlation", []),
         escalated=bool(pa.get("escalated", False)),
+        photos_count=int(pa.get("photos_count", 1)),
     )
 
 
@@ -270,11 +271,26 @@ async def upload_photo(
         where = ", ".join(p for p in (site.name, site.city) if p)
         geotag = {"lat": site.lat, "lng": site.lng, "label": f"Within 150 m of {where}"}
 
-    # --- Image-grounded scoring (AI asks, humans decide) -------------------
-    # Correlate the model's per-field read with the citizen's answers, write the
-    # grounded weak prior onto each verify item, recompute quality from the photo
-    # relevance, and escalate a confident pollution contradiction to expert review.
-    corr = vision_fields.correlate(obs.answers or {}, analysis.fields)
+    # --- Collective image-grounded scoring (AI asks, humans decide) --------
+    # Append this photo to the observation's set, then score ALL 1–5 images
+    # together: a consensus per-field read, quality from mean relevance, and an
+    # authenticity that the weakest photo caps. More agreeing images → a stronger
+    # (but still weak) prior; the model never fills a field or downgrades a human.
+    this_photo = {
+        "kind": kind,
+        "summary": analysis.summary,
+        "tags": analysis.tags,
+        "relevance": round(analysis.relevance, 3),
+        "fields": analysis.fields,
+        "ai_generated_likelihood": round(analysis.ai_generated_likelihood, 3),
+        "authenticity": auth.confidence,
+    }
+    photos = list(obs.photos or [])
+    photos.append(this_photo)
+    obs.photos = photos
+
+    collective_fields = vision_fields.aggregate_photo_fields(photos)
+    corr = vision_fields.correlate(obs.answers or {}, collective_fields)
     items = (
         await session.execute(
             select(VerifyItem)
@@ -284,26 +300,38 @@ async def upload_photo(
     ).scalars().all()
     for item, fc in zip(items, corr.per_field, strict=False):
         if fc.agrees is None:
-            item.ai_agrees = None  # model abstained → no AI term in field_trust
+            item.ai_agrees = None  # collective read abstained → no AI term
             item.ai_confidence = 0.0
         else:
             item.ai_agrees = fc.agrees
             item.ai_confidence = round(fc.confidence, 3)
+        # "AI asks": replace the template question with GPT's image-grounded one
+        # (intuitive, varies per scene) when the model supplied it.
+        model_field = vision_fields.model_field_for(fc.key)
+        gpt_q = (collective_fields.get(model_field) or {}).get("question") if model_field else None
+        if gpt_q:
+            item.question = gpt_q
 
-    # Quality now reflects whether the photo is actually a relevant river shot.
+    # Collective evidence: mean relevance across photos, weakest-photo authenticity.
+    mean_relevance = sum(p["relevance"] for p in photos) / len(photos)
+    min_authenticity = min(int(p["authenticity"]) for p in photos)
     answered = sum(1 for k in _FIELD_KEYS if (obs.answers or {}).get(k))
     completeness = answered / len(_FIELD_KEYS) if _FIELD_KEYS else 0.0
-    photo_ok = analysis.relevance >= 0.5
+    photo_ok = mean_relevance >= 0.5
     obs.quality = scoring.quality(completeness, photo_ok=photo_ok, geo_ok=obs.geom_ok)
+    # Reward (River points) now reflects the collective evidence quality.
+    first_visit = scoring.visit_multiplier(0, is_first_in_72h=True)
+    need = (site.need_score or 0.0) if site else 0.0
+    obs.points = round(scoring.value_score(need, obs.quality, first_visit))
 
-    # Escalate (never downgrade): a confident contradiction on a pollution field
-    # routes to a human expert.
+    # Escalate (never downgrade): a confident collective contradiction on a
+    # pollution field routes to a human expert.
     if corr.escalate and obs.status == "in_verify":
         obs.status = "expert"
 
-    obs.photo_path = processed.path
+    obs.photo_path = processed.path  # hero image = latest capture
     obs.photo_phash = processed.phash
-    obs.photo_count = (obs.photo_count or 0) + 1
+    obs.photo_count = len(photos)
     obs.photo_analysis = {
         "kind": kind,
         "summary": analysis.summary,
@@ -311,8 +339,9 @@ async def upload_photo(
         "model": analysis.model,
         "used_model": analysis.used_model,
         "ai_generated_likelihood": round(analysis.ai_generated_likelihood, 3),
-        "relevance": round(analysis.relevance, 3),
-        "fields": analysis.fields,
+        "relevance": round(mean_relevance, 3),
+        "photos_count": len(photos),
+        "fields": collective_fields,
         "correlation": [
             {
                 "field": fc.key,
@@ -325,7 +354,7 @@ async def upload_photo(
         ],
         "discrepancy_count": len(corr.discrepancies),
         "escalated": corr.escalate,
-        "authenticity": auth.confidence,
+        "authenticity": min_authenticity,
         "authenticity_reason": auth.reason,
         "captured_live": captured_live,
         "faces_blurred": processed.faces_blurred,

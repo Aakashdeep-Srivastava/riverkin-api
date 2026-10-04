@@ -62,3 +62,28 @@ def test_correlate_no_escalation_when_agreeing():
     corr = vf.correlate(answers, model_fields)
     assert corr.escalate is False
     assert corr.discrepancies == []
+
+
+def test_aggregate_photo_fields_consensus_boost():
+    """Collective read: agreeing photos boost confidence; strongest value wins."""
+    photos = [
+        {"fields": {"foam": {"value": "lots", "confidence": 0.6}}},
+        {"fields": {"foam": {"value": "lots", "confidence": 0.5}}},
+        {"fields": {"litter": {"value": "none", "confidence": 0.9}}},
+    ]
+    agg = vf.aggregate_photo_fields(photos)
+    assert agg["foam"]["value"] == "lots"
+    assert agg["foam"]["photos"] == 2
+    assert agg["foam"]["confidence"] > 0.6  # consensus boost over the single max
+    assert agg["litter"]["value"] == "none" and agg["litter"]["photos"] == 1
+
+
+def test_aggregate_prefers_value_with_most_evidence():
+    photos = [
+        {"fields": {"water_appearance": {"value": "clear", "confidence": 0.4}}},
+        {"fields": {"water_appearance": {"value": "clear", "confidence": 0.4}}},
+        {"fields": {"water_appearance": {"value": "turbid", "confidence": 0.7}}},
+    ]
+    agg = vf.aggregate_photo_fields(photos)
+    # Two photos at 0.4 (sum 0.8) outweigh one at 0.7 → "clear".
+    assert agg["water_appearance"]["value"] == "clear"

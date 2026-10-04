@@ -161,6 +161,7 @@ class ReceiptPhotoOut(BaseModel):
     relevance: float | None = None
     correlation: list[dict] = []
     escalated: bool = False
+    photos_count: int = 1
 
 
 class ReceiptOut(BaseModel):

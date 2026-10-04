@@ -33,13 +33,18 @@ PROMPT = (
     'its bank, not a selfie/unrelated scene), '
     '"ai_generated_likelihood": number 0..1, '
     '"fields": {'
-    '"water_appearance": {"value": "clear|slightly_turbid|turbid", "confidence": 0..1}, '
-    '"foam": {"value": "none|some|lots", "confidence": 0..1}, '
-    '"litter": {"value": "none|some|lots", "confidence": 0..1}, '
-    '"pipe_outfall": {"value": "none|visible", "confidence": 0..1}, '
-    '"flow": {"value": "low|normal|high", "confidence": 0..1}, '
-    '"bank_vegetation": {"value": "bare|some|lush", "confidence": 0..1}'
+    '"water_appearance": {"value": "clear|slightly_turbid|turbid", "confidence": 0..1, '
+    '"question": string}, '
+    '"foam": {"value": "none|some|lots", "confidence": 0..1, "question": string}, '
+    '"litter": {"value": "none|some|lots", "confidence": 0..1, "question": string}, '
+    '"pipe_outfall": {"value": "none|visible", "confidence": 0..1, "question": string}, '
+    '"flow": {"value": "low|normal|high", "confidence": 0..1, "question": string}, '
+    '"bank_vegetation": {"value": "bare|some|lush", "confidence": 0..1, "question": string}'
     "}}. "
+    'Each "question" is a short, natural yes/no-style question a volunteer could '
+    "answer by looking at THIS photo, grounded in what you actually see (e.g. "
+    "\"Is there white foam near the right bank?\" or \"Does the water look muddy "
+    'here?"). Vary it to fit the scene. '
     "Set a field's confidence to 0 if you genuinely cannot tell from the image. "
     "No prose, JSON only."
 )
@@ -195,6 +200,9 @@ async def analyze_image(raw: bytes) -> VisionAnalysis:
                     "value": str(entry["value"])[:24],
                     "confidence": _num(entry.get("confidence"), 0.0),
                 }
+                q = entry.get("question")
+                if isinstance(q, str) and q.strip():
+                    fields[key]["question"] = q.strip()[:160]
 
     return VisionAnalysis(
         summary=str(data.get("summary") or "Water surface photographed from the bank.")[:200],

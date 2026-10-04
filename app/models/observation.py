@@ -56,7 +56,10 @@ class Observation(Base):
     photo_path: Mapped[str | None] = mapped_column(String(512), nullable=True)
     photo_phash: Mapped[str | None] = mapped_column(String(64), nullable=True)
     # Vision analysis + capture-authenticity + (coarse, site-level) geotag.
+    # photo_analysis = the hero photo + the COLLECTIVE read; photos = each of the
+    # 1–5 captured images' individual analysis (for the collective algorithm).
     photo_analysis: Mapped[dict | None] = mapped_column(JSONB, nullable=True)
+    photos: Mapped[list | None] = mapped_column(JSONB, nullable=True)
 
     # Days of monitoring gap this check closed (site days_unseen at submit).
     gap_days_closed: Mapped[int | None] = mapped_column(Integer, nullable=True)

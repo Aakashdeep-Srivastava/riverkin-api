@@ -45,6 +45,11 @@ _KEY_TO_MODEL_FIELD = {
 }
 
 
+def model_field_for(key: str) -> str | None:
+    """Map a front-end question key (q-water) to the model field (water_appearance)."""
+    return _KEY_TO_MODEL_FIELD.get(key)
+
+
 @dataclass(frozen=True)
 class FieldCorrelation:
     key: str  # front-end question key (q-water, ...)
@@ -72,6 +77,46 @@ def correlate_field(
     agrees = abs(cc - mc) <= 1
     discrepancy = (not agrees) and conf >= FLAG_CONFIDENCE
     return FieldCorrelation(key, str(citizen_value), model_value, conf, agrees, discrepancy)
+
+
+def aggregate_photo_fields(photos: list[dict]) -> dict[str, dict]:
+    """Collapse the per-field reads of 1–5 photos into one collective read.
+
+    For each field, pick the value with the strongest evidence across photos:
+    sum confidence per candidate value, choose the top value, and BOOST its
+    confidence when ≥2 photos agree (consensus) — capped at 0.98. This is the
+    "collective algorithm": more images that agree → a stronger prior; a lone
+    low-confidence guess stays weak. Pure, order-independent.
+    """
+    # field -> value -> [(confidence, question)]
+    tally: dict[str, dict[str, list[tuple[float, str | None]]]] = {}
+    for ph in photos:
+        for key, entry in (ph.get("fields") or {}).items():
+            if not isinstance(entry, dict):
+                continue
+            val = str(entry.get("value") or "")
+            conf = float(entry.get("confidence") or 0.0)
+            if not val or conf <= 0:
+                continue
+            q = entry.get("question") if isinstance(entry.get("question"), str) else None
+            tally.setdefault(key, {}).setdefault(val, []).append((conf, q))
+
+    collective: dict[str, dict] = {}
+    for key, values in tally.items():
+        # Best value = highest total confidence mass across photos.
+        best_val, entries = max(values.items(), key=lambda kv: sum(c for c, _ in kv[1]))
+        confs = [c for c, _ in entries]
+        agree = len(confs)
+        base = max(confs)
+        # Consensus boost: each additional agreeing photo adds 10%, capped.
+        boosted = min(0.98, base + 0.10 * (agree - 1))
+        # The GPT-written question from the most confident photo for that value.
+        question = max(entries, key=lambda cq: cq[0])[1]
+        out: dict = {"value": best_val, "confidence": round(boosted, 3), "photos": agree}
+        if question:
+            out["question"] = question
+        collective[key] = out
+    return collective
 
 
 @dataclass(frozen=True)
