@@ -167,6 +167,49 @@ async def test_photo_upload_blur_and_duplicate_gates():
         assert dup.json()["detail"]["reason"] == "duplicate_photo"
 
 
+async def test_photo_contradiction_grounds_prior_and_escalates(monkeypatch):
+    """A confident photo↔answer contradiction escalates to expert and flips the
+    grounded AI prior (AI asks, humans decide)."""
+    from app.ai import vision
+
+    async def _fake(_raw: bytes):
+        return vision.VisionAnalysis(
+            summary="Turbid, brown water.",
+            tags=["turbid"],
+            ai_generated_likelihood=0.2,
+            relevance=0.8,
+            fields={"water_appearance": {"value": "turbid", "confidence": 0.9}},
+            model="test",
+            used_model=True,
+        )
+
+    monkeypatch.setattr(vision, "analyze_image", _fake)
+
+    await seed()
+    async with await _client() as client:
+        code = await _a_site_code(client)
+        # Citizen says the water is clear; the photo (mock) says turbid.
+        obs = (
+            await client.post(
+                "/api/v1/observations",
+                json={"site_code": code, "answers": {"q-water": "clear"}, "photo_count": 0},
+            )
+        ).json()["id"]
+        res = await client.post(
+            f"/api/v1/observations/{obs}/photos",
+            files={"file": ("a.jpg", _sharp_jpeg(3), "image/jpeg")},
+        )
+        assert res.status_code == 200
+        analysis = res.json()["analysis"]
+        assert analysis["escalated"] is True
+        assert analysis["discrepancy_count"] >= 1
+        water = next(c for c in analysis["correlation"] if c["field"] == "q-water")
+        assert water["agrees"] is False
+        # The observation is now routed to expert review.
+        status = (await client.get(f"/api/v1/observations/{obs}/status")).json()
+        assert "review" in status["receipt"]["state"].lower() or status["receipt"]["state"]
+
+
 async def test_photo_analysis_authenticity_geotag_and_serving():
     await seed()
     async with await _client() as client:

@@ -157,6 +157,10 @@ class ReceiptPhotoOut(BaseModel):
     geotag_label: str | None = None
     lat: float | None = None
     lng: float | None = None
+    # Image-grounded cross-check of the citizen's answers vs the photo.
+    relevance: float | None = None
+    correlation: list[dict] = []
+    escalated: bool = False
 
 
 class ReceiptOut(BaseModel):

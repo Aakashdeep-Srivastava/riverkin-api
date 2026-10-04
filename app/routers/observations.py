@@ -20,7 +20,7 @@ from fastapi.responses import FileResponse
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app import authenticity, receipts, scoring
+from app import authenticity, receipts, scoring, vision_fields
 from app.ai import vision
 from app.ai.questions import FIELD_SPECS, build_verify_items
 from app.db import get_session
@@ -95,6 +95,9 @@ def _build_photo(obs: Observation) -> ReceiptPhotoOut | None:
         geotag_label=geo.get("label"),
         lat=geo.get("lat"),
         lng=geo.get("lng"),
+        relevance=pa.get("relevance"),
+        correlation=pa.get("correlation", []),
+        escalated=bool(pa.get("escalated", False)),
     )
 
 
@@ -256,6 +259,37 @@ async def upload_photo(
         where = ", ".join(p for p in (site.name, site.city) if p)
         geotag = {"lat": site.lat, "lng": site.lng, "label": f"Within 150 m of {where}"}
 
+    # --- Image-grounded scoring (AI asks, humans decide) -------------------
+    # Correlate the model's per-field read with the citizen's answers, write the
+    # grounded weak prior onto each verify item, recompute quality from the photo
+    # relevance, and escalate a confident pollution contradiction to expert review.
+    corr = vision_fields.correlate(obs.answers or {}, analysis.fields)
+    items = (
+        await session.execute(
+            select(VerifyItem)
+            .where(VerifyItem.observation_id == obs.id)
+            .order_by(VerifyItem.id)
+        )
+    ).scalars().all()
+    for item, fc in zip(items, corr.per_field, strict=False):
+        if fc.agrees is None:
+            item.ai_agrees = None  # model abstained → no AI term in field_trust
+            item.ai_confidence = 0.0
+        else:
+            item.ai_agrees = fc.agrees
+            item.ai_confidence = round(fc.confidence, 3)
+
+    # Quality now reflects whether the photo is actually a relevant river shot.
+    answered = sum(1 for k in _FIELD_KEYS if (obs.answers or {}).get(k))
+    completeness = answered / len(_FIELD_KEYS) if _FIELD_KEYS else 0.0
+    photo_ok = analysis.relevance >= 0.5
+    obs.quality = scoring.quality(completeness, photo_ok=photo_ok, geo_ok=obs.geom_ok)
+
+    # Escalate (never downgrade): a confident contradiction on a pollution field
+    # routes to a human expert.
+    if corr.escalate and obs.status == "in_verify":
+        obs.status = "expert"
+
     obs.photo_path = processed.path
     obs.photo_phash = processed.phash
     obs.photo_count = (obs.photo_count or 0) + 1
@@ -266,6 +300,20 @@ async def upload_photo(
         "model": analysis.model,
         "used_model": analysis.used_model,
         "ai_generated_likelihood": round(analysis.ai_generated_likelihood, 3),
+        "relevance": round(analysis.relevance, 3),
+        "fields": analysis.fields,
+        "correlation": [
+            {
+                "field": fc.key,
+                "citizen": fc.citizen,
+                "photo": fc.model_value,
+                "confidence": round(fc.confidence, 3),
+                "agrees": fc.agrees,
+            }
+            for fc in corr.per_field
+        ],
+        "discrepancy_count": len(corr.discrepancies),
+        "escalated": corr.escalate,
         "authenticity": auth.confidence,
         "authenticity_reason": auth.reason,
         "captured_live": captured_live,

@@ -2360,6 +2360,31 @@
               }
             ],
             "title": "Lng"
+          },
+          "relevance": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Relevance"
+          },
+          "correlation": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Correlation",
+            "default": []
+          },
+          "escalated": {
+            "type": "boolean",
+            "title": "Escalated",
+            "default": false
           }
         },
         "type": "object",

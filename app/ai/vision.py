@@ -21,13 +21,37 @@ from PIL import Image
 
 from app.config import settings
 
+# The model returns a WEAK, structured per-field read aligned to the citizen's
+# check — never a verdict. "AI asks, humans decide" (CLAUDE.md). Each field
+# carries the model's own confidence so a low-confidence read is ignored.
 PROMPT = (
     "You are assisting a citizen river-monitoring app. Look at this photo of a "
-    "stream or river taken from the bank. Respond ONLY with compact JSON of the "
-    'form {"summary": string (<=140 chars, what the water and bank look like), '
-    '"tags": string[] (up to 5 short labels e.g. clear-water, foam, litter, '
-    'algae, turbid, normal-flow), "ai_generated_likelihood": number between 0 '
-    "and 1 (how likely this image is AI-generated or synthetic)}. No prose."
+    "stream or river taken from the bank. Respond ONLY with compact JSON:\n"
+    '{"summary": string (<=140 chars), '
+    '"tags": string[] (up to 5 short labels), '
+    '"relevance": number 0..1 (is this an in-focus photo of a river/stream and '
+    'its bank, not a selfie/unrelated scene), '
+    '"ai_generated_likelihood": number 0..1, '
+    '"fields": {'
+    '"water_appearance": {"value": "clear|slightly_turbid|turbid", "confidence": 0..1}, '
+    '"foam": {"value": "none|some|lots", "confidence": 0..1}, '
+    '"litter": {"value": "none|some|lots", "confidence": 0..1}, '
+    '"pipe_outfall": {"value": "none|visible", "confidence": 0..1}, '
+    '"flow": {"value": "low|normal|high", "confidence": 0..1}, '
+    '"bank_vegetation": {"value": "bare|some|lush", "confidence": 0..1}'
+    "}}. "
+    "Set a field's confidence to 0 if you genuinely cannot tell from the image. "
+    "No prose, JSON only."
+)
+
+# Fields the model may estimate (keys in VisionAnalysis.fields).
+ASSESSABLE_FIELDS = (
+    "water_appearance",
+    "foam",
+    "litter",
+    "pipe_outfall",
+    "flow",
+    "bank_vegetation",
 )
 
 
@@ -36,6 +60,9 @@ class VisionAnalysis:
     summary: str
     tags: list[str] = field(default_factory=list)
     ai_generated_likelihood: float = 0.5
+    relevance: float = 0.5
+    # {field_key: {"value": str, "confidence": float}} — a weak per-field prior.
+    fields: dict[str, dict] = field(default_factory=dict)
     model: str = "heuristic"
     used_model: bool = False
 
@@ -80,8 +107,23 @@ def _heuristic(raw: bytes) -> VisionAnalysis:
         + ("balanced tones" if not greenish and not brownish else "")
         + f", {'bright' if brightness > 150 else 'dim' if brightness < 70 else 'even'} light."
     )
+    # Coarse, low-confidence field reads from colour stats. These are only a weak
+    # prior; real distinctions need the configured model. Confidence stays low so
+    # the heuristic rarely overrides the human.
+    fields: dict[str, dict] = {
+        "water_appearance": {
+            "value": "turbid" if brownish else "clear",
+            "confidence": 0.3,
+        },
+        "bank_vegetation": {"value": "lush" if greenish else "some", "confidence": 0.2},
+    }
     return VisionAnalysis(
-        summary=summary, tags=tags, ai_generated_likelihood=0.5, model="heuristic"
+        summary=summary,
+        tags=tags,
+        ai_generated_likelihood=0.5,
+        relevance=0.6,
+        fields=fields,
+        model="heuristic",
     )
 
 
@@ -130,18 +172,36 @@ async def analyze_image(raw: bytes) -> VisionAnalysis:
     except Exception:
         return _heuristic(raw)
 
-    likelihood = data.get("ai_generated_likelihood", 0.5)
-    try:
-        likelihood = max(0.0, min(1.0, float(likelihood)))
-    except (TypeError, ValueError):
-        likelihood = 0.5
+    def _num(v: object, default: float) -> float:
+        try:
+            return max(0.0, min(1.0, float(v)))  # type: ignore[arg-type]
+        except (TypeError, ValueError):
+            return default
+
+    likelihood = _num(data.get("ai_generated_likelihood"), 0.5)
+    relevance = _num(data.get("relevance"), 0.5)
     tags = data.get("tags") or []
     if not isinstance(tags, list):
         tags = []
+
+    # Parse the structured per-field reads, keeping only well-formed entries.
+    raw_fields = data.get("fields") or {}
+    fields: dict[str, dict] = {}
+    if isinstance(raw_fields, dict):
+        for key in ASSESSABLE_FIELDS:
+            entry = raw_fields.get(key)
+            if isinstance(entry, dict) and entry.get("value") is not None:
+                fields[key] = {
+                    "value": str(entry["value"])[:24],
+                    "confidence": _num(entry.get("confidence"), 0.0),
+                }
+
     return VisionAnalysis(
         summary=str(data.get("summary") or "Water surface photographed from the bank.")[:200],
         tags=[str(t)[:32] for t in tags[:5]],
         ai_generated_likelihood=likelihood,
+        relevance=relevance,
+        fields=fields,
         model=settings.FOUNDRY_VISION_MODEL,
         used_model=True,
     )
