@@ -1158,6 +1158,86 @@
           }
         }
       }
+    },
+    "/api/v1/community/standings": {
+      "get": {
+        "tags": [
+          "community"
+        ],
+        "summary": "Standings",
+        "description": "Per-city collective progress, most-covered first (usefulness, not vanity).",
+        "operationId": "standings_api_v1_community_standings_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/CityStanding"
+                  },
+                  "type": "array",
+                  "title": "Response Standings Api V1 Community Standings Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/community/challenges": {
+      "get": {
+        "tags": [
+          "community"
+        ],
+        "summary": "Challenges",
+        "description": "This-period field challenges, derived live from sites needing a look.\n\nNo fake urgency: every target is a real count of sites in that state right now.",
+        "operationId": "challenges_api_v1_community_challenges_get",
+        "parameters": [
+          {
+            "name": "city",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "City"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Challenge"
+                  },
+                  "title": "Response Challenges Api V1 Community Challenges Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1253,6 +1333,110 @@
           "file"
         ],
         "title": "Body_upload_photo_api_v1_observations__observation_id__photos_post"
+      },
+      "Challenge": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "city": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "City"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "detail": {
+            "type": "string",
+            "title": "Detail"
+          },
+          "target": {
+            "type": "integer",
+            "title": "Target"
+          },
+          "progress": {
+            "type": "integer",
+            "title": "Progress"
+          },
+          "kind": {
+            "type": "string",
+            "title": "Kind"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "city",
+          "title",
+          "detail",
+          "target",
+          "progress",
+          "kind"
+        ],
+        "title": "Challenge"
+      },
+      "CityStanding": {
+        "properties": {
+          "city": {
+            "type": "string",
+            "title": "City"
+          },
+          "country": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Country"
+          },
+          "sites_total": {
+            "type": "integer",
+            "title": "Sites Total"
+          },
+          "sites_fresh": {
+            "type": "integer",
+            "title": "Sites Fresh"
+          },
+          "coverage_pct": {
+            "type": "integer",
+            "title": "Coverage Pct"
+          },
+          "gaps_closed": {
+            "type": "integer",
+            "title": "Gaps Closed"
+          },
+          "checks_7d": {
+            "type": "integer",
+            "title": "Checks 7D"
+          },
+          "rank": {
+            "type": "integer",
+            "title": "Rank"
+          }
+        },
+        "type": "object",
+        "required": [
+          "city",
+          "sites_total",
+          "sites_fresh",
+          "coverage_pct",
+          "gaps_closed",
+          "checks_7d",
+          "rank"
+        ],
+        "title": "CityStanding"
       },
       "CrewCreated": {
         "properties": {

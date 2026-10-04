@@ -13,6 +13,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.config import settings
 from app.routers import (
     auth,
+    community,
     crews,
     expert,
     fhir,
@@ -57,3 +58,4 @@ app.include_router(maps.router, prefix=API_PREFIX)
 app.include_router(metrics.router, prefix=API_PREFIX)
 app.include_router(crews.router, prefix=API_PREFIX)
 app.include_router(missions.router, prefix=API_PREFIX)
+app.include_router(community.router, prefix=API_PREFIX)
