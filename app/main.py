@@ -7,8 +7,9 @@
 
 from __future__ import annotations
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from starlette.middleware.base import BaseHTTPMiddleware
 
 from app.config import settings
 from app.routers import (
@@ -26,18 +27,43 @@ from app.routers import (
     verify,
 )
 
+# Security response headers (the API serves JSON only, so a locked-down CSP that
+# forbids any embedding/active content is safe and strong — defence in depth on
+# top of HTTPS-only Azure Container Apps ingress). EU/OWASP best practice.
+_SECURITY_HEADERS = {
+    "Strict-Transport-Security": "max-age=63072000; includeSubDomains; preload",
+    "X-Content-Type-Options": "nosniff",
+    "X-Frame-Options": "DENY",
+    "Referrer-Policy": "no-referrer",
+    "Content-Security-Policy": "default-src 'none'; frame-ancestors 'none'",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Permissions-Policy": "geolocation=(), camera=(), microphone=()",
+}
+
+
+class SecurityHeadersMiddleware(BaseHTTPMiddleware):
+    """Attach hardened security headers to every response."""
+
+    async def dispatch(self, request: Request, call_next):
+        response = await call_next(request)
+        for key, value in _SECURITY_HEADERS.items():
+            response.headers.setdefault(key, value)
+        return response
+
+
 app = FastAPI(
     title="RiverKin API",
     version="0.1.0",
     description="RiverKin backend — IEEE OneAquaHealth Global Hackathon 2026 (Track 5).",
 )
 
+app.add_middleware(SecurityHeadersMiddleware)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.cors_origins_list,
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["GET", "POST", "OPTIONS"],
+    allow_headers=["Authorization", "Content-Type"],
 )
 
 
