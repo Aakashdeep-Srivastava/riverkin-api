@@ -20,6 +20,7 @@ from fastapi import APIRouter, Depends, HTTPException, Request, status
 from fastapi.responses import RedirectResponse
 from jose import JWTError, jwt
 from sqlalchemy import select
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.config import settings
@@ -27,7 +28,6 @@ from app.db import get_session
 from app.models.strava_account import StravaAccount
 from app.models.user import User
 from app.routers.auth import current_user
-from app.security import decode_token
 
 router = APIRouter(prefix="/strava", tags=["strava"])
 
@@ -37,33 +37,52 @@ ACTIVITIES = "https://www.strava.com/api/v3/athlete/activities"
 SCOPE = "read,activity:read"
 _ALG = "HS256"
 _STATE_TTL = 900  # seconds a connect attempt stays valid
+_TICKET_TTL = 120  # seconds a connect ticket stays valid
 
 
 def _configured() -> bool:
     return bool(settings.STRAVA_CLIENT_ID and settings.STRAVA_CLIENT_SECRET)
 
 
-def _sign_state(user_id: int) -> str:
-    """Signed, short-lived state carrying the linking user's id (CSRF guard)."""
+def _sign(uid: int, typ: str, ttl: int) -> str:
     now = int(time.time())
     return jwt.encode(
-        {"uid": user_id, "typ": "strava_state", "iat": now, "exp": now + _STATE_TTL},
+        {"uid": uid, "typ": typ, "iat": now, "exp": now + ttl},
         settings.JWT_SECRET,
         algorithm=_ALG,
     )
 
 
-def _read_state(state: str) -> int | None:
+def _read(value: str, typ: str) -> int | None:
     try:
-        claims = jwt.decode(state, settings.JWT_SECRET, algorithms=[_ALG])
+        claims = jwt.decode(value, settings.JWT_SECRET, algorithms=[_ALG])
     except JWTError:
         return None
-    if claims.get("typ") != "strava_state":
+    if claims.get("typ") != typ:
         return None
     try:
         return int(claims["uid"])
     except (KeyError, TypeError, ValueError):
         return None
+
+
+# OAuth state (CSRF guard, API↔Strava↔API) and the connect ticket (browser→API,
+# a short-lived single-purpose token so the long-lived session JWT never rides in
+# a GET URL / access logs).
+def _sign_state(user_id: int) -> str:
+    return _sign(user_id, "strava_state", _STATE_TTL)
+
+
+def _read_state(state: str) -> int | None:
+    return _read(state, "strava_state")
+
+
+def _sign_ticket(user_id: int) -> str:
+    return _sign(user_id, "strava_connect", _TICKET_TTL)
+
+
+def _read_ticket(ticket: str) -> int | None:
+    return _read(ticket, "strava_connect")
 
 
 def _fail_redirect(reason: str) -> RedirectResponse:
@@ -101,29 +120,40 @@ async def strava_status(
     }
 
 
-@router.get("/connect")
-async def strava_connect(token: str) -> RedirectResponse:
-    """Begin the Strava OAuth redirect for the signed-in user.
+@router.get("/connect-ticket")
+async def strava_connect_ticket(
+    user: User | None = Depends(current_user),
+) -> dict[str, str]:
+    """Mint a short-lived (120 s), single-purpose ticket the browser puts in the
+    /connect URL — so the long-lived session JWT never appears in a GET URL or
+    the ingress access logs."""
+    if user is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="sign in required"
+        )
+    if not _configured():
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Strava is not configured"
+        )
+    return {"ticket": _sign_ticket(user.id)}
 
-    The user's identity rides in the signed ``state`` because a browser
-    navigation can't carry the Authorization header; ``token`` is the app JWT
-    the frontend already holds.
+
+@router.get("/connect")
+async def strava_connect(ticket: str) -> RedirectResponse:
+    """Begin the Strava OAuth redirect, identified by the short-lived ticket.
+
+    The user's identity rides in the signed OAuth ``state`` (a browser navigation
+    can't carry the Authorization header); the ``ticket`` proves who started it.
     """
     if not _configured():
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="Strava is not configured"
         )
-    claims = decode_token(token)
-    if not claims or "sub" not in claims:
+    user_id = _read_ticket(ticket)
+    if user_id is None:
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, detail="invalid token"
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="invalid or expired ticket"
         )
-    try:
-        user_id = int(claims["sub"])
-    except (TypeError, ValueError):
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, detail="invalid token"
-        ) from None
     params = {
         "client_id": settings.STRAVA_CLIENT_ID,
         "response_type": "code",
@@ -177,11 +207,21 @@ async def strava_callback(
         or None
     )
 
+    # Match on user_id OR athlete_id so re-linking (same athlete, or a user who
+    # already linked) updates the existing row instead of inserting a duplicate
+    # that would violate either unique constraint.
     acct = (
         await session.execute(
-            select(StravaAccount).where(StravaAccount.user_id == user_id)
+            select(StravaAccount).where(
+                (StravaAccount.user_id == user_id)
+                | (StravaAccount.athlete_id == athlete_id)
+            )
         )
-    ).scalar_one_or_none()
+    ).scalars().first()
+    # If this Strava athlete is already tied to a *different* RiverKin account,
+    # refuse rather than steal the link.
+    if acct is not None and acct.user_id != user_id:
+        return _fail_redirect("already_linked")
     if acct is None:
         acct = StravaAccount(user_id=user_id, athlete_id=athlete_id)
         session.add(acct)
@@ -190,7 +230,12 @@ async def strava_callback(
     acct.access_token = tok["access_token"]
     acct.refresh_token = tok["refresh_token"]
     acct.expires_at = int(tok.get("expires_at", 0))
-    await session.commit()
+    try:
+        await session.commit()
+    except IntegrityError:
+        # Concurrent callback raced us to the same unique row.
+        await session.rollback()
+        return _fail_redirect("already_linked")
 
     return RedirectResponse(
         f"{settings.WEB_URL.rstrip('/')}/me?strava=connected",
@@ -216,6 +261,8 @@ async def _valid_access_token(acct: StravaAccount, session: AsyncSession) -> str
         resp.raise_for_status()
         tok = resp.json()
     except (httpx.HTTPError, ValueError):
+        return None
+    if "access_token" not in tok:
         return None
     acct.access_token = tok["access_token"]
     acct.refresh_token = tok.get("refresh_token", acct.refresh_token)

@@ -45,6 +45,8 @@ router = APIRouter(prefix="/observations", tags=["observations"])
 
 GEOFENCE_M = 150.0
 ORPHAN_DAYS = 999
+# Reject oversized uploads before buffering/decoding (OOM guard on a capped replica).
+MAX_PHOTO_BYTES = 15 * 1024 * 1024
 _FIELD_KEYS = [spec["key"] for spec in FIELD_SPECS]
 
 
@@ -225,9 +227,17 @@ async def analyze_preview(
     authoritative score (with cross-photo novelty) still happens on submit.
     """
     raw = await file.read()
+    if len(raw) > MAX_PHOTO_BYTES:
+        raise HTTPException(
+            status_code=413,
+            detail={"reason": "too_large", "message": "Photo is too large (max 15 MB)."},
+        )
     exif_present = has_exif(raw)
     try:
-        processed = process_photo(raw, observation_id=0, kind="preview", persist=False)
+        # CPU-bound (OpenCV + pHash) — run off the event loop.
+        processed = await run_in_threadpool(
+            process_photo, raw, observation_id=0, kind="preview", persist=False
+        )
     except Exception as exc:  # unreadable / not an image
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
@@ -285,9 +295,17 @@ async def upload_photo(
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="observation not found")
 
     raw = await file.read()
+    if len(raw) > MAX_PHOTO_BYTES:
+        raise HTTPException(
+            status_code=413,
+            detail={"reason": "too_large", "message": "Photo is too large (max 15 MB)."},
+        )
     exif_present = has_exif(raw)
     try:
-        processed = process_photo(raw, observation_id=observation_id, kind=kind)
+        # CPU-bound (OpenCV + pHash) — run off the event loop.
+        processed = await run_in_threadpool(
+            process_photo, raw, observation_id=observation_id, kind=kind
+        )
     except Exception as exc:  # unreadable / not an image
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,

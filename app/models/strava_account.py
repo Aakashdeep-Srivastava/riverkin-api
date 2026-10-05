@@ -25,8 +25,9 @@ class StravaAccount(Base):
     )
     athlete_id: Mapped[int] = mapped_column(BigInteger, unique=True, index=True)
     athlete_name: Mapped[str | None] = mapped_column(String(128), nullable=True)
-    access_token: Mapped[str] = mapped_column(String(128))
-    refresh_token: Mapped[str] = mapped_column(String(128))
+    # Opaque third-party tokens — generous width in case Strava lengthens them.
+    access_token: Mapped[str] = mapped_column(String(255))
+    refresh_token: Mapped[str] = mapped_column(String(255))
     # Unix seconds at which the access token expires (Strava's expires_at).
     expires_at: Mapped[int] = mapped_column(Integer)
     created_at: Mapped[datetime] = mapped_column(

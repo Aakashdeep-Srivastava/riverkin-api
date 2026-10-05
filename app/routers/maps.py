@@ -16,12 +16,17 @@ import time
 from typing import Any
 
 import httpx
-from fastapi import APIRouter, Query
+from fastapi import APIRouter, Query, Request
 from fastapi.responses import JSONResponse, Response
+from starlette.concurrency import run_in_threadpool
 
 from app.config import settings
+from app.ratelimit import limiter
 
 router = APIRouter(prefix="/maps", tags=["maps"])
+
+# A static image is a billable Azure Maps transaction; cap per-IP calls.
+_STATIC_LIMIT = "60/minute"
 
 # Azure Maps AAD scope (same for every tenant/account).
 _MAPS_SCOPE = "https://atlas.microsoft.com/.default"
@@ -89,7 +94,8 @@ async def get_maps_token() -> JSONResponse | dict[str, Any]:
     ``{"detail": "maps token unavailable"}`` when no credential/role is
     available. Fails fast (never hangs) so CI stays deterministic.
     """
-    token = _mint_token()
+    # Minting does blocking credential/IMDS I/O — keep it off the event loop.
+    token = await run_in_threadpool(_mint_token)
     if token is None:
         return JSONResponse(
             status_code=503, content={"detail": "maps token unavailable"}
@@ -103,7 +109,9 @@ async def get_maps_token() -> JSONResponse | dict[str, Any]:
 
 
 @router.get("/static", response_model=None)
+@limiter.limit(_STATIC_LIMIT)
 async def get_static_map(
+    request: Request,
     lat: float = Query(..., ge=-90.0, le=90.0),
     lng: float = Query(..., ge=-180.0, le=180.0),
     zoom: int = Query(15, ge=1, le=20),
@@ -121,7 +129,7 @@ async def get_static_map(
     if tileset not in _ALLOWED_TILESETS:
         tileset = "microsoft.imagery"
 
-    token = _mint_token()
+    token = await run_in_threadpool(_mint_token)
     if token is None:
         return JSONResponse(
             status_code=503, content={"detail": "maps image unavailable"}

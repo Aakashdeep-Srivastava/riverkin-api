@@ -28,7 +28,7 @@ async def test_strava_connect_404_when_unconfigured(monkeypatch):
     monkeypatch.setattr(settings, "STRAVA_CLIENT_SECRET", "")
     transport = httpx.ASGITransport(app=app)
     async with httpx.AsyncClient(transport=transport, base_url="http://test") as client:
-        resp = await client.get("/api/v1/strava/connect", params={"token": "x"})
+        resp = await client.get("/api/v1/strava/connect", params={"ticket": "x"})
     assert resp.status_code == 404
 
 
