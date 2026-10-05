@@ -60,6 +60,13 @@ class Settings(BaseSettings):
     # Where to send the browser back after a successful sign-in.
     WEB_URL: str = "http://localhost:3000"
 
+    # Geofence enforcement. When True, a check logged outside the site radius is
+    # refused (403). When False (default — demo/field-test friendly), the check
+    # is accepted but flagged ``geom_ok=False`` ("location not verified") so the
+    # full pipeline (GPT vision + authenticity) still runs from anywhere and the
+    # receipt reports honestly whether the visitor was confirmed at the site.
+    GEOFENCE_ENFORCE: bool = False
+
     # Azure Maps — the account uniqueId (client id). Used to mint AAD tokens for
     # the browser via managed identity; not a secret.
     AZURE_MAPS_CLIENT_ID: str = ""

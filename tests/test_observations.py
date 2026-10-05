@@ -95,7 +95,31 @@ async def test_pipe_flag_routes_to_expert():
         assert resp.json()["receipt"]["state"] == "Sent for expert review"
 
 
-async def test_geofence_refusal():
+async def test_geofence_non_blocking_by_default():
+    """Default (demo/field-test): a far check is accepted but flagged geo_ok=False
+    so the full pipeline still runs from anywhere (e.g. developing from India)."""
+    await seed()
+    async with await _client() as client:
+        code = await _a_site_code(client)
+        resp = await client.post(
+            "/api/v1/observations",
+            json={
+                "site_code": code,
+                "answers": {"q-water": "clear"},
+                "photo_count": 2,
+                "lat": 0.0,
+                "lng": 0.0,
+            },
+        )
+        assert resp.status_code == 201
+        assert resp.json()["receipt"]["geo_ok"] is False
+
+
+async def test_geofence_enforced_refuses(monkeypatch):
+    """With GEOFENCE_ENFORCE=True, a far check is refused (403)."""
+    from app.config import settings
+
+    monkeypatch.setattr(settings, "GEOFENCE_ENFORCE", True)
     await seed()
     async with await _client() as client:
         code = await _a_site_code(client)

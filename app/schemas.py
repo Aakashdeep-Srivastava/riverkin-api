@@ -182,6 +182,7 @@ class ReceiptOut(BaseModel):
     state: str
     date_label: str
     points: int = 0  # River points earned for this check (River Value)
+    geo_ok: bool = True  # was the visitor confirmed within the site radius?
     photo: ReceiptPhotoOut | None = None
 
 

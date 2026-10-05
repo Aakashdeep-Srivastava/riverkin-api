@@ -23,6 +23,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app import authenticity, receipts, scoring, vision_fields
 from app.ai import vision
 from app.ai.questions import FIELD_SPECS, build_verify_items
+from app.config import settings
 from app.db import get_session
 from app.models.observation import Observation
 from app.models.site import Site
@@ -121,6 +122,7 @@ def _build_receipt(obs: Observation, site: Site, verifier_count: int) -> Receipt
         state=receipts.state_label(obs.status),
         date_label=receipts.date_label(obs.created_at),
         points=obs.points or 0,
+        geo_ok=bool(obs.geom_ok),
         photo=_build_photo(obs),
     )
 
@@ -142,11 +144,14 @@ async def create_observation(
     if site is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="site not found")
 
-    # Geofence (raw GPS discarded immediately after the check).
-    geo_ok = True
+    # Geofence (raw GPS discarded immediately after the check). Non-blocking by
+    # default: no GPS or outside the radius → geo_ok=False ("location not
+    # verified"), but the check is still accepted and the full vision pipeline
+    # runs. Set GEOFENCE_ENFORCE=true to hard-refuse (403) instead.
+    geo_ok = False
     if payload.lat is not None and payload.lng is not None:
         geo_ok = await _within_geofence(session, site, payload.lat, payload.lng)
-        if not geo_ok:
+        if not geo_ok and settings.GEOFENCE_ENFORCE:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail={
