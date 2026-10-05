@@ -14,6 +14,7 @@ import base64
 import io
 import json
 import logging
+import re
 from dataclasses import dataclass, field
 
 import httpx
@@ -142,12 +143,27 @@ def _heuristic(raw: bytes) -> VisionAnalysis:
 
 
 def _parse_model_json(text: str) -> dict:
-    """Pull the JSON object out of a model reply that may wrap it in prose/fences."""
-    start = text.find("{")
-    end = text.rfind("}")
+    """Pull the JSON object out of a model reply that may wrap it in prose/fences.
+
+    Tolerant: strips markdown fences and trailing commas (gpt-4o-mini sometimes
+    emits them) so a well-formed-enough reply still parses.
+    """
+    t = text.strip()
+    if t.startswith("```"):
+        # ```json\n{...}\n```  → keep the inner block
+        t = t.strip("`")
+        if t[:4].lower() == "json":
+            t = t[4:]
+    start = t.find("{")
+    end = t.rfind("}")
     if start == -1 or end == -1 or end <= start:
         raise ValueError("no json object in reply")
-    return json.loads(text[start : end + 1])
+    blob = t[start : end + 1]
+    try:
+        return json.loads(blob)
+    except json.JSONDecodeError:
+        # Tolerate trailing commas before } or ].
+        return json.loads(re.sub(r",(\s*[}\]])", r"\1", blob))
 
 
 async def analyze_image(raw: bytes) -> VisionAnalysis:
@@ -173,8 +189,9 @@ async def analyze_image(raw: bytes) -> VisionAnalysis:
                 ],
             }
         ],
-        "max_tokens": 300,
+        "max_tokens": 800,
         "temperature": 0.0,
+        "response_format": {"type": "json_object"},
     }
     url = f"{endpoint}/chat/completions?api-version={settings.FOUNDRY_API_VERSION}"
     try:
