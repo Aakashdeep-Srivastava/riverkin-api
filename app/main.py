@@ -9,9 +9,13 @@ from __future__ import annotations
 
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from slowapi import _rate_limit_exceeded_handler
+from slowapi.errors import RateLimitExceeded
+from slowapi.middleware import SlowAPIMiddleware
 from starlette.middleware.base import BaseHTTPMiddleware
 
 from app.config import settings
+from app.ratelimit import limiter
 from app.routers import (
     auth,
     challenges,
@@ -60,6 +64,11 @@ app = FastAPI(
     description="RiverKin backend — IEEE OneAquaHealth Global Hackathon 2026 (Track 5).",
 )
 
+# Rate limiting (slowapi): global default + per-endpoint tightening.
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+app.add_middleware(SlowAPIMiddleware)
+
 app.add_middleware(SecurityHeadersMiddleware)
 app.add_middleware(
     CORSMiddleware,
@@ -71,6 +80,7 @@ app.add_middleware(
 
 
 @app.get("/healthz", tags=["health"])
+@limiter.exempt
 async def healthz() -> dict[str, str]:
     """Liveness probe used by the Docker entrypoint and CI smoke test."""
     return {"status": "ok"}

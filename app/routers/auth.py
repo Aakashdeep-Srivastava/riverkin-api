@@ -24,6 +24,7 @@ from app.config import settings
 from app.db import get_session
 from app.models.observation import Observation
 from app.models.user import User
+from app.ratelimit import AUTH_LIMIT, limiter
 from app.schemas import AuthToken, LoginIn, RegisterIn, UserOut
 from app.security import (
     create_access_token,
@@ -70,7 +71,10 @@ def _token_for(user: User) -> AuthToken:
 
 
 @router.post("/register", response_model=AuthToken, status_code=status.HTTP_201_CREATED)
-async def register(payload: RegisterIn, session: AsyncSession = Depends(get_session)) -> AuthToken:
+@limiter.limit(AUTH_LIMIT)
+async def register(
+    request: Request, payload: RegisterIn, session: AsyncSession = Depends(get_session)
+) -> AuthToken:
     if payload.role not in VALID_ROLES:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
@@ -98,7 +102,10 @@ async def register(payload: RegisterIn, session: AsyncSession = Depends(get_sess
 
 
 @router.post("/login", response_model=AuthToken)
-async def login(payload: LoginIn, session: AsyncSession = Depends(get_session)) -> AuthToken:
+@limiter.limit(AUTH_LIMIT)
+async def login(
+    request: Request, payload: LoginIn, session: AsyncSession = Depends(get_session)
+) -> AuthToken:
     user = (
         await session.execute(select(User).where(User.email == payload.email.lower()))
     ).scalar_one_or_none()

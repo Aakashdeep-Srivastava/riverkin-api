@@ -15,7 +15,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
-from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile, status
+from fastapi import APIRouter, Depends, File, Form, HTTPException, Request, UploadFile, status
 from fastapi.responses import FileResponse, Response
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -31,6 +31,7 @@ from app.models.site import Site
 from app.models.user import User
 from app.models.verify import VerifyItem, Vote
 from app.photos import MEDIA_DIR, PHASH_REUSE_DISTANCE, has_exif, phash_distance, process_photo
+from app.ratelimit import PHOTO_LIMIT, WRITE_LIMIT, limiter
 from app.routers.auth import current_user
 from app.schemas import (
     ObservationCreated,
@@ -129,7 +130,9 @@ def _build_receipt(obs: Observation, site: Site, verifier_count: int) -> Receipt
 
 
 @router.post("", response_model=ObservationCreated, status_code=status.HTTP_201_CREATED)
+@limiter.limit(WRITE_LIMIT)
 async def create_observation(
+    request: Request,
     payload: ObservationIn,
     session: AsyncSession = Depends(get_session),
     author: User | None = Depends(current_user),
@@ -208,7 +211,9 @@ async def create_observation(
 
 
 @router.post("/{observation_id}/photos")
+@limiter.limit(PHOTO_LIMIT)
 async def upload_photo(
+    request: Request,
     observation_id: int,
     file: UploadFile = File(...),
     kind: str = Form("upstream"),
