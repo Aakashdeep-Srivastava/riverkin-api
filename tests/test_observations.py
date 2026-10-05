@@ -267,3 +267,31 @@ async def test_photo_analysis_authenticity_geotag_and_serving():
         assert img.status_code == 200
         assert img.headers["content-type"] == "image/jpeg"
         assert len(img.content) > 0
+
+
+async def test_analyze_preview_returns_real_fields():
+    """Stateless /analyze returns a vision read without needing an observation."""
+    async with await _client() as client:
+        resp = await client.post(
+            "/api/v1/observations/analyze",
+            files={"file": ("a.jpg", _sharp_jpeg(7), "image/jpeg")},
+            data={"captured_live": "true"},
+        )
+    assert resp.status_code == 200
+    body = resp.json()
+    assert body["ok"] is True
+    for key in ("summary", "tags", "ai_generated_likelihood", "authenticity", "used_model"):
+        assert key in body
+    assert 0 <= body["authenticity"] <= 100
+
+
+async def test_analyze_preview_flags_blurry():
+    async with await _client() as client:
+        resp = await client.post(
+            "/api/v1/observations/analyze",
+            files={"file": ("b.jpg", _blurry_jpeg(), "image/jpeg")},
+        )
+    assert resp.status_code == 200
+    body = resp.json()
+    assert body["ok"] is False
+    assert body["reason"] == "retake_photo"

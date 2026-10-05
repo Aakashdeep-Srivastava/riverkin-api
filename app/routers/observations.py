@@ -210,6 +210,58 @@ async def create_observation(
     )
 
 
+@router.post("/analyze")
+@limiter.limit(PHOTO_LIMIT)
+async def analyze_preview(
+    request: Request,
+    file: UploadFile = File(...),
+    captured_live: bool = Form(False),
+) -> dict[str, Any]:
+    """Stateless live-scan analysis for the camera step (persists nothing).
+
+    Runs the same EXIF-strip + face-blur + vision pipeline as the real upload so
+    the scan overlay shows a *real* pollution / AI-generation read the instant a
+    photo is taken — but it needs no observation id and writes no file. The
+    authoritative score (with cross-photo novelty) still happens on submit.
+    """
+    raw = await file.read()
+    exif_present = has_exif(raw)
+    try:
+        processed = process_photo(raw, observation_id=0, kind="preview", persist=False)
+    except Exception as exc:  # unreadable / not an image
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
+            detail={"reason": "unreadable_image", "message": str(exc)[:120]},
+        ) from exc
+
+    if processed.is_blurry:
+        return {
+            "ok": False,
+            "reason": "retake_photo",
+            "message": "Photo looks blurry — retake it.",
+        }
+
+    analysis = await vision.analyze_image(processed.jpeg_bytes)
+    auth = authenticity.score(
+        captured_live=captured_live,
+        exif_present=exif_present,
+        phash_novelty=None,  # novelty vs site history is checked at submit, not preview
+        model_ai_likelihood=analysis.ai_generated_likelihood,
+    )
+    return {
+        "ok": True,
+        "summary": analysis.summary,
+        "tags": analysis.tags,
+        "relevance": round(analysis.relevance, 3),
+        "ai_generated_likelihood": round(analysis.ai_generated_likelihood, 3),
+        "authenticity": auth.confidence,
+        "authenticity_reason": auth.reason,
+        "evidence_region": analysis.evidence_region,
+        "used_model": analysis.used_model,
+        "model": analysis.model,
+    }
+
+
 @router.post("/{observation_id}/photos")
 @limiter.limit(PHOTO_LIMIT)
 async def upload_photo(

@@ -231,6 +231,50 @@
         }
       }
     },
+    "/api/v1/observations/analyze": {
+      "post": {
+        "tags": [
+          "observations"
+        ],
+        "summary": "Analyze Preview",
+        "description": "Stateless live-scan analysis for the camera step (persists nothing).\n\nRuns the same EXIF-strip + face-blur + vision pipeline as the real upload so\nthe scan overlay shows a *real* pollution / AI-generation read the instant a\nphoto is taken \u2014 but it needs no observation id and writes no file. The\nauthoritative score (with cross-photo novelty) still happens on submit.",
+        "operationId": "analyze_preview_api_v1_observations_analyze_post",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_analyze_preview_api_v1_observations_analyze_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Analyze Preview Api V1 Observations Analyze Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/observations/{observation_id}/photos": {
       "post": {
         "tags": [
@@ -2210,6 +2254,25 @@
           "user"
         ],
         "title": "AuthToken"
+      },
+      "Body_analyze_preview_api_v1_observations_analyze_post": {
+        "properties": {
+          "file": {
+            "type": "string",
+            "contentMediaType": "application/octet-stream",
+            "title": "File"
+          },
+          "captured_live": {
+            "type": "boolean",
+            "title": "Captured Live",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "file"
+        ],
+        "title": "Body_analyze_preview_api_v1_observations_analyze_post"
       },
       "Body_upload_photo_api_v1_observations__observation_id__photos_post": {
         "properties": {

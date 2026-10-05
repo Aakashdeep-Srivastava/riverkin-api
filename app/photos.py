@@ -81,11 +81,15 @@ def _blur_faces(bgr: np.ndarray) -> int:
         return 0
 
 
-def process_photo(raw: bytes, *, observation_id: int, kind: str = "upstream") -> ProcessedPhoto:
-    """Process one uploaded photo and persist the clean bytes.
+def process_photo(
+    raw: bytes, *, observation_id: int, kind: str = "upstream", persist: bool = True
+) -> ProcessedPhoto:
+    """Process one uploaded photo and (optionally) persist the clean bytes.
 
     EXIF is dropped by re-encoding from the pixel data only. Returns the stored
-    path, perceptual hash, blur score and face-blur count.
+    path, perceptual hash, blur score and face-blur count. ``persist=False`` runs
+    the exact same clean-up (face blur, EXIF strip, blur score) but writes nothing
+    to disk — used by the stateless live-scan preview, which must not create files.
     """
     # Decode via PIL (RGB, no EXIF carried forward) then to OpenCV BGR.
     pil = Image.open(io.BytesIO(raw)).convert("RGB")
@@ -100,15 +104,19 @@ def process_photo(raw: bytes, *, observation_id: int, kind: str = "upstream") ->
     processed_rgb = cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB)
     phash = str(imagehash.phash(Image.fromarray(processed_rgb)))
 
-    MEDIA_DIR.mkdir(parents=True, exist_ok=True)
-    out_path = MEDIA_DIR / f"obs{observation_id:05d}-{kind}.jpg"
     clean = Image.fromarray(processed_rgb)
-    clean.save(out_path, format="JPEG", quality=85)
     buf = io.BytesIO()
     clean.save(buf, format="JPEG", quality=85)
 
+    path = ""
+    if persist:
+        MEDIA_DIR.mkdir(parents=True, exist_ok=True)
+        out_path = MEDIA_DIR / f"obs{observation_id:05d}-{kind}.jpg"
+        clean.save(out_path, format="JPEG", quality=85)
+        path = str(out_path.relative_to(MEDIA_DIR.parent))
+
     return ProcessedPhoto(
-        path=str(out_path.relative_to(MEDIA_DIR.parent)),
+        path=path,
         phash=phash,
         blur_score=blur,
         is_blurry=blur < BLUR_THRESHOLD,
