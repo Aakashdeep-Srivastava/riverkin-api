@@ -878,6 +878,106 @@
         }
       }
     },
+    "/api/v1/maps/static": {
+      "get": {
+        "tags": [
+          "maps"
+        ],
+        "summary": "Get Static Map",
+        "description": "Proxy an Azure Maps static image centred on a site's coordinates.\n\nThe browser never holds a token: it requests this endpoint and we fetch the\nPNG server-side with the managed-identity AAD token, then stream the bytes\nback. Returns 503 when maps auth is unavailable so the frontend can fall\nback to its illustrative placeholder.",
+        "operationId": "get_static_map_api_v1_maps_static_get",
+        "parameters": [
+          {
+            "name": "lat",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "number",
+              "maximum": 90.0,
+              "minimum": -90.0,
+              "title": "Lat"
+            }
+          },
+          {
+            "name": "lng",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "number",
+              "maximum": 180.0,
+              "minimum": -180.0,
+              "title": "Lng"
+            }
+          },
+          {
+            "name": "zoom",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 20,
+              "minimum": 1,
+              "default": 15,
+              "title": "Zoom"
+            }
+          },
+          {
+            "name": "w",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 1280,
+              "minimum": 64,
+              "default": 640,
+              "title": "W"
+            }
+          },
+          {
+            "name": "h",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 1280,
+              "minimum": 64,
+              "default": 360,
+              "title": "H"
+            }
+          },
+          {
+            "name": "tileset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "microsoft.imagery",
+              "title": "Tileset"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/metrics": {
       "get": {
         "tags": [
@@ -1309,6 +1409,238 @@
         }
       }
     },
+    "/api/v1/challenges": {
+      "get": {
+        "tags": [
+          "challenges"
+        ],
+        "summary": "List Challenges",
+        "operationId": "list_challenges_api_v1_challenges_get",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Status"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChallengeOut"
+                  },
+                  "title": "Response List Challenges Api V1 Challenges Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/challenges/{challenge_id}": {
+      "get": {
+        "tags": [
+          "challenges"
+        ],
+        "summary": "Get Challenge",
+        "operationId": "get_challenge_api_v1_challenges__challenge_id__get",
+        "parameters": [
+          {
+            "name": "challenge_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Challenge Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChallengeOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/community/profile": {
+      "get": {
+        "tags": [
+          "challenges"
+        ],
+        "summary": "Community Profile",
+        "operationId": "community_profile_api_v1_community_profile_get",
+        "parameters": [
+          {
+            "name": "key",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 3,
+              "maxLength": 64,
+              "title": "Key"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommunityProfile"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/referrals": {
+      "post": {
+        "tags": [
+          "challenges"
+        ],
+        "summary": "Attach Referral",
+        "operationId": "attach_referral_api_v1_referrals_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReferralBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommunityProfile"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/challenges/{challenge_id}/join": {
+      "post": {
+        "tags": [
+          "challenges"
+        ],
+        "summary": "Join Challenge",
+        "operationId": "join_challenge_api_v1_challenges__challenge_id__join_post",
+        "parameters": [
+          {
+            "name": "challenge_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Challenge Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/JoinBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JoinResult"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/notifications": {
       "get": {
         "tags": [
@@ -1720,6 +2052,86 @@
         ],
         "title": "Challenge"
       },
+      "ChallengeOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "city": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "City"
+          },
+          "kind": {
+            "type": "string",
+            "title": "Kind"
+          },
+          "meta": {
+            "type": "string",
+            "title": "Meta"
+          },
+          "window": {
+            "type": "string",
+            "title": "Window"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "days_left": {
+            "type": "integer",
+            "title": "Days Left"
+          },
+          "sites": {
+            "type": "integer",
+            "title": "Sites"
+          },
+          "blurb": {
+            "type": "string",
+            "title": "Blurb"
+          },
+          "credit": {
+            "type": "integer",
+            "title": "Credit"
+          },
+          "featured": {
+            "type": "boolean",
+            "title": "Featured"
+          },
+          "joined": {
+            "type": "integer",
+            "title": "Joined"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "city",
+          "kind",
+          "meta",
+          "window",
+          "status",
+          "days_left",
+          "sites",
+          "blurb",
+          "credit",
+          "featured",
+          "joined"
+        ],
+        "title": "ChallengeOut"
+      },
       "CityStanding": {
         "properties": {
           "city": {
@@ -1773,6 +2185,52 @@
           "rank"
         ],
         "title": "CityStanding"
+      },
+      "CommunityProfile": {
+        "properties": {
+          "key": {
+            "type": "string",
+            "title": "Key"
+          },
+          "credits": {
+            "type": "integer",
+            "title": "Credits"
+          },
+          "missions": {
+            "type": "integer",
+            "title": "Missions"
+          },
+          "checks": {
+            "type": "integer",
+            "title": "Checks"
+          },
+          "rivers_helped": {
+            "type": "integer",
+            "title": "Rivers Helped"
+          },
+          "referrals": {
+            "type": "integer",
+            "title": "Referrals"
+          },
+          "joined_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Joined Ids",
+            "default": []
+          }
+        },
+        "type": "object",
+        "required": [
+          "key",
+          "credits",
+          "missions",
+          "checks",
+          "rivers_helped",
+          "referrals"
+        ],
+        "title": "CommunityProfile"
       },
       "CrewCreated": {
         "properties": {
@@ -2057,6 +2515,49 @@
         },
         "type": "object",
         "title": "HTTPValidationError"
+      },
+      "JoinBody": {
+        "properties": {
+          "key": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 3,
+            "title": "Key"
+          },
+          "referrer": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 64
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Referrer"
+          }
+        },
+        "type": "object",
+        "required": [
+          "key"
+        ],
+        "title": "JoinBody"
+      },
+      "JoinResult": {
+        "properties": {
+          "challenge": {
+            "$ref": "#/components/schemas/ChallengeOut"
+          },
+          "profile": {
+            "$ref": "#/components/schemas/CommunityProfile"
+          }
+        },
+        "type": "object",
+        "required": [
+          "challenge",
+          "profile"
+        ],
+        "title": "JoinResult"
       },
       "LoginIn": {
         "properties": {
@@ -2668,6 +3169,11 @@
             "title": "Points",
             "default": 0
           },
+          "geo_ok": {
+            "type": "boolean",
+            "title": "Geo Ok",
+            "default": true
+          },
           "photo": {
             "anyOf": [
               {
@@ -2838,6 +3344,28 @@
         ],
         "title": "ReceiptPhotoOut",
         "description": "The analysed check photo shown on the receipt."
+      },
+      "ReferralBody": {
+        "properties": {
+          "referrer": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 3,
+            "title": "Referrer"
+          },
+          "referred": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 3,
+            "title": "Referred"
+          }
+        },
+        "type": "object",
+        "required": [
+          "referrer",
+          "referred"
+        ],
+        "title": "ReferralBody"
       },
       "RegisterIn": {
         "properties": {

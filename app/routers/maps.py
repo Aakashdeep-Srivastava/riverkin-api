@@ -15,8 +15,9 @@ from __future__ import annotations
 import time
 from typing import Any
 
-from fastapi import APIRouter
-from fastapi.responses import JSONResponse
+import httpx
+from fastapi import APIRouter, Query
+from fastapi.responses import JSONResponse, Response
 
 from app.config import settings
 
@@ -26,6 +27,16 @@ router = APIRouter(prefix="/maps", tags=["maps"])
 _MAPS_SCOPE = "https://atlas.microsoft.com/.default"
 # Re-mint when within this many seconds of expiry.
 _REFRESH_SKEW_SECONDS = 120
+
+# Azure Maps "Get Map Static Image" (Render v2024-04-01). Satellite imagery is
+# the default so each site shows its real location from above.
+_STATIC_IMAGE_URL = "https://atlas.microsoft.com/map/static"
+_STATIC_API_VERSION = "2024-04-01"
+_ALLOWED_TILESETS = {
+    "microsoft.imagery",
+    "microsoft.base.road",
+    "microsoft.base.hybrid.road",
+}
 
 # Module-level singletons, created lazily on first use.
 _credential: Any = None
@@ -48,6 +59,28 @@ def _get_credential() -> Any:
     return _credential
 
 
+def _mint_token() -> Any | None:
+    """Return a cached/fresh Azure Maps AAD token, or None if unavailable.
+
+    Shared by ``/maps/token`` (handed to the browser MapLibre) and
+    ``/maps/static`` (used server-side to authenticate the image proxy).
+    """
+    if not settings.AZURE_MAPS_CLIENT_ID:
+        return None
+
+    global _cached_token
+    now = time.time()
+    if _cached_token is not None and _cached_token.expires_on - now > _REFRESH_SKEW_SECONDS:
+        return _cached_token
+    try:
+        token = _get_credential().get_token(_MAPS_SCOPE)
+    except Exception:
+        # CredentialUnavailableError, ClientAuthenticationError, probe failures.
+        return None
+    _cached_token = token
+    return token
+
+
 @router.get("/token", response_model=None)
 async def get_maps_token() -> JSONResponse | dict[str, Any]:
     """Mint an AAD access token for Azure Maps.
@@ -56,32 +89,69 @@ async def get_maps_token() -> JSONResponse | dict[str, Any]:
     ``{"detail": "maps token unavailable"}`` when no credential/role is
     available. Fails fast (never hangs) so CI stays deterministic.
     """
-    # No client id configured -> nothing to hand the browser; fail fast before
-    # touching any credential/network.
-    if not settings.AZURE_MAPS_CLIENT_ID:
+    token = _mint_token()
+    if token is None:
         return JSONResponse(
             status_code=503, content={"detail": "maps token unavailable"}
         )
-
-    global _cached_token
-
-    now = time.time()
-    if _cached_token is not None and _cached_token.expires_on - now > _REFRESH_SKEW_SECONDS:
-        token = _cached_token
-    else:
-        try:
-            credential = _get_credential()
-            token = credential.get_token(_MAPS_SCOPE)
-            _cached_token = token
-        except Exception:
-            # CredentialUnavailableError, ClientAuthenticationError, probe
-            # failures, etc. Never log the exception detail or token.
-            return JSONResponse(
-                status_code=503, content={"detail": "maps token unavailable"}
-            )
 
     return {
         "token": token.token,
         "clientId": settings.AZURE_MAPS_CLIENT_ID,
         "expiresOn": int(token.expires_on),
     }
+
+
+@router.get("/static", response_model=None)
+async def get_static_map(
+    lat: float = Query(..., ge=-90.0, le=90.0),
+    lng: float = Query(..., ge=-180.0, le=180.0),
+    zoom: int = Query(15, ge=1, le=20),
+    w: int = Query(640, ge=64, le=1280),
+    h: int = Query(360, ge=64, le=1280),
+    tileset: str = Query("microsoft.imagery"),
+) -> Response:
+    """Proxy an Azure Maps static image centred on a site's coordinates.
+
+    The browser never holds a token: it requests this endpoint and we fetch the
+    PNG server-side with the managed-identity AAD token, then stream the bytes
+    back. Returns 503 when maps auth is unavailable so the frontend can fall
+    back to its illustrative placeholder.
+    """
+    if tileset not in _ALLOWED_TILESETS:
+        tileset = "microsoft.imagery"
+
+    token = _mint_token()
+    if token is None:
+        return JSONResponse(
+            status_code=503, content={"detail": "maps image unavailable"}
+        )
+
+    params = {
+        "api-version": _STATIC_API_VERSION,
+        "tilesetId": tileset,
+        "center": f"{lng},{lat}",
+        "zoom": str(zoom),
+        "width": str(w),
+        "height": str(h),
+    }
+    headers = {
+        "Authorization": f"Bearer {token.token}",
+        "x-ms-client-id": settings.AZURE_MAPS_CLIENT_ID or "",
+    }
+    try:
+        async with httpx.AsyncClient(timeout=10.0) as client:
+            resp = await client.get(_STATIC_IMAGE_URL, params=params, headers=headers)
+        resp.raise_for_status()
+    except httpx.HTTPError:
+        return JSONResponse(
+            status_code=503, content={"detail": "maps image unavailable"}
+        )
+
+    media_type = resp.headers.get("content-type", "image/png")
+    return Response(
+        content=resp.content,
+        media_type=media_type,
+        # Site locations don't move; let the browser/CDN hold the image a day.
+        headers={"Cache-Control": "public, max-age=86400"},
+    )
