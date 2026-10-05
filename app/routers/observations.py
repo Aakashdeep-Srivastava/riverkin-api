@@ -16,11 +16,12 @@ from pathlib import Path
 from typing import Any
 
 from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile, status
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, Response
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
+from starlette.concurrency import run_in_threadpool
 
-from app import authenticity, receipts, scoring, vision_fields
+from app import authenticity, receipts, scoring, storage, vision_fields
 from app.ai import vision
 from app.ai.questions import FIELD_SPECS, build_verify_items
 from app.config import settings
@@ -337,6 +338,11 @@ async def upload_photo(
         obs.status = "expert"
 
     obs.photo_path = processed.path  # hero image = latest capture
+    # Durable copy in Azure Blob (survives restarts, shared across replicas).
+    if storage.enabled():
+        await run_in_threadpool(
+            storage.upload, Path(processed.path).name, processed.jpeg_bytes
+        )
     obs.photo_phash = processed.phash
     obs.photo_count = len(photos)
     obs.photo_analysis = {
@@ -384,15 +390,26 @@ async def upload_photo(
 async def observation_photo(
     observation_id: int,
     session: AsyncSession = Depends(get_session),
-) -> FileResponse:
+) -> Response:
     """Serve the processed (EXIF-stripped, face-blurred) photo for a check."""
     obs = await session.get(Observation, observation_id)
     if obs is None or not obs.photo_path:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="photo not found")
+
+    # Durable store first (Azure Blob), then the local-disk fallback.
+    blob_name = Path(obs.photo_path).name
+    if storage.enabled():
+        data = await run_in_threadpool(storage.download, blob_name)
+        if data:
+            return Response(
+                content=data,
+                media_type="image/jpeg",
+                headers={"Cache-Control": "private, max-age=86400"},
+            )
     full = MEDIA_DIR.parent / obs.photo_path
-    if not Path(full).is_file():
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="photo not found")
-    return FileResponse(full, media_type="image/jpeg")
+    if Path(full).is_file():
+        return FileResponse(full, media_type="image/jpeg")
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="photo not found")
 
 
 @router.get("/{observation_id}/status", response_model=ObservationStatusOut)
