@@ -396,19 +396,23 @@ async def observation_photo(
     if obs is None or not obs.photo_path:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="photo not found")
 
+    # The photo is embedded cross-site (page on riverkin.online, API on
+    # *.azurecontainerapps.io), so it must opt out of the API's default
+    # Cross-Origin-Resource-Policy: same-site.
+    img_headers = {
+        "Cache-Control": "private, max-age=86400",
+        "Cross-Origin-Resource-Policy": "cross-origin",
+    }
+
     # Durable store first (Azure Blob), then the local-disk fallback.
     blob_name = Path(obs.photo_path).name
     if storage.enabled():
         data = await run_in_threadpool(storage.download, blob_name)
         if data:
-            return Response(
-                content=data,
-                media_type="image/jpeg",
-                headers={"Cache-Control": "private, max-age=86400"},
-            )
+            return Response(content=data, media_type="image/jpeg", headers=img_headers)
     full = MEDIA_DIR.parent / obs.photo_path
     if Path(full).is_file():
-        return FileResponse(full, media_type="image/jpeg")
+        return FileResponse(full, media_type="image/jpeg", headers=img_headers)
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="photo not found")
 
 
