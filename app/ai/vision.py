@@ -13,6 +13,7 @@ from __future__ import annotations
 import base64
 import io
 import json
+import logging
 from dataclasses import dataclass, field
 
 import httpx
@@ -20,6 +21,8 @@ import numpy as np
 from PIL import Image
 
 from app.config import settings
+
+logger = logging.getLogger("app.ai.vision")
 
 # The model returns a WEAK, structured per-field read aligned to the citizen's
 # check — never a verdict. "AI asks, humans decide" (CLAUDE.md). Each field
@@ -152,6 +155,11 @@ async def analyze_image(raw: bytes) -> VisionAnalysis:
     endpoint = settings.FOUNDRY_VISION_ENDPOINT.rstrip("/")
     key = settings.FOUNDRY_VISION_KEY
     if not endpoint or not key:
+        logger.warning(
+            "vision: foundry not configured (endpoint=%s, key_len=%d) — heuristic",
+            bool(endpoint),
+            len(key or ""),
+        )
         return _heuristic(raw)
 
     body = {
@@ -177,10 +185,12 @@ async def analyze_image(raw: bytes) -> VisionAnalysis:
                 json=body,
             )
         if resp.status_code != 200:
+            logger.warning("vision: foundry HTTP %s — %s", resp.status_code, resp.text[:300])
             return _heuristic(raw)
         content = resp.json()["choices"][0]["message"]["content"]
         data = _parse_model_json(content if isinstance(content, str) else str(content))
-    except Exception:
+    except Exception as exc:  # noqa: BLE001
+        logger.warning("vision: foundry call failed (%s): %s", type(exc).__name__, exc)
         return _heuristic(raw)
 
     def _num(v: object, default: float) -> float:
