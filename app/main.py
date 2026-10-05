@@ -14,6 +14,7 @@ from starlette.middleware.base import BaseHTTPMiddleware
 from app.config import settings
 from app.routers import (
     auth,
+    challenges,
     community,
     crews,
     events,
@@ -88,6 +89,7 @@ app.include_router(metrics.router, prefix=API_PREFIX)
 app.include_router(crews.router, prefix=API_PREFIX)
 app.include_router(missions.router, prefix=API_PREFIX)
 app.include_router(community.router, prefix=API_PREFIX)
+app.include_router(challenges.router, prefix=API_PREFIX)
 app.include_router(notifications.router, prefix=API_PREFIX)
 app.include_router(push.router, prefix=API_PREFIX)
 app.include_router(events.router, prefix=API_PREFIX)

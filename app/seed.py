@@ -138,8 +138,33 @@ async def seed() -> int:
     return len(rows)
 
 
+CHALLENGES_FILE = Path(__file__).resolve().parent.parent / "data" / "challenges.json"
+
+
+async def seed_challenges() -> int:
+    """Upsert the community challenge campaigns (idempotent on the slug id)."""
+    from app.models.challenge import Challenge  # local import: table added in 0013
+
+    rows = json.loads(CHALLENGES_FILE.read_text(encoding="utf-8"))
+    async with SessionLocal() as session:
+        for r in rows:
+            stmt = insert(Challenge).values(**r)
+            update_cols = {k: stmt.excluded[k] for k in r if k != "id"}
+            stmt = stmt.on_conflict_do_update(index_elements=["id"], set_=update_cols)
+            await session.execute(stmt)
+        ids = [r["id"] for r in rows]
+        await session.execute(delete(Challenge).where(Challenge.id.not_in(ids)))
+        await session.commit()
+    logger.info("seeded %d challenges", len(rows))
+    return len(rows)
+
+
 def main() -> None:
-    asyncio.run(seed())
+    async def _run() -> None:
+        await seed()
+        await seed_challenges()
+
+    asyncio.run(_run())
 
 
 if __name__ == "__main__":
