@@ -152,6 +152,12 @@ async def get_static_map(
     return Response(
         content=resp.content,
         media_type=media_type,
-        # Site locations don't move; let the browser/CDN hold the image a day.
-        headers={"Cache-Control": "public, max-age=86400"},
+        headers={
+            # Site locations don't move; let the browser/CDN hold the image a day.
+            "Cache-Control": "public, max-age=86400",
+            # The image is embedded cross-site (page on riverkin.online, API on
+            # *.azurecontainerapps.io), so it must opt out of the API's default
+            # Cross-Origin-Resource-Policy: same-site or the browser blocks it.
+            "Cross-Origin-Resource-Policy": "cross-origin",
+        },
     )
