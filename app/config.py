@@ -60,6 +60,12 @@ class Settings(BaseSettings):
     # Where to send the browser back after a successful sign-in.
     WEB_URL: str = "http://localhost:3000"
 
+    # Strava OAuth for linking a runner's activities to their account. Empty
+    # disables the "Connect Strava" button (same gating as Microsoft above).
+    STRAVA_CLIENT_ID: str = ""
+    STRAVA_CLIENT_SECRET: str = ""
+    STRAVA_REDIRECT_URI: str = "http://localhost:8000/api/v1/strava/callback"
+
     # Geofence enforcement. When True, a check logged outside the site radius is
     # refused (403). When False (default — demo/field-test friendly), the check
     # is accepted but flagged ``geom_ok=False`` ("location not verified") so the

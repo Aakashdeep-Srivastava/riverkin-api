@@ -31,6 +31,7 @@ from app.routers import (
     observations,
     push,
     sites,
+    strava,
     verify,
 )
 
@@ -103,3 +104,4 @@ app.include_router(challenges.router, prefix=API_PREFIX)
 app.include_router(notifications.router, prefix=API_PREFIX)
 app.include_router(push.router, prefix=API_PREFIX)
 app.include_router(events.router, prefix=API_PREFIX)
+app.include_router(strava.router, prefix=API_PREFIX)

@@ -8,6 +8,7 @@ from app.models.challenge import Challenge, ChallengeParticipant, Referral
 from app.models.crew import Adoption, Checkin, Crew, CrewMember
 from app.models.observation import Observation
 from app.models.site import Site
+from app.models.strava_account import StravaAccount
 from app.models.user import User
 from app.models.verify import VerifyItem, Vote
 
@@ -21,6 +22,7 @@ __all__ = [
     "Observation",
     "Referral",
     "Site",
+    "StravaAccount",
     "User",
     "VerifyItem",
     "Vote",

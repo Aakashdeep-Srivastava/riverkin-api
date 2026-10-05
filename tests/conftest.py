@@ -21,7 +21,8 @@ async def clean_mutable_tables():
             text(
                 "TRUNCATE votes, verify_items, observations, "
                 "checkins, adoptions, crew_members, crews, users, "
-                "challenge_participants, referrals RESTART IDENTITY CASCADE"
+                "challenge_participants, referrals, strava_accounts "
+                "RESTART IDENTITY CASCADE"
             )
         )
     yield
