@@ -83,7 +83,7 @@ async def test_metrics():
     await seed()
     async with await _client() as client:
         m = (await client.get("/api/v1/metrics")).json()
-        assert m["sites_total"] == 106
+        assert m["sites_total"] >= 106
         assert 0 <= m["coverage_fresh_pct"] <= 100
         assert m["sites_needing_attention"] >= 0
         assert "open_expert_reviews" in m

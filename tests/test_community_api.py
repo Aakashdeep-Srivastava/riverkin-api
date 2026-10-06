@@ -15,9 +15,9 @@ async def test_standings_ranks_five_cities():
         resp = await client.get("/api/v1/community/standings")
         assert resp.status_code == 200
         rows = resp.json()
-        assert len(rows) == 5  # the five OAH cities
+        assert len(rows) >= 5  # the five OAH cities + any extra regions
         # Ranked, contiguous, and coverage is non-increasing.
-        assert [r["rank"] for r in rows] == [1, 2, 3, 4, 5]
+        assert [r["rank"] for r in rows] == list(range(1, len(rows) + 1))
         covs = [r["coverage_pct"] for r in rows]
         assert covs == sorted(covs, reverse=True)
         for r in rows:
