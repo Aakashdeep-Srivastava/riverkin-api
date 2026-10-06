@@ -32,6 +32,10 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("app.seed")
 
 DATA_FILE = Path(__file__).resolve().parent.parent / "data" / "oah_sites.json"
+# Optional extra region: real Australian stations (BoM Water Data Online). Same
+# "real identity + coordinates, illustrative check schedule" model as OAH, but no
+# ecology/health data. See scripts/gen_au_sites.py and data/au_sites.json.
+AU_FILE = Path(__file__).resolve().parent.parent / "data" / "au_sites.json"
 
 # Deterministic spread of "days since last verified check" so the map shows a
 # realistic mix of fresh, attention, urgent and orphan (>=30 d) sites.
@@ -61,15 +65,18 @@ def _synthesize(index: int, cadence: int) -> dict:
 
 
 def _rows() -> list[dict]:
-    data = json.loads(DATA_FILE.read_text(encoding="utf-8"))
-    sites = data["sites"]
+    sites = json.loads(DATA_FILE.read_text(encoding="utf-8"))["sites"]
+    # Append the Australian region if bundled (real coords; no ecology).
+    if AU_FILE.exists():
+        sites = sites + json.loads(AU_FILE.read_text(encoding="utf-8"))["sites"]
     rows: list[dict] = []
     for i, s in enumerate(sites):
         cadence = int(s.get("cadence_days", 14))
         syn = _synthesize(i, cadence)
         rows.append(
             {
-                "external_id": s["oah_code"],
+                # OAH uses "oah_code"; the AU snapshot uses "code".
+                "external_id": s.get("oah_code") or s["code"],
                 "name": s["name"],
                 "waterbody": s.get("waterbody"),
                 "city": s.get("city"),
@@ -134,7 +141,7 @@ async def seed() -> int:
             delete(Site).where(Site.external_id.not_in(codes))
         )
         await session.commit()
-    logger.info("seeded %d OAH sites", len(rows))
+    logger.info("seeded %d sites (OAH + bundled regions)", len(rows))
     return len(rows)
 
 

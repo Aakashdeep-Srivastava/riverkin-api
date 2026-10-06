@@ -1,0 +1,153 @@
+{
+  "schema": "riverkin.au_sites.v1",
+  "source": "Bureau of Meteorology \u2014 Water Data Online (OGC SOS2/WaterML2), GetFeatureOfInterest. Real station codes, names and coordinates; no ecology/health data (BoM coverage is level/discharge).",
+  "attribution": "Data: Bureau of Meteorology (Water Data Online)",
+  "city": "Melbourne",
+  "count": 16,
+  "sites": [
+    {
+      "code": "AU-WBUNTTPD",
+      "name": "Bunyip River At Ttp",
+      "waterbody": "Bunyip River",
+      "city": "Melbourne",
+      "country": "Australia",
+      "lat": -38.0116,
+      "lng": 145.271
+    },
+    {
+      "code": "AU-WWATRR32",
+      "name": "Watts River At Road",
+      "waterbody": "Watts River",
+      "city": "Melbourne",
+      "country": "Australia",
+      "lat": -37.6264,
+      "lng": 145.579
+    },
+    {
+      "code": "AU-231208",
+      "name": "Werribee River",
+      "waterbody": "Werribee River",
+      "city": "Melbourne",
+      "country": "Australia",
+      "lat": -37.82046,
+      "lng": 144.58106
+    },
+    {
+      "code": "AU-WYARBCHR",
+      "name": "Yarra River At Bourch",
+      "waterbody": "Yarra River",
+      "city": "Melbourne",
+      "country": "Australia",
+      "lat": -37.7113,
+      "lng": 145.257
+    },
+    {
+      "code": "AU-229272A",
+      "name": "Arthurs Creek - Nutfield",
+      "waterbody": "Arthurs Creek",
+      "city": "Melbourne",
+      "country": "Australia",
+      "lat": -37.598013,
+      "lng": 145.182886
+    },
+    {
+      "code": "AU-228388A",
+      "name": "Bangholme Eumm'Ng Creek",
+      "waterbody": "Bangholme Eumm'Ng Creek",
+      "city": "Melbourne",
+      "country": "Australia",
+      "lat": -38.041518,
+      "lng": 145.186759
+    },
+    {
+      "code": "AU-230209",
+      "name": "Barringo Creek",
+      "waterbody": "Barringo Creek",
+      "city": "Melbourne",
+      "country": "Australia",
+      "lat": -37.410504,
+      "lng": 144.626055
+    },
+    {
+      "code": "AU-228351A",
+      "name": "Blind Creek At High St",
+      "waterbody": "Blind Creek",
+      "city": "Melbourne",
+      "country": "Australia",
+      "lat": -37.8774,
+      "lng": 145.216
+    },
+    {
+      "code": "AU-228234A",
+      "name": "Boggy Creek - Seaford",
+      "waterbody": "Boggy Creek",
+      "city": "Melbourne",
+      "country": "Australia",
+      "lat": -38.1001,
+      "lng": 145.15
+    },
+    {
+      "code": "AU-230211A",
+      "name": "Bolinda Creek - Clrkfield",
+      "waterbody": "Bolinda Creek",
+      "city": "Melbourne",
+      "country": "Australia",
+      "lat": -37.466256,
+      "lng": 144.744149
+    },
+    {
+      "code": "AU-AARC0076",
+      "name": "Bruces Creek At Beech St",
+      "waterbody": "Bruces Creek",
+      "city": "Melbourne",
+      "country": "Australia",
+      "lat": -37.5108,
+      "lng": 145.12
+    },
+    {
+      "code": "AU-228369A",
+      "name": "Bungalook Creek - Fussell",
+      "waterbody": "Bungalook Creek",
+      "city": "Melbourne",
+      "country": "Australia",
+      "lat": -37.826122,
+      "lng": 145.328456
+    },
+    {
+      "code": "AU-WCARCKDS",
+      "name": "Cardinia Creek Downstream Tp D",
+      "waterbody": "Cardinia Creek",
+      "city": "Melbourne",
+      "country": "Australia",
+      "lat": -37.971,
+      "lng": 145.386
+    },
+    {
+      "code": "AU-229248B",
+      "name": "Cockatoo Creek - Nangana",
+      "waterbody": "Cockatoo Creek",
+      "city": "Melbourne",
+      "country": "Australia",
+      "lat": -37.87616,
+      "lng": 145.528947
+    },
+    {
+      "code": "AU-229138A",
+      "name": "Contentment Creek No 3",
+      "waterbody": "Contentment Creek",
+      "city": "Melbourne",
+      "country": "Australia",
+      "lat": -37.5844,
+      "lng": 145.595
+    },
+    {
+      "code": "AU-AAOR0033",
+      "name": "Corandrk Creek - Badgerck",
+      "waterbody": "Corandrk Creek",
+      "city": "Melbourne",
+      "country": "Australia",
+      "lat": -37.6885,
+      "lng": 145.518
+    }
+  ]
+}
