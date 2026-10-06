@@ -30,10 +30,15 @@ def client_ip(request: Request) -> str:
 # A generous global default for normal browsing; specific endpoints tighten it.
 # Disabled under APP_ENV=test so the test suite (many requests per "IP") isn't
 # throttled; active in local + production.
+# headers_enabled must stay False: with it on, slowapi tries to inject
+# X-RateLimit-* headers into the endpoint's return value and raises
+# "parameter `response` must be an instance of Response" for every handler that
+# returns a dict (photo upload, analyze, observation create, auth) — a 500 that
+# only fires in prod (the limiter is disabled under tests). 429s still work.
 limiter = Limiter(
     key_func=client_ip,
     default_limits=["180/minute"],
-    headers_enabled=True,  # emit X-RateLimit-* + Retry-After
+    headers_enabled=False,
     enabled=settings.APP_ENV != "test",
 )
 
