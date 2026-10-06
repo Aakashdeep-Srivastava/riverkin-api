@@ -150,11 +150,14 @@ async def test_unknown_site_and_observation_404():
         assert missing.status_code == 404
 
 
-async def _new_obs(client: httpx.AsyncClient, code: str) -> int:
-    resp = await client.post(
-        "/api/v1/observations",
-        json={"site_code": code, "answers": {"q-water": "clear"}, "photo_count": 0},
-    )
+async def _new_obs(
+    client: httpx.AsyncClient, code: str, lat: float | None = None, lng: float | None = None
+) -> int:
+    payload: dict = {"site_code": code, "answers": {"q-water": "clear"}, "photo_count": 0}
+    if lat is not None and lng is not None:
+        payload["lat"] = lat
+        payload["lng"] = lng
+    resp = await client.post("/api/v1/observations", json=payload)
     return resp.json()["id"]
 
 
@@ -237,8 +240,12 @@ async def test_photo_contradiction_grounds_prior_and_escalates(monkeypatch):
 async def test_photo_analysis_authenticity_geotag_and_serving():
     await seed()
     async with await _client() as client:
-        code = await _a_site_code(client)
-        obs = await _new_obs(client, code)
+        sites = (await client.get("/api/v1/sites")).json()
+        site = sites[0]
+        code = site["id"]
+        # Create the check AT the site (within the geofence) so location
+        # strengthens authenticity.
+        obs = await _new_obs(client, code, lat=site["lat"], lng=site["lng"])
 
         res = await client.post(
             f"/api/v1/observations/{obs}/photos",
@@ -250,7 +257,7 @@ async def test_photo_analysis_authenticity_geotag_and_serving():
         assert analysis["summary"]
         assert 0 <= analysis["authenticity"] <= 100
         assert analysis["captured_live"] is True
-        # A live, novel capture scores well.
+        # A live, novel, on-site capture scores well.
         assert analysis["authenticity"] >= 60
         assert analysis["geotag"] and analysis["geotag"]["label"].startswith("Within 150 m")
 

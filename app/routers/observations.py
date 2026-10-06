@@ -345,6 +345,8 @@ async def upload_photo(
         exif_present=exif_present,
         phash_novelty=novelty,
         model_ai_likelihood=analysis.ai_generated_likelihood,
+        # Location shared + within the site geofence strengthens authenticity.
+        at_site=bool(obs.geom_ok),
     )
 
     # Coarse, privacy-safe geotag: the geofenced site location (never raw GPS).

@@ -30,8 +30,9 @@ def score(
     exif_present: bool,
     phash_novelty: int | None,
     model_ai_likelihood: float,
+    at_site: bool = False,
 ) -> Authenticity:
-    """Blend provenance + model signals into one confidence with a reason."""
+    """Blend provenance + location + model signals into one confidence with a reason."""
     confidence = 50.0
     reasons: list[str] = []
 
@@ -43,6 +44,15 @@ def score(
         reasons.append("carried camera metadata")
     else:
         reasons.append("uploaded file")
+
+    # Location: a capture confirmed within the site geofence is strong evidence it
+    # is a genuine on-site observation; no confirmed location is a mild unknown.
+    if at_site:
+        confidence += 12
+        reasons.append("confirmed at the site")
+    else:
+        confidence -= 5
+        reasons.append("location not confirmed")
 
     if phash_novelty is None:
         confidence += 5
@@ -70,5 +80,6 @@ def score(
             "exif_present": exif_present,
             "phash_novelty": phash_novelty,
             "model_ai_likelihood": round(float(model_ai_likelihood), 3),
+            "at_site": at_site,
         },
     )
