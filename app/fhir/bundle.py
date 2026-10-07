@@ -17,10 +17,10 @@ from typing import Any
 from fhir.resources.R4B.bundle import Bundle, BundleEntry, BundleEntryRequest
 from fhir.resources.R4B.codeableconcept import CodeableConcept
 from fhir.resources.R4B.coding import Coding
-from fhir.resources.R4B.group import Group
 from fhir.resources.R4B.identifier import Identifier
 from fhir.resources.R4B.location import Location, LocationPosition
 from fhir.resources.R4B.observation import Observation
+from fhir.resources.R4B.organization import Organization
 from fhir.resources.R4B.provenance import Provenance, ProvenanceAgent
 from fhir.resources.R4B.reference import Reference
 
@@ -59,7 +59,9 @@ def _field_observation(
     when: datetime,
 ) -> tuple[str, Observation]:
     spec = _FIELD_BY_KEY.get(key, {"field_code": key, "label": key})
-    full_url = f"urn:riverkin:observation:{obs_id}:{spec['field_code']}"
+    # Key on the (unique) answer key, not field_code — two keys can share a
+    # field_code, which would otherwise collide fullUrls (FHIR bdl-7).
+    full_url = f"urn:riverkin:observation:{obs_id}:{key}"
     obs = Observation(
         meta={"profile": [OAH_OBS_PROFILE]},
         status=_obs_status(status),
@@ -67,9 +69,12 @@ def _field_observation(
             CodeableConcept(
                 coding=[
                     Coding(
+                        # Citizen-reported field answers → "survey" (a valid code
+                        # in the HL7 observation-category system; "environment"
+                        # is not, which base-FHIR validation rejects).
                         system="http://terminology.hl7.org/CodeSystem/observation-category",
-                        code="environment",
-                        display="Environment",
+                        code="survey",
+                        display="Survey",
                     )
                 ]
             )
@@ -156,11 +161,14 @@ def build_observation_bundle(
             else None
         ),
     )
-    crew = Group(type="person", actual=True, quantity=1)
+    # The pseudonymous citizen crew. Modelled as an Organization (a grouping of
+    # people with a common purpose): base FHIR allows Organization as an
+    # Observation.performer and Provenance.agent.who, but NOT a bare Group.
+    crew = Organization(name="RiverKin crew (pseudonymous)")
 
     entries: list[BundleEntry] = [
         _entry(location_url, location, "Location"),
-        _entry(group_url, crew, "Group"),
+        _entry(group_url, crew, "Organization"),
     ]
     observation_urls: list[str] = []
 

@@ -46,7 +46,7 @@ def test_bundle_roundtrips_through_r4b_models():
     for entry in reparsed.entry:
         assert entry.request is not None
         assert entry.request.method == "POST"
-        assert entry.request.url in {"Location", "Group", "Observation", "Provenance"}
+        assert entry.request.url in {"Location", "Organization", "Observation", "Provenance"}
 
 
 def test_bundle_carries_oah_ig_tags():

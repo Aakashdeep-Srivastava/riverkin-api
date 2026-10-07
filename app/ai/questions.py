@@ -53,7 +53,7 @@ def weak_prior(observation_context: dict[str, Any]) -> float:
 # Canonical verifiable fields, keyed by the front-end question id, mapped to the
 # real OAH code system (see data/oah_field_codes.json).
 FIELD_SPECS: list[dict[str, str]] = [
-    {"key": "q-water", "field_code": "foam", "label": "water appearance"},
+    {"key": "q-water", "field_code": "water", "label": "water appearance"},
     {"key": "q-litter", "field_code": "litter", "label": "litter / debris"},
     {"key": "q-foam", "field_code": "foam", "label": "surface foam"},
     {"key": "q-flow", "field_code": "hydrology", "label": "flow"},
