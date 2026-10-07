@@ -47,6 +47,7 @@ USER appuser
 
 EXPOSE 8000
 
-# Run migrations once, then serve. Keep the API at 1 replica during the
-# hackathon so migrations never run twice (CLAUDE.md).
-CMD ["sh", "-c", "alembic upgrade head && python -m app.seed && uvicorn app.main:app --host 0.0.0.0 --port 8000"]
+# Migrate + seed under a Postgres advisory lock (concurrency-safe across
+# replicas — see scripts/migrate_and_seed.py), then serve. Because the lock
+# serialises boot-time DDL + seed, min-replicas may safely be > 1.
+CMD ["sh", "-c", "python scripts/migrate_and_seed.py && uvicorn app.main:app --host 0.0.0.0 --port 8000"]
