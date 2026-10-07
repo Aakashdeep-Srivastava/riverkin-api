@@ -17,6 +17,7 @@ from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db import get_session
+from app.experiment import MIN_PER_ARM, VERIFY_LIFT_EXPERIMENT
 from app.models.observation import Observation
 from app.models.site import Site
 from app.models.verify import VerifyItem, Vote
@@ -47,8 +48,40 @@ class MetricsOut(BaseModel):
     simulated: bool = False
 
 
+class ArmStats(BaseModel):
+    n: int = 0  # total votes in this arm
+    gold_n: int = 0  # votes on gold items (ground truth known)
+    gold_accuracy_pct: int | None = None  # share correct vs gold_answer
+    median_seconds: float | None = None
+
+
+class VerificationLiftOut(BaseModel):
+    """AI-assisted vs human-only verification lift (experimental, not validated).
+
+    Gold items carry a known answer, so per-arm accuracy is measurable. ``status``
+    is ``insufficient_data`` until BOTH arms reach ``min_per_arm`` gold votes; the
+    lift is reported only then, and still labelled experimental — never presented
+    as a statistically significant measurement (PRD/roadmap).
+    """
+
+    experiment: str
+    status: str  # insufficient_data | ready
+    min_per_arm: int
+    assisted: ArmStats
+    control: ArmStats
+    accuracy_lift_pct: int | None = None  # assisted − control, only when ready
+    note: str
+
+
 async def _count(session: AsyncSession, stmt) -> int:
     return int((await session.execute(stmt)).scalar() or 0)
+
+
+def _median(xs: list[int]) -> float | None:
+    if not xs:
+        return None
+    xs = sorted(xs)
+    return round(xs[len(xs) // 2] / 1000.0, 1)
 
 
 @router.get("", response_model=MetricsOut)
@@ -148,4 +181,69 @@ async def metrics(session: AsyncSession = Depends(get_session)) -> MetricsOut:
         verify_votes_n=len(times),
         revisit_rate_pct=revisit_pct,
         revisit_eligible_n=eligible,
+    )
+
+
+@router.get("/experiment/verification-lift", response_model=VerificationLiftOut)
+async def verification_lift(
+    session: AsyncSession = Depends(get_session),
+) -> VerificationLiftOut:
+    """AI-assisted vs human-only verification lift (see app/experiment.py).
+
+    Measures, per arm, accuracy on gold items (known answer) and median decision
+    time. Honestly gated: reports a lift only once both arms clear ``min_per_arm``
+    gold votes, and always labels the result experimental.
+    """
+    # Votes with an arm, joined to their item's gold answer (when gold).
+    rows = (
+        await session.execute(
+            select(Vote.arm, Vote.answer, Vote.ms_taken, VerifyItem.is_gold, VerifyItem.gold_answer)
+            .join(VerifyItem, Vote.verify_item_id == VerifyItem.id)
+            .where(Vote.arm.is_not(None))
+        )
+    ).all()
+
+    stats: dict[str, dict] = {
+        "assisted": {"n": 0, "gold_n": 0, "correct": 0, "times": []},
+        "control": {"n": 0, "gold_n": 0, "correct": 0, "times": []},
+    }
+    for arm, answer, ms_taken, is_gold, gold_answer in rows:
+        s = stats.get(arm)
+        if s is None:
+            continue
+        s["n"] += 1
+        if ms_taken is not None and answer in ("yes", "no"):
+            s["times"].append(int(ms_taken))
+        if is_gold and gold_answer is not None:
+            s["gold_n"] += 1
+            if answer == gold_answer:
+                s["correct"] += 1
+
+    def _arm(name: str) -> ArmStats:
+        s = stats[name]
+        acc = round(100 * s["correct"] / s["gold_n"]) if s["gold_n"] else None
+        return ArmStats(
+            n=s["n"], gold_n=s["gold_n"], gold_accuracy_pct=acc, median_seconds=_median(s["times"])
+        )
+
+    assisted, control = _arm("assisted"), _arm("control")
+    ready = assisted.gold_n >= MIN_PER_ARM and control.gold_n >= MIN_PER_ARM
+    lift = (
+        assisted.gold_accuracy_pct - control.gold_accuracy_pct
+        if ready
+        and assisted.gold_accuracy_pct is not None
+        and control.gold_accuracy_pct is not None
+        else None
+    )
+    return VerificationLiftOut(
+        experiment=VERIFY_LIFT_EXPERIMENT,
+        status="ready" if ready else "insufficient_data",
+        min_per_arm=MIN_PER_ARM,
+        assisted=assisted,
+        control=control,
+        accuracy_lift_pct=lift,
+        note=(
+            "Experimental: AI-assisted vs human-only verification. "
+            "Not a statistically validated measurement."
+        ),
     )

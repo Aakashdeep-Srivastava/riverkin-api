@@ -15,6 +15,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db import get_session
+from app.experiment import assign_arm
 from app.models.observation import Observation
 from app.models.site import Site
 from app.models.verify import VerifyItem, Vote
@@ -49,17 +50,22 @@ async def next_verify_items(
         .limit(n)
     )
     rows = (await session.execute(stmt)).all()
-    cards = [
-        VerifyCard(
-            item_id=item.id,
-            observation_id=item.observation_id,
-            site_name=(site.name if site is not None else "A monitored stream"),
-            field_code=item.field_code,
-            question=item.question,
-            ai_box=item.ai_box,
+    cards: list[VerifyCard] = []
+    for item, _obs, site in rows:
+        # AI-assist lift experiment: the control arm is a human-only decision, so
+        # withhold the AI box. Assignment is stable per (voter, item).
+        arm = assign_arm(voter_id, item.id)
+        cards.append(
+            VerifyCard(
+                item_id=item.id,
+                observation_id=item.observation_id,
+                site_name=(site.name if site is not None else "A monitored stream"),
+                field_code=item.field_code,
+                question=item.question,
+                ai_box=None if arm == "control" else item.ai_box,
+                arm=arm,
+            )
         )
-        for item, _obs, site in rows
-    ]
     return VerifyNextOut(cards=cards, simulated=len(cards) == 0)
 
 
@@ -81,14 +87,18 @@ async def cast_vote(
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="verify item not found")
 
     # Crew-mates are down-weighted (PRD); the trust math applies the 0.5 weight.
+    voter_id = payload.voter_id or "demo-keeper"
     session.add(
         Vote(
             verify_item_id=item_id,
             voter_kind=payload.voter_kind,
-            voter_id=payload.voter_id or "demo-keeper",
+            voter_id=voter_id,
             answer=payload.answer,
             ms_taken=payload.ms_taken,
             weight=0.5 if payload.voter_kind == "member" else 1.0,
+            # Record the experiment arm the voter was in (same assignment the
+            # /verify/next card used), for the verification-lift metric.
+            arm=assign_arm(voter_id, item_id),
         )
     )
     await session.flush()

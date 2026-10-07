@@ -41,7 +41,8 @@ async def test_next_returns_cards_without_gold_or_submitter():
         cards = resp.json()["cards"]
         assert len(cards) >= 1
         card = cards[0]
-        # Card exposes the question + AI box, never gold status, submitter or tally.
+        # Card exposes the question + AI box (+ experiment arm), never gold
+        # status, submitter or tally.
         assert set(card.keys()) == {
             "item_id",
             "observation_id",
@@ -49,7 +50,9 @@ async def test_next_returns_cards_without_gold_or_submitter():
             "field_code",
             "question",
             "ai_box",
+            "arm",
         }
+        assert card["arm"] in {"assisted", "control"}
 
 
 async def test_three_yes_votes_reach_community_verified():

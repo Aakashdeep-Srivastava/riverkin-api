@@ -48,6 +48,9 @@ class Vote(Base):
     answer: Mapped[str] = mapped_column(String(16))  # yes | no | cant_tell
     ms_taken: Mapped[int | None] = mapped_column(Integer, nullable=True)
     weight: Mapped[float] = mapped_column(Float, default=1.0)
+    # AI-assist verification-lift experiment arm ("assisted" | "control" | None
+    # for pre-experiment votes). See app/experiment.py.
+    arm: Mapped[str | None] = mapped_column(String(16), nullable=True)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()
     )

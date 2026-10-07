@@ -1,0 +1,5 @@
+{
+  "schema": "riverkin-vision-eval-v1",
+  "note": "Labelled ecological eval set for vision accuracy. Empty by design — populate with REAL, human-labelled photos (see README.md). The harness never invents an accuracy number from an empty set.",
+  "cases": []
+}

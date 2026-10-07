@@ -225,6 +225,9 @@ class VerifyCard(BaseModel):
     field_code: str
     question: str
     ai_box: str | None = None
+    # AI-assist verification-lift experiment arm: "control" cards withhold the
+    # AI box (human-only); "assisted" cards show it. See app/experiment.py.
+    arm: str = "assisted"
 
 
 class VerifyNextOut(BaseModel):

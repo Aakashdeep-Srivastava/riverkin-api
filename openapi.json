@@ -1107,6 +1107,28 @@
         }
       }
     },
+    "/api/v1/metrics/experiment/verification-lift": {
+      "get": {
+        "tags": [
+          "metrics"
+        ],
+        "summary": "Verification Lift",
+        "description": "AI-assisted vs human-only verification lift (see app/experiment.py).\n\nMeasures, per arm, accuracy on gold items (known answer) and median decision\ntime. Honestly gated: reports a lift only once both arms clear ``min_per_arm``\ngold votes, and always labels the result experimental.",
+        "operationId": "verification_lift_api_v1_metrics_experiment_verification_lift_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VerificationLiftOut"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/crews": {
       "post": {
         "tags": [
@@ -2350,6 +2372,44 @@
           "site_code"
         ],
         "title": "AdoptionIn"
+      },
+      "ArmStats": {
+        "properties": {
+          "n": {
+            "type": "integer",
+            "title": "N",
+            "default": 0
+          },
+          "gold_n": {
+            "type": "integer",
+            "title": "Gold N",
+            "default": 0
+          },
+          "gold_accuracy_pct": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Gold Accuracy Pct"
+          },
+          "median_seconds": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Median Seconds"
+          }
+        },
+        "type": "object",
+        "title": "ArmStats"
       },
       "AuthToken": {
         "properties": {
@@ -4213,6 +4273,54 @@
         ],
         "title": "ValidationError"
       },
+      "VerificationLiftOut": {
+        "properties": {
+          "experiment": {
+            "type": "string",
+            "title": "Experiment"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "min_per_arm": {
+            "type": "integer",
+            "title": "Min Per Arm"
+          },
+          "assisted": {
+            "$ref": "#/components/schemas/ArmStats"
+          },
+          "control": {
+            "$ref": "#/components/schemas/ArmStats"
+          },
+          "accuracy_lift_pct": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Accuracy Lift Pct"
+          },
+          "note": {
+            "type": "string",
+            "title": "Note"
+          }
+        },
+        "type": "object",
+        "required": [
+          "experiment",
+          "status",
+          "min_per_arm",
+          "assisted",
+          "control",
+          "note"
+        ],
+        "title": "VerificationLiftOut",
+        "description": "AI-assisted vs human-only verification lift (experimental, not validated).\n\nGold items carry a known answer, so per-arm accuracy is measurable. ``status``\nis ``insufficient_data`` until BOTH arms reach ``min_per_arm`` gold votes; the\nlift is reported only then, and still labelled experimental \u2014 never presented\nas a statistically significant measurement (PRD/roadmap)."
+      },
       "VerifyCard": {
         "properties": {
           "item_id": {
@@ -4245,6 +4353,11 @@
               }
             ],
             "title": "Ai Box"
+          },
+          "arm": {
+            "type": "string",
+            "title": "Arm",
+            "default": "assisted"
           }
         },
         "type": "object",

@@ -30,3 +30,6 @@ htmlcov/
 # Processed observation photos (local MVP store)
 media/
 fhir_sample.json
+
+# Real/licensed eval photos are never committed
+data/eval/images/
