@@ -38,7 +38,7 @@
           "sites"
         ],
         "summary": "List Sites",
-        "description": "All sites, most-urgent first. Optional ``city`` filter.",
+        "description": "All sites, most-urgent first. Optional ``city`` filter.\n\nServed from a short-TTL in-process cache (see ``_SITES_CACHE``) and tagged\nwith ``ETag`` + ``Cache-Control`` so repeat loads hit the browser/CDN or a\ncheap ``304`` instead of re-scanning + re-scoring every site.",
         "operationId": "list_sites_api_v1_sites_get",
         "parameters": [
           {

@@ -10,13 +10,16 @@ Backed by the seeded 106-site OAH table (see app/seed.py). ``need_score`` and
 
 from __future__ import annotations
 
+import time
 from datetime import UTC, datetime
 
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi import APIRouter, Depends, HTTPException, Query, Request, Response, status
+from pydantic import TypeAdapter
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app import oah, scoring
+from app.config import settings
 from app.db import get_session
 from app.models.observation import Observation
 from app.models.site import Site
@@ -28,6 +31,38 @@ ORPHAN_DAYS = 999
 
 # Shown anywhere OAH baseline data surfaces (ODbL/OAH attribution, see README).
 OAH_ATTRIBUTION = "Site, ecology & health-risk data: OneAquaHealth project (oneaquahealth.eu)"
+
+# In-process GET /sites cache: {city_key: (expires_monotonic, body_bytes, etag)}.
+# We cache the *already-serialised* JSON, so a cache hit skips the table scan,
+# the per-row scoring AND the response serialisation — it just writes bytes.
+# The list is viewer-independent and only changes every few hours, so a short
+# TTL is safe. Per-replica (not shared); a concurrent miss may rebuild twice,
+# which is idempotent and cheap, so no lock.
+_SITES_ADAPTER = TypeAdapter(list[SiteOut])
+_SITES_CACHE: dict[str, tuple[float, bytes, str]] = {}
+
+
+def _sites_cache_on() -> bool:
+    # Disabled under tests so the module-level cache never leaks state between
+    # the suite's repeated re-seeds; ETag/304 still work (rebuilt each call).
+    return settings.SITES_CACHE_TTL > 0 and settings.APP_ENV != "test"
+
+
+def _sites_cache_control() -> str:
+    ttl = max(1, settings.SITES_CACHE_TTL)
+    return f"public, max-age={ttl}, stale-while-revalidate=300"
+
+
+def _sites_etag(city_key: str, rows: list[Site]) -> str:
+    """Weak ETag over a cheap signature: city, row count, newest updated_at and
+    the date (days_unseen changes at day granularity). Changes exactly when the
+    list's content would, without serialising it."""
+    newest = 0
+    for s in rows:
+        if s.updated_at is not None:
+            newest = max(newest, int(s.updated_at.timestamp()))
+    day = datetime.now(UTC).strftime("%Y%m%d")
+    return f'W/"sites-{city_key}-{len(rows)}-{newest}-{day}"'
 
 
 def _days_unseen(site: Site) -> int:
@@ -70,28 +105,55 @@ def _to_out(site: Site) -> SiteOut:
 
 @router.get("", response_model=list[SiteOut])
 async def list_sites(
+    request: Request,
+    response: Response,
     city: str | None = Query(default=None),
     session: AsyncSession = Depends(get_session),
-) -> list[SiteOut]:
-    """All sites, most-urgent first. Optional ``city`` filter."""
-    stmt = select(Site)
-    if city:
-        stmt = stmt.where(Site.city == city)
-    rows = (await session.execute(stmt)).scalars().all()
-    out = [_to_out(s) for s in rows]
-    out.sort(key=lambda s: s.need_score, reverse=True)
-    return out
+):
+    """All sites, most-urgent first. Optional ``city`` filter.
+
+    Served from a short-TTL in-process cache (see ``_SITES_CACHE``) and tagged
+    with ``ETag`` + ``Cache-Control`` so repeat loads hit the browser/CDN or a
+    cheap ``304`` instead of re-scanning + re-scoring every site.
+    """
+    key = city or "*"
+    now = time.monotonic()
+    cached = _SITES_CACHE.get(key)
+    if cached and cached[0] > now and _sites_cache_on():
+        body, etag = cached[1], cached[2]
+    else:
+        stmt = select(Site)
+        if city:
+            stmt = stmt.where(Site.city == city)
+        rows = list((await session.execute(stmt)).scalars().all())
+        out = [_to_out(s) for s in rows]
+        out.sort(key=lambda s: s.need_score, reverse=True)
+        body = _SITES_ADAPTER.dump_json(out)
+        etag = _sites_etag(key, rows)
+        if _sites_cache_on():
+            _SITES_CACHE[key] = (now + settings.SITES_CACHE_TTL, body, etag)
+
+    headers = {"ETag": etag, "Cache-Control": _sites_cache_control()}
+    if request.headers.get("if-none-match") == etag:
+        return Response(status_code=status.HTTP_304_NOT_MODIFIED, headers=headers)
+    # Return pre-serialised bytes directly (response_model stays declared for the
+    # OpenAPI contract; returning a Response just skips re-serialisation).
+    return Response(content=body, media_type="application/json", headers=headers)
 
 
 @router.get("/{oah_code}", response_model=SiteOut)
 async def get_site(
     oah_code: str,
+    response: Response,
     session: AsyncSession = Depends(get_session),
 ) -> SiteOut:
     stmt = select(Site).where(Site.external_id == oah_code)
     site = (await session.execute(stmt)).scalar_one_or_none()
     if site is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="site not found")
+    # A single site is cheap, but still viewer-independent and slow-changing —
+    # let the browser/CDN hold it briefly.
+    response.headers["Cache-Control"] = _sites_cache_control()
     return _to_out(site)
 
 

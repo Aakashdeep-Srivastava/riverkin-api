@@ -38,6 +38,21 @@ async def test_seed_and_list_sites():
         assert missing.status_code == 404
 
 
+async def test_sites_cache_headers_and_304():
+    await seed()
+    transport = httpx.ASGITransport(app=app)
+    async with httpx.AsyncClient(transport=transport, base_url="http://test") as client:
+        resp = await client.get("/api/v1/sites")
+        assert resp.status_code == 200
+        assert resp.headers.get("cache-control", "").startswith("public, max-age=")
+        etag = resp.headers.get("etag")
+        assert etag and etag.startswith('W/"sites-')
+        # A conditional request with the same ETag gets a cheap 304 (no body).
+        again = await client.get("/api/v1/sites", headers={"If-None-Match": etag})
+        assert again.status_code == 304
+        assert again.headers.get("etag") == etag
+
+
 async def test_seed_is_idempotent():
     first = await seed()
     assert await seed() == first  # re-running does not duplicate rows

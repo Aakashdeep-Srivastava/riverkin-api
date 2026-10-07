@@ -73,6 +73,13 @@ class Settings(BaseSettings):
     # receipt reports honestly whether the visitor was confirmed at the site.
     GEOFENCE_ENFORCE: bool = False
 
+    # TTL (seconds) for the in-process GET /sites response cache. The site list
+    # is identical for every viewer and only changes when the 3-hourly job
+    # recomputes need scores, so memoising the built list for a short window
+    # removes the per-request table scan + per-row scoring (the hot path). Also
+    # drives the public Cache-Control max-age so browsers/CDN can cache. 0 = off.
+    SITES_CACHE_TTL: int = 60
+
     # Role-based access control. When True (default), privileged endpoints (the
     # expert review queue + decisions) require a bearer token whose user has the
     # right role (401 if unauthenticated, 403 if under-privileged). Set False to
