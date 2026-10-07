@@ -45,6 +45,9 @@ NAME_HINTS = {
     "Leie (Lys)": "Leie|Lys",
     "Calore": "Calore",
     "Akerselva": "Akerselva",
+    # India (OSM often labels the Cauvery as "Kaveri").
+    "Cauvery": "Cauvery|Kaveri",
+    "Narmada": "Narmada",
 }
 
 BBOX_PAD_DEG = 0.15  # ~15 km cushion around the member sites
@@ -52,9 +55,10 @@ BBOX_PAD_DEG = 0.15  # ~15 km cushion around the member sites
 
 def _load_sites() -> list[dict]:
     sites = json.loads((DATA / "oah_sites.json").read_text(encoding="utf-8"))["sites"]
-    au = DATA / "au_sites.json"
-    if au.exists():
-        sites = sites + json.loads(au.read_text(encoding="utf-8"))["sites"]
+    for extra in ("au_sites.json", "in_sites.json"):
+        p = DATA / extra
+        if p.exists():
+            sites = sites + json.loads(p.read_text(encoding="utf-8"))["sites"]
     return sites
 
 

@@ -126,10 +126,13 @@ uv run python scripts/gen_rivers.py    # data/rivers.geojson (OSM via Overpass)
 
 ## Credits
 
-- **Sites, ecology & One Health risk:** [OneAquaHealth](https://oneaquahealth.eu)
+- **Sites, ecology & One Health risk (Europe):** [OneAquaHealth](https://oneaquahealth.eu)
   project (IEEE OneAquaHealth) — real coordinates/identity/baseline from
   api.enora-oah.eu (see `data/DATA_PROVENANCE.md`). Only the "days since last
   citizen check" schedule is illustrative and flagged `recency_simulated`.
+- **River stations (Australia):** Bureau of Meteorology — Water Data Online.
+- **River stations (India):** India-WRIS, National Water Informatics Centre,
+  Ministry of Jal Shakti (Govt. of India) — CWC surface-water gauge stations.
 - **Weather:** rainfall via [Open-Meteo](https://open-meteo.com) (CC-BY 4.0).
 - **Biodiversity:** Powered by [GBIF](https://www.gbif.org) (GBIF.org).
 - **River discharge:** [Open-Meteo Flood API](https://open-meteo.com) (CC-BY 4.0),

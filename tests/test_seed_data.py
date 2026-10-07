@@ -30,6 +30,26 @@ def test_oah_sites_file_shape():
         assert s["waterbody"] and s["name"]
 
 
+def test_in_sites_file_shape():
+    """The bundled India (India-WRIS / CWC) pilot: real river gauge stations."""
+    path = DATA / "in_sites.json"
+    if not path.exists():
+        return  # optional region
+    data = json.loads(path.read_text(encoding="utf-8"))
+    assert data["schema"] == "riverkin.in_sites.v1"
+    sites = data["sites"]
+    assert len(sites) == data["count"] >= 1
+    codes = {s["code"] for s in sites}
+    assert len(codes) == len(sites)  # unique codes
+    for s in sites:
+        assert s["country"] == "India"
+        assert s["code"].startswith("IN-")
+        assert s["name"] and s["waterbody"]
+        # Coordinates fall inside India's bounding box.
+        assert 6.0 <= s["lat"] <= 37.5
+        assert 68.0 <= s["lng"] <= 98.0
+
+
 def test_oah_samples_file_shape():
     data = json.loads((DATA / "oah_samples.json").read_text(encoding="utf-8"))
     assert data["ecology"] and data["health_risk"]

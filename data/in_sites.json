@@ -1,0 +1,606 @@
+{
+  "schema": "riverkin.in_sites.v1",
+  "source": "India-WRIS (National Water Informatics Centre, Ministry of Jal Shakti) \u2014 ArcGIS Telemetry_Stations_Data, surface-water CWC gauge stations (GDQ/GDSQ). Real station ids, names, river and coordinates (EPSG:4326); no ecology/health.",
+  "attribution": "Data: India-WRIS, National Water Informatics Centre, Ministry of Jal Shakti (Govt. of India)",
+  "rivers": [
+    "Cauvery",
+    "Narmada"
+  ],
+  "count": 66,
+  "sites": [
+    {
+      "code": "IN-CCS00A9",
+      "name": "Hogenakkal",
+      "waterbody": "Cauvery",
+      "city": "Cauvery Basin",
+      "country": "India",
+      "lat": 12.120833,
+      "lng": 77.785278
+    },
+    {
+      "code": "IN-CCQ00E9",
+      "name": "K.M.Vadi",
+      "waterbody": "Cauvery",
+      "city": "Cauvery Basin",
+      "country": "India",
+      "lat": 12.345833,
+      "lng": 76.288333
+    },
+    {
+      "code": "IN-CCL00D9",
+      "name": "Kanakpura",
+      "waterbody": "Cauvery",
+      "city": "Cauvery Basin",
+      "country": "India",
+      "lat": 12.55,
+      "lng": 77.416667
+    },
+    {
+      "code": "IN-CC000I7",
+      "name": "Kodumudi",
+      "waterbody": "Cauvery",
+      "city": "Cauvery Basin",
+      "country": "India",
+      "lat": 11.081111,
+      "lng": 77.890833
+    },
+    {
+      "code": "IN-CC000R5",
+      "name": "Kollegal",
+      "waterbody": "Cauvery",
+      "city": "Cauvery Basin",
+      "country": "India",
+      "lat": 12.189167,
+      "lng": 77.1
+    },
+    {
+      "code": "IN-CC000Y5",
+      "name": "Kudige",
+      "waterbody": "Cauvery",
+      "city": "Cauvery Basin",
+      "country": "India",
+      "lat": 12.5025,
+      "lng": 75.961944
+    },
+    {
+      "code": "IN-CCK00L9",
+      "name": "Kudlur",
+      "waterbody": "Cauvery",
+      "city": "Cauvery Basin",
+      "country": "India",
+      "lat": 11.840556,
+      "lng": 77.463889
+    },
+    {
+      "code": "IN-CCR00M8",
+      "name": "M.H. Halli",
+      "waterbody": "Cauvery",
+      "city": "Cauvery Basin",
+      "country": "India",
+      "lat": 12.818333,
+      "lng": 76.133333
+    },
+    {
+      "code": "IN-CCA23N4",
+      "name": "Menangudi",
+      "waterbody": "Cauvery",
+      "city": "Cauvery Basin",
+      "country": "India",
+      "lat": 10.947222,
+      "lng": 79.705556
+    },
+    {
+      "code": "IN-CC000G4",
+      "name": "Musiri",
+      "waterbody": "Cauvery",
+      "city": "Cauvery Basin",
+      "country": "India",
+      "lat": 10.943333,
+      "lng": 78.435
+    },
+    {
+      "code": "IN-CCP00T8",
+      "name": "Muthankera",
+      "waterbody": "Cauvery",
+      "city": "Cauvery Basin",
+      "country": "India",
+      "lat": 11.833333,
+      "lng": 76.116667
+    },
+    {
+      "code": "IN-CCD00D5",
+      "name": "Nalammaranpatti",
+      "waterbody": "Cauvery",
+      "city": "Cauvery Basin",
+      "country": "India",
+      "lat": 10.880833,
+      "lng": 77.984722
+    },
+    {
+      "code": "IN-CCA12G3",
+      "name": "Nallathur",
+      "waterbody": "Cauvery",
+      "city": "Cauvery Basin",
+      "country": "India",
+      "lat": 10.991667,
+      "lng": 79.743056
+    },
+    {
+      "code": "IN-CCG00Q8",
+      "name": "Nellithurai",
+      "waterbody": "Cauvery",
+      "city": "Cauvery Basin",
+      "country": "India",
+      "lat": 11.287778,
+      "lng": 76.893056
+    },
+    {
+      "code": "IN-CCA22S5",
+      "name": "Peralam",
+      "waterbody": "Cauvery",
+      "city": "Cauvery Basin",
+      "country": "India",
+      "lat": 10.966667,
+      "lng": 79.663889
+    },
+    {
+      "code": "IN-CCA20G5",
+      "name": "Porakudi",
+      "waterbody": "Cauvery",
+      "city": "Cauvery Basin",
+      "country": "India",
+      "lat": 10.902778,
+      "lng": 79.708333
+    },
+    {
+      "code": "IN-CCR00U6",
+      "name": "Sakleshpur",
+      "waterbody": "Cauvery",
+      "city": "Cauvery Basin",
+      "country": "India",
+      "lat": 12.953333,
+      "lng": 75.785833
+    },
+    {
+      "code": "IN-CCG00E3",
+      "name": "Savandapur",
+      "waterbody": "Cauvery",
+      "city": "Cauvery Basin",
+      "country": "India",
+      "lat": 11.521667,
+      "lng": 77.51
+    },
+    {
+      "code": "IN-CCI00C4",
+      "name": "Sevanur",
+      "waterbody": "Cauvery",
+      "city": "Cauvery Basin",
+      "country": "India",
+      "lat": 11.555,
+      "lng": 77.715
+    },
+    {
+      "code": "IN-T. BEKUPPE",
+      "name": "T. Bekuppe",
+      "waterbody": "Cauvery",
+      "city": "Cauvery Basin",
+      "country": "India",
+      "lat": 12.516667,
+      "lng": 77.433333
+    },
+    {
+      "code": "IN-CCM00B9",
+      "name": "T.K. Halli",
+      "waterbody": "Cauvery",
+      "city": "Cauvery Basin",
+      "country": "India",
+      "lat": 12.416667,
+      "lng": 77.193333
+    },
+    {
+      "code": "IN-CCP00B1",
+      "name": "T. Narasipur",
+      "waterbody": "Cauvery",
+      "city": "Cauvery Basin",
+      "country": "India",
+      "lat": 12.23,
+      "lng": 76.896111
+    },
+    {
+      "code": "IN-CCA31N6",
+      "name": "Thengudi",
+      "waterbody": "Cauvery",
+      "city": "Cauvery Basin",
+      "country": "India",
+      "lat": 10.916667,
+      "lng": 79.641667
+    },
+    {
+      "code": "IN-CCGI0E9",
+      "name": "Thengumarahada",
+      "waterbody": "Cauvery",
+      "city": "Cauvery Basin",
+      "country": "India",
+      "lat": 11.572222,
+      "lng": 76.920833
+    },
+    {
+      "code": "IN-CCH00C3",
+      "name": "Thevur",
+      "waterbody": "Cauvery",
+      "city": "Cauvery Basin",
+      "country": "India",
+      "lat": 11.527222,
+      "lng": 77.752778
+    },
+    {
+      "code": "IN-CCRI0F7",
+      "name": "Thimmanahalli",
+      "waterbody": "Cauvery",
+      "city": "Cauvery Basin",
+      "country": "India",
+      "lat": 12.983333,
+      "lng": 76.039167
+    },
+    {
+      "code": "IN-CCJ00I2",
+      "name": "Thoppur",
+      "waterbody": "Cauvery",
+      "city": "Cauvery Basin",
+      "country": "India",
+      "lat": 11.937222,
+      "lng": 78.055
+    },
+    {
+      "code": "IN-UCCADAI",
+      "name": "Uccadai",
+      "waterbody": "Cauvery",
+      "city": "Cauvery Basin",
+      "country": "India",
+      "lat": 11.005556,
+      "lng": 79.711111
+    },
+    {
+      "code": "IN-CC000K5",
+      "name": "Urachikottai",
+      "waterbody": "Cauvery",
+      "city": "Cauvery Basin",
+      "country": "India",
+      "lat": 11.477778,
+      "lng": 77.701389
+    },
+    {
+      "code": "IN-CCR00B7",
+      "name": "Akkihebbal",
+      "waterbody": "Cauvery",
+      "city": "Cauvery Basin",
+      "country": "India",
+      "lat": 12.602778,
+      "lng": 76.402778
+    },
+    {
+      "code": "IN-CCA21G5",
+      "name": "Annavasal",
+      "waterbody": "Cauvery",
+      "city": "Cauvery Basin",
+      "country": "India",
+      "lat": 10.972222,
+      "lng": 79.755556
+    },
+    {
+      "code": "IN-CCN00J5",
+      "name": "Bendrehalli",
+      "waterbody": "Cauvery",
+      "city": "Cauvery Basin",
+      "country": "India",
+      "lat": 12.128889,
+      "lng": 77.083056
+    },
+    {
+      "code": "IN-CC000N7",
+      "name": "Biligundulu",
+      "waterbody": "Cauvery",
+      "city": "Cauvery Basin",
+      "country": "India",
+      "lat": 12.18,
+      "lng": 77.73
+    },
+    {
+      "code": "IN-CC000V7",
+      "name": "Chunchunkatte",
+      "waterbody": "Cauvery",
+      "city": "Cauvery Basin",
+      "country": "India",
+      "lat": 12.506667,
+      "lng": 76.300833
+    },
+    {
+      "code": "IN-CCF00A4",
+      "name": "E-Managalam",
+      "waterbody": "Cauvery",
+      "city": "Cauvery Basin",
+      "country": "India",
+      "lat": 11.031667,
+      "lng": 77.892222
+    },
+    {
+      "code": "IN-CCA32D2",
+      "name": "Gopurajapuram",
+      "waterbody": "Cauvery",
+      "city": "Cauvery Basin",
+      "country": "India",
+      "lat": 10.851389,
+      "lng": 79.8
+    },
+    {
+      "code": "IN-01 02 15 030",
+      "name": "Garudeshwar",
+      "waterbody": "Narmada",
+      "city": "Narmada Basin",
+      "country": "India",
+      "lat": 21.883333,
+      "lng": 73.65
+    },
+    {
+      "code": "IN-01 02 15 032",
+      "name": "Chandwada",
+      "waterbody": "Narmada",
+      "city": "Narmada Basin",
+      "country": "India",
+      "lat": 22.03,
+      "lng": 73.425
+    },
+    {
+      "code": "IN-01 02 15 034",
+      "name": "Bharuch",
+      "waterbody": "Narmada",
+      "city": "Narmada Basin",
+      "country": "India",
+      "lat": 21.6894,
+      "lng": 73.0072
+    },
+    {
+      "code": "IN-NCA SITE",
+      "name": "Bamni Banjar",
+      "waterbody": "Narmada",
+      "city": "Narmada Basin",
+      "country": "India",
+      "lat": 22.484167,
+      "lng": 80.378056
+    },
+    {
+      "code": "IN-010215005",
+      "name": "Mukki",
+      "waterbody": "Narmada",
+      "city": "Narmada Basin",
+      "country": "India",
+      "lat": 22.149444,
+      "lng": 80.665
+    },
+    {
+      "code": "IN-010215001",
+      "name": "Dindori",
+      "waterbody": "Narmada",
+      "city": "Narmada Basin",
+      "country": "India",
+      "lat": 22.9475,
+      "lng": 81.077778
+    },
+    {
+      "code": "IN-010215020",
+      "name": "Chhidgaon",
+      "waterbody": "Narmada",
+      "city": "Narmada Basin",
+      "country": "India",
+      "lat": 22.404444,
+      "lng": 77.309722
+    },
+    {
+      "code": "IN-N.C.A. PATI",
+      "name": "Pati",
+      "waterbody": "Narmada",
+      "city": "Narmada Basin",
+      "country": "India",
+      "lat": 21.943333,
+      "lng": 74.744722
+    },
+    {
+      "code": "IN-NCA JOBAT",
+      "name": "Jobat",
+      "waterbody": "Narmada",
+      "city": "Narmada Basin",
+      "country": "India",
+      "lat": 22.280556,
+      "lng": 74.586111
+    },
+    {
+      "code": "IN-010215025",
+      "name": "Kogaon",
+      "waterbody": "Narmada",
+      "city": "Narmada Basin",
+      "country": "India",
+      "lat": 22.105,
+      "lng": 75.678333
+    },
+    {
+      "code": "IN-NCA-1",
+      "name": "Shahpur",
+      "waterbody": "Narmada",
+      "city": "Narmada Basin",
+      "country": "India",
+      "lat": 22.184167,
+      "lng": 77.883611
+    },
+    {
+      "code": "IN-010215007",
+      "name": "Mandla",
+      "waterbody": "Narmada",
+      "city": "Narmada Basin",
+      "country": "India",
+      "lat": 22.604167,
+      "lng": 80.361944
+    },
+    {
+      "code": "IN-010215002",
+      "name": "Manot",
+      "waterbody": "Narmada",
+      "city": "Narmada Basin",
+      "country": "India",
+      "lat": 22.735556,
+      "lng": 80.512222
+    },
+    {
+      "code": "IN-010215003",
+      "name": "Mawai",
+      "waterbody": "Narmada",
+      "city": "Narmada Basin",
+      "country": "India",
+      "lat": 22.5,
+      "lng": 81.083333
+    },
+    {
+      "code": "IN-010215004",
+      "name": "Mohgaon",
+      "waterbody": "Narmada",
+      "city": "Narmada Basin",
+      "country": "India",
+      "lat": 22.761667,
+      "lng": 80.623889
+    },
+    {
+      "code": "IN-010215026",
+      "name": "Mandleshwar",
+      "waterbody": "Narmada",
+      "city": "Narmada Basin",
+      "country": "India",
+      "lat": 22.168333,
+      "lng": 75.66
+    },
+    {
+      "code": "IN-010215022",
+      "name": "Handia",
+      "waterbody": "Narmada",
+      "city": "Narmada Basin",
+      "country": "India",
+      "lat": 22.490556,
+      "lng": 76.975833
+    },
+    {
+      "code": "IN-010215019",
+      "name": "Hoshangabad",
+      "waterbody": "Narmada",
+      "city": "Narmada Basin",
+      "country": "India",
+      "lat": 22.756111,
+      "lng": 77.732778
+    },
+    {
+      "code": "IN-010215024",
+      "name": "Mortakka",
+      "waterbody": "Narmada",
+      "city": "Narmada Basin",
+      "country": "India",
+      "lat": 22.228333,
+      "lng": 76.047222
+    },
+    {
+      "code": "IN-010215028",
+      "name": "Rajghat",
+      "waterbody": "Narmada",
+      "city": "Narmada Basin",
+      "country": "India",
+      "lat": 22.075556,
+      "lng": 74.854167
+    },
+    {
+      "code": "IN-010215013",
+      "name": "Sandia",
+      "waterbody": "Narmada",
+      "city": "Narmada Basin",
+      "country": "India",
+      "lat": 22.915833,
+      "lng": 78.3475
+    },
+    {
+      "code": "IN-010215009",
+      "name": "Patan",
+      "waterbody": "Narmada",
+      "city": "Narmada Basin",
+      "country": "India",
+      "lat": 23.311667,
+      "lng": 79.662778
+    },
+    {
+      "code": "IN-010215012",
+      "name": "Gadarwara",
+      "waterbody": "Narmada",
+      "city": "Narmada Basin",
+      "country": "India",
+      "lat": 22.923056,
+      "lng": 78.789722
+    },
+    {
+      "code": "IN-010215010",
+      "name": "Belkheri",
+      "waterbody": "Narmada",
+      "city": "Narmada Basin",
+      "country": "India",
+      "lat": 22.916944,
+      "lng": 79.342222
+    },
+    {
+      "code": "IN-NCA DHULSAR",
+      "name": "Dhulsar",
+      "waterbody": "Narmada",
+      "city": "Narmada Basin",
+      "country": "India",
+      "lat": 22.208333,
+      "lng": 74.869167
+    },
+    {
+      "code": "IN-010215016",
+      "name": "Pachmarhi",
+      "waterbody": "Narmada",
+      "city": "Narmada Basin",
+      "country": "India",
+      "lat": 22.466667,
+      "lng": 78.433333
+    },
+    {
+      "code": "IN-010215011",
+      "name": "Narmada At Barman (Barmanghat)",
+      "waterbody": "Narmada",
+      "city": "Narmada Basin",
+      "country": "India",
+      "lat": 23.029444,
+      "lng": 79.009444
+    },
+    {
+      "code": "IN-010215017",
+      "name": "Tawa Dam",
+      "waterbody": "Narmada",
+      "city": "Narmada Basin",
+      "country": "India",
+      "lat": 22.561667,
+      "lng": 77.975
+    },
+    {
+      "code": "IN-NCA - 2",
+      "name": "Ghodadongari",
+      "waterbody": "Narmada",
+      "city": "Narmada Basin",
+      "country": "India",
+      "lat": 22.170833,
+      "lng": 77.908333
+    },
+    {
+      "code": "IN-NIL",
+      "name": "Jabalpur",
+      "waterbody": "Narmada",
+      "city": "Narmada Basin",
+      "country": "India",
+      "lat": 22.5,
+      "lng": 80.5
+    }
+  ]
+}
