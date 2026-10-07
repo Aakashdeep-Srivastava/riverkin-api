@@ -60,6 +60,8 @@ def _to_out(site: Site) -> SiteOut:
         ),
         ecology=oah.ecology_status(site.ecology),
         health_risk=oah.health_risk_band(site.health_risk),
+        biodiversity=site.biodiversity,
+        discharge=site.discharge,
         recency_simulated=site.simulated,
         data_attribution=OAH_ATTRIBUTION,
         simulated=site.simulated,

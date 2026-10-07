@@ -58,6 +58,12 @@ class SiteOut(BaseModel):
     # has no published sample. See ``data_attribution``.
     ecology: dict | None = None
     health_risk: dict | None = None
+    # Real keyless open-data signals cached on the site (null until the scheduled
+    # job has populated them, or when the upstream has no data for this point).
+    # biodiversity carries its own "Powered by GBIF" attribution; discharge its
+    # "Open-Meteo / GloFAS (CC-BY)" attribution. See app/signals.py.
+    biodiversity: dict | None = None
+    discharge: dict | None = None
     # Coordinates, identity and ecology/health are REAL (from OAH). Only the
     # "days since last citizen check" schedule is illustrative — hence this flag.
     recency_simulated: bool = True

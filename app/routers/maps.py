@@ -12,7 +12,9 @@ endpoint fails fast with 503 instead of hanging.
 
 from __future__ import annotations
 
+import json
 import time
+from pathlib import Path
 from typing import Any
 
 import httpx
@@ -24,6 +26,22 @@ from app.config import settings
 from app.ratelimit import limiter
 
 router = APIRouter(prefix="/maps", tags=["maps"])
+
+# Pre-baked OSM river geometry (generated once by scripts/gen_rivers.py). Served
+# verbatim so the request path never touches Overpass. Cached in-memory.
+_RIVERS_FILE = Path(__file__).resolve().parents[2] / "data" / "rivers.geojson"
+_EMPTY_FC: dict[str, Any] = {"type": "FeatureCollection", "features": []}
+_rivers_cache: dict[str, Any] | None = None
+
+
+def _load_rivers() -> dict[str, Any]:
+    global _rivers_cache
+    if _rivers_cache is None:
+        try:
+            _rivers_cache = json.loads(_RIVERS_FILE.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            _rivers_cache = _EMPTY_FC
+    return _rivers_cache
 
 # A static image is a billable Azure Maps transaction; cap per-IP calls.
 _STATIC_LIMIT = "60/minute"
@@ -106,6 +124,27 @@ async def get_maps_token() -> JSONResponse | dict[str, Any]:
         "clientId": settings.AZURE_MAPS_CLIENT_ID,
         "expiresOn": int(token.expires_on),
     }
+
+
+@router.get("/rivers", response_model=None)
+async def get_rivers() -> Response:
+    """Real OSM river courses behind the monitored sites, as a GeoJSON
+    FeatureCollection of LineStrings (one feature per river way).
+
+    Pre-baked from OpenStreetMap via Overpass by scripts/gen_rivers.py and
+    bundled, so this endpoint never calls out. Returns an empty FeatureCollection
+    when the file has not been generated yet. The frontend draws these as a line
+    layer under the site markers.
+
+    Attribution (ODbL, required): © OpenStreetMap contributors
+    (openstreetmap.org/copyright).
+    """
+    data = await run_in_threadpool(_load_rivers)
+    return JSONResponse(
+        content=data,
+        # River courses are static — let the browser/CDN hold them a day.
+        headers={"Cache-Control": "public, max-age=86400"},
+    )
 
 
 @router.get("/static", response_model=None)

@@ -107,12 +107,35 @@ See [`.env.example`](.env.example). Summary:
 Never commit a real `.env` or any secret. In Azure, secrets come from Key Vault
 references.
 
+## Real open-data signals
+
+Beyond the OAH baseline, each site is enriched with keyless open data, cached on
+the site row by the scheduled job (`app/signals.py`) and served without a live
+upstream call. Regenerate the bundled one-time snapshots with:
+
+```bash
+uv run python scripts/gen_signals.py   # data/site_signals.json (GBIF + GloFAS)
+uv run python scripts/gen_rivers.py    # data/rivers.geojson (OSM via Overpass)
+```
+
+- **Biodiversity** — GBIF freshwater bioindicator richness (EPT + amphibians)
+  within 5 km of each site (`GET /sites` → `biodiversity`).
+- **River discharge** — GloFAS daily discharge m³/s with a 30-day series
+  (`GET /sites` → `discharge`).
+- **River geometry** — real OSM river courses as GeoJSON (`GET /maps/rivers`).
+
 ## Credits
 
-- **Sites:** monitoring sites are based on the [OneAquaHealth](https://oneaquahealth.eu)
-  project (IEEE OneAquaHealth). The bundled `data/oah_sites.json` currently holds
-  **simulated** placeholder sites (`simulated: true`) pending the real 106-site list.
-- **Weather:** rainfall data via [Open-Meteo](https://open-meteo.com).
+- **Sites, ecology & One Health risk:** [OneAquaHealth](https://oneaquahealth.eu)
+  project (IEEE OneAquaHealth) — real coordinates/identity/baseline from
+  api.enora-oah.eu (see `data/DATA_PROVENANCE.md`). Only the "days since last
+  citizen check" schedule is illustrative and flagged `recency_simulated`.
+- **Weather:** rainfall via [Open-Meteo](https://open-meteo.com) (CC-BY 4.0).
+- **Biodiversity:** Powered by [GBIF](https://www.gbif.org) (GBIF.org).
+- **River discharge:** [Open-Meteo Flood API](https://open-meteo.com) (CC-BY 4.0),
+  source GloFAS/Copernicus (ECMWF).
+- **River geometry:** © [OpenStreetMap](https://www.openstreetmap.org/copyright)
+  contributors (ODbL).
 
 Any simulated data in this repo is flagged `simulated=true` and labelled in
 responses that expose it.

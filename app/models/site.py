@@ -47,6 +47,13 @@ class Site(Base):
     ecology: Mapped[dict | None] = mapped_column(JSONB, nullable=True)
     health_risk: Mapped[dict | None] = mapped_column(JSONB, nullable=True)
 
+    # Real keyless open-data signal snapshots, refreshed by app/jobs/scheduled.py
+    # and cached here (like rain_48h_mm). biodiversity = GBIF freshwater
+    # bioindicator richness within 5 km; discharge = GloFAS river discharge m³/s.
+    # Shapes are produced by app/signals.py. See data/DATA_PROVENANCE.md.
+    biodiversity: Mapped[dict | None] = mapped_column(JSONB, nullable=True)
+    discharge: Mapped[dict | None] = mapped_column(JSONB, nullable=True)
+
     # Scoring inputs (denormalised; recomputed by the rain/need job).
     cadence_days: Mapped[int] = mapped_column(Integer, default=14, server_default="14")
     last_verified_at: Mapped[datetime | None] = mapped_column(

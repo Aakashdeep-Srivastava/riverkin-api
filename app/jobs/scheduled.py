@@ -14,11 +14,12 @@ from __future__ import annotations
 
 import asyncio
 import logging
+from datetime import UTC, datetime
 
 import httpx
 from sqlalchemy import select
 
-from app import scoring
+from app import scoring, signals
 from app.db import SessionLocal
 from app.models.site import Site
 
@@ -26,6 +27,57 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("app.jobs.scheduled")
 
 OPEN_METEO_URL = "https://api.open-meteo.com/v1/forecast"
+
+# GBIF/GloFAS change slowly; a 3-hourly cron only does real upstream work for a
+# site once its cached snapshot is older than this (so ≈ once a day per site).
+SIGNAL_REFRESH_HOURS = 24
+
+
+def _signal_stale(snapshot: dict | None, hours: float = SIGNAL_REFRESH_HOURS) -> bool:
+    """True if a cached signal snapshot is missing or older than ``hours``."""
+    if not snapshot:
+        return True
+    ts = snapshot.get("sampled_at")
+    if not ts:
+        return True
+    try:
+        when = datetime.fromisoformat(ts)
+    except (TypeError, ValueError):
+        return True
+    if when.tzinfo is None:
+        when = when.replace(tzinfo=UTC)
+    return (datetime.now(UTC) - when).total_seconds() >= hours * 3600
+
+
+async def refresh_signals(
+    sites: list[Site], client: httpx.AsyncClient, *, force: bool = False
+) -> int:
+    """Refresh GBIF biodiversity + GloFAS discharge for stale sites.
+
+    Mutates the ``Site`` rows in place (the caller commits). Each fetch degrades
+    to ``None`` on failure and leaves the existing cached value untouched, so a
+    flaky upstream never wipes good data. Returns the number of sites updated.
+    """
+    updated = 0
+    for s in sites:
+        if s.lat is None or s.lng is None:
+            continue
+        touched = False
+        if force or _signal_stale(s.biodiversity):
+            bio = await signals.fetch_biodiversity(client, s.lat, s.lng)
+            if bio is not None:
+                s.biodiversity = bio
+                touched = True
+        if force or _signal_stale(s.discharge):
+            dis = await signals.fetch_discharge(client, s.lat, s.lng)
+            if dis is not None:
+                s.discharge = dis
+                touched = True
+        if touched:
+            updated += 1
+    if updated:
+        logger.info("refreshed GBIF/GloFAS signals for %d sites", updated)
+    return updated
 
 
 async def _rain_48h(client: httpx.AsyncClient, lat: float, lng: float) -> float:
@@ -58,8 +110,6 @@ def _visit_share(days_unseen: float) -> float:
 
 async def run() -> int:
     """Pull rain per city and recompute need for every site. Returns site count."""
-    from datetime import UTC, datetime
-
     async with SessionLocal() as session:
         sites = (await session.execute(select(Site))).scalars().all()
         if not sites:
@@ -76,6 +126,9 @@ async def run() -> int:
             rain_by_city = {
                 city: await _rain_48h(client, lat, lng) for city, (lat, lng) in reps.items()
             }
+            # Per-site keyless open-data signals (GBIF biodiversity + GloFAS
+            # discharge), guarded so this only does real work ≈ once a day.
+            await refresh_signals(list(sites), client)
 
         now = datetime.now(UTC)
         for s in sites:

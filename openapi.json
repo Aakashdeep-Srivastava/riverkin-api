@@ -922,6 +922,26 @@
         }
       }
     },
+    "/api/v1/maps/rivers": {
+      "get": {
+        "tags": [
+          "maps"
+        ],
+        "summary": "Get Rivers",
+        "description": "Real OSM river courses behind the monitored sites, as a GeoJSON\nFeatureCollection of LineStrings (one feature per river way).\n\nPre-baked from OpenStreetMap via Overpass by scripts/gen_rivers.py and\nbundled, so this endpoint never calls out. Returns an empty FeatureCollection\nwhen the file has not been generated yet. The frontend draws these as a line\nlayer under the site markers.\n\nAttribution (ODbL, required): \u00a9 OpenStreetMap contributors\n(openstreetmap.org/copyright).",
+        "operationId": "get_rivers_api_v1_maps_rivers_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/maps/static": {
       "get": {
         "tags": [
@@ -3932,6 +3952,30 @@
               }
             ],
             "title": "Health Risk"
+          },
+          "biodiversity": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Biodiversity"
+          },
+          "discharge": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Discharge"
           },
           "recency_simulated": {
             "type": "boolean",
