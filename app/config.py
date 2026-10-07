@@ -73,6 +73,12 @@ class Settings(BaseSettings):
     # receipt reports honestly whether the visitor was confirmed at the site.
     GEOFENCE_ENFORCE: bool = False
 
+    # Role-based access control. When True (default), privileged endpoints (the
+    # expert review queue + decisions) require a bearer token whose user has the
+    # right role (401 if unauthenticated, 403 if under-privileged). Set False to
+    # restore the fully-open demo behaviour. Mirrors GEOFENCE_ENFORCE.
+    RBAC_ENFORCE: bool = True
+
     # Azure Maps — the account uniqueId (client id). Used to mint AAD tokens for
     # the browser via managed identity; not a secret.
     AZURE_MAPS_CLIENT_ID: str = ""

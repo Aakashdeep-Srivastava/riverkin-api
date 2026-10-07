@@ -13,6 +13,21 @@ async def _client() -> httpx.AsyncClient:
     return httpx.AsyncClient(transport=transport, base_url="http://test")
 
 
+async def _researcher_headers(client: httpx.AsyncClient) -> dict[str, str]:
+    """Register a researcher and return its bearer auth header (RBAC is enforced)."""
+    resp = await client.post(
+        "/api/v1/auth/register",
+        json={
+            "email": "researcher@example.com",
+            "password": "pw-at-least-8",
+            "display_name": "Dr Test",
+            "role": "researcher",
+        },
+    )
+    token = resp.json()["access_token"]
+    return {"Authorization": f"Bearer {token}"}
+
+
 async def _submit(client: httpx.AsyncClient, answers: dict, feeling: str | None = None) -> int:
     code = (await client.get("/api/v1/sites")).json()[0]["id"]
     resp = await client.post(
@@ -49,31 +64,40 @@ async def test_fhir_bundle_shape():
 async def test_expert_queue_and_review_lifecycle():
     await seed()
     async with await _client() as client:
+        hdr = await _researcher_headers(client)
         obs = await _submit(client, {"q-water": "cloudy", "q-pipe": "yes"})  # pipe flag → expert
-        queue = (await client.get("/api/v1/expert/queue")).json()["items"]
+        queue = (await client.get("/api/v1/expert/queue", headers=hdr)).json()["items"]
         assert obs in [i["observation_id"] for i in queue]
 
-        confirm = await client.post(f"/api/v1/expert/{obs}/review", json={"decision": "confirm"})
+        confirm = await client.post(
+            f"/api/v1/expert/{obs}/review", json={"decision": "confirm"}, headers=hdr
+        )
         assert confirm.status_code == 200
         assert confirm.json()["status"] == "final"
 
         # No longer in the expert queue.
-        queue2 = (await client.get("/api/v1/expert/queue")).json()["items"]
+        queue2 = (await client.get("/api/v1/expert/queue", headers=hdr)).json()["items"]
         assert obs not in [i["observation_id"] for i in queue2]
 
-        bad = await client.post(f"/api/v1/expert/{obs}/review", json={"decision": "nope"})
+        bad = await client.post(
+            f"/api/v1/expert/{obs}/review", json={"decision": "nope"}, headers=hdr
+        )
         assert bad.status_code == 422
-        missing = await client.post("/api/v1/expert/999999/review", json={"decision": "confirm"})
+        missing = await client.post(
+            "/api/v1/expert/999999/review", json={"decision": "confirm"}, headers=hdr
+        )
         assert missing.status_code == 404
 
 
 async def test_expert_amend_updates_answer():
     await seed()
     async with await _client() as client:
+        hdr = await _researcher_headers(client)
         obs = await _submit(client, {"q-water": "cloudy", "q-pipe": "yes"})
         r = await client.post(
             f"/api/v1/expert/{obs}/review",
             json={"decision": "amend", "field_code": "q-water", "new_value": "clear"},
+            headers=hdr,
         )
         assert r.status_code == 200
         assert r.json()["status"] == "amended"

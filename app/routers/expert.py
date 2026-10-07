@@ -19,8 +19,16 @@ from app.db import get_session
 from app.models.observation import Observation
 from app.models.site import Site
 from app.models.verify import VerifyItem, Vote
+from app.routers.auth import require_role
 
-router = APIRouter(prefix="/expert", tags=["expert"])
+# Expert sign-off is a researcher action. require_role enforces the researcher
+# role (honouring settings.RBAC_ENFORCE); the whole router is gated so no expert
+# route is ever unauthenticated.
+router = APIRouter(
+    prefix="/expert",
+    tags=["expert"],
+    dependencies=[Depends(require_role("researcher"))],
+)
 
 
 class ExpertQueueItem(BaseModel):

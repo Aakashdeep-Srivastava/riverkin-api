@@ -531,6 +531,24 @@
         "summary": "Expert Queue",
         "description": "Observations awaiting expert sign-off (pipe/sewage flag or split votes).",
         "operationId": "expert_queue_api_v1_expert_queue_get",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -538,6 +556,16 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ExpertQueueOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
                 }
               }
             }
@@ -561,6 +589,22 @@
             "schema": {
               "type": "integer",
               "title": "Obs Id"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
             }
           }
         ],

@@ -133,6 +133,33 @@ async def current_user(
     return await session.get(User, user_id)
 
 
+def require_role(*roles: str):
+    """Dependency factory: require an authenticated user, optionally in a role.
+
+    Unlike ``current_user`` (optional, guest-first), this rejects: 401 when no
+    valid bearer token is present, 403 when the user's role isn't in ``roles``.
+    Honours ``settings.RBAC_ENFORCE`` — when disabled it is permissive (returns
+    whoever is there, like the pre-RBAC demo), so enforcement is one flag away.
+    Use it to gate the privileged surfaces (expert review) that were open before.
+    """
+
+    async def _dep(user: User | None = Depends(current_user)) -> User | None:
+        if not settings.RBAC_ENFORCE:
+            return user
+        if user is None:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED, detail="sign in required"
+            )
+        if roles and user.role not in roles:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail=f"requires role: {', '.join(roles)}",
+            )
+        return user
+
+    return _dep
+
+
 @router.get("/me")
 async def me(user: User | None = Depends(current_user)) -> dict:
     if user is None:

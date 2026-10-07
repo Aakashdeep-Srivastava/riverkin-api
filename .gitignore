@@ -29,3 +29,4 @@ htmlcov/
 
 # Processed observation photos (local MVP store)
 media/
+fhir_sample.json

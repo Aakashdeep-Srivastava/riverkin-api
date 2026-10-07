@@ -39,6 +39,29 @@ jobs:
       - run: uv run alembic upgrade head
       - run: uv run pytest -q
 
+  # Deeper FHIR conformance: run the official HL7 validator against a real,
+  # representative Bundle. The fast in-process structural + OAH-IG checks live in
+  # tests/test_fhir_validation.py (part of `test`, which gates deploy); this job
+  # is the heavier HL7-validator pass and runs independently of the deploy gate.
+  fhir-validate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - run: uv sync --frozen
+      - name: Build a representative FHIR Bundle
+        run: uv run python scripts/export_fhir_sample.py
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+      - name: Download HL7 FHIR validator
+        run: curl -L -o validator_cli.jar https://github.com/hapifhir/org.hl7.fhir.core/releases/latest/download/validator_cli.jar
+      - name: Validate Bundle against FHIR R4B
+        run: java -jar validator_cli.jar fhir_sample.json -version 4.3.0
+
   deploy:
     if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
     needs: test
