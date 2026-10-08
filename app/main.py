@@ -9,6 +9,7 @@ from __future__ import annotations
 
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import PlainTextResponse
 from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 from slowapi.middleware import SlowAPIMiddleware
@@ -46,6 +47,8 @@ _SECURITY_HEADERS = {
     "Content-Security-Policy": "default-src 'none'; frame-ancestors 'none'",
     "Cross-Origin-Resource-Policy": "same-site",
     "Permissions-Policy": "geolocation=(), camera=(), microphone=()",
+    # Keep the API out of search indexes — it's a data backend, not content.
+    "X-Robots-Tag": "noindex, nofollow",
 }
 
 
@@ -59,10 +62,19 @@ class SecurityHeadersMiddleware(BaseHTTPMiddleware):
         return response
 
 
+# Hide the interactive docs and the live OpenAPI schema in production so the API
+# surface isn't publicly browsable (the frontend still calls /api/v1/* directly;
+# openapi.json for `gen:api` is exported from the app object by
+# scripts/export_openapi.py, not this HTTP route). Docs stay on in local/test.
+_DOCS_ENABLED = settings.APP_ENV != "production"
+
 app = FastAPI(
     title="RiverKin API",
     version="0.1.0",
     description="RiverKin backend — IEEE OneAquaHealth Global Hackathon 2026 (Track 5).",
+    docs_url="/docs" if _DOCS_ENABLED else None,
+    redoc_url="/redoc" if _DOCS_ENABLED else None,
+    openapi_url="/openapi.json" if _DOCS_ENABLED else None,
 )
 
 # Rate limiting (slowapi): global default + per-endpoint tightening.
@@ -85,6 +97,13 @@ app.add_middleware(
 async def healthz() -> dict[str, str]:
     """Liveness probe used by the Docker entrypoint and CI smoke test."""
     return {"status": "ok"}
+
+
+@app.get("/robots.txt", include_in_schema=False)
+@limiter.exempt
+async def robots_txt() -> PlainTextResponse:
+    """Disallow all crawlers — the API is a data backend, not indexable content."""
+    return PlainTextResponse("User-agent: *\nDisallow: /\n")
 
 
 # Perfect 6 routers plus maps token, all under /api/v1.
