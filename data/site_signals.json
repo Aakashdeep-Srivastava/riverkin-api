@@ -23865,7 +23865,7 @@
    "attribution": "Flood data by Open-Meteo.com (CC-BY 4.0); source GloFAS/Copernicus (ECMWF)"
   }
  },
- "IN-T. BEKUPPE": {
+ "IN-T-BEKUPPE": {
   "biodiversity": {
    "occurrences": 2,
    "species_richness": 2,
@@ -26667,7 +26667,7 @@
    "attribution": "Flood data by Open-Meteo.com (CC-BY 4.0); source GloFAS/Copernicus (ECMWF)"
   }
  },
- "IN-01 02 15 030": {
+ "IN-01-02-15-030": {
   "biodiversity": null,
   "discharge": {
    "latest_m3s": 2470.72,
@@ -26829,7 +26829,7 @@
    "attribution": "Flood data by Open-Meteo.com (CC-BY 4.0); source GloFAS/Copernicus (ECMWF)"
   }
  },
- "IN-01 02 15 032": {
+ "IN-01-02-15-032": {
   "biodiversity": null,
   "discharge": {
    "latest_m3s": 12.77,
@@ -26991,7 +26991,7 @@
    "attribution": "Flood data by Open-Meteo.com (CC-BY 4.0); source GloFAS/Copernicus (ECMWF)"
   }
  },
- "IN-01 02 15 034": {
+ "IN-01-02-15-034": {
   "biodiversity": null,
   "discharge": {
    "latest_m3s": 0.73,
@@ -27153,7 +27153,7 @@
    "attribution": "Flood data by Open-Meteo.com (CC-BY 4.0); source GloFAS/Copernicus (ECMWF)"
   }
  },
- "IN-NCA SITE": {
+ "IN-NCA-SITE": {
   "biodiversity": null,
   "discharge": {
    "latest_m3s": 35.14,
@@ -27809,7 +27809,7 @@
    "attribution": "Flood data by Open-Meteo.com (CC-BY 4.0); source GloFAS/Copernicus (ECMWF)"
   }
  },
- "IN-N.C.A. PATI": {
+ "IN-N-C-A-PATI": {
   "biodiversity": null,
   "discharge": {
    "latest_m3s": 2.3,
@@ -27971,7 +27971,7 @@
    "attribution": "Flood data by Open-Meteo.com (CC-BY 4.0); source GloFAS/Copernicus (ECMWF)"
   }
  },
- "IN-NCA JOBAT": {
+ "IN-NCA-JOBAT": {
   "biodiversity": null,
   "discharge": {
    "latest_m3s": 0.04,
@@ -30579,7 +30579,7 @@
    "attribution": "Flood data by Open-Meteo.com (CC-BY 4.0); source GloFAS/Copernicus (ECMWF)"
   }
  },
- "IN-NCA DHULSAR": {
+ "IN-NCA-DHULSAR": {
   "biodiversity": null,
   "discharge": {
    "latest_m3s": 0.05,
@@ -31235,7 +31235,7 @@
    "attribution": "Flood data by Open-Meteo.com (CC-BY 4.0); source GloFAS/Copernicus (ECMWF)"
   }
  },
- "IN-NCA - 2": {
+ "IN-NCA-2": {
   "biodiversity": null,
   "discharge": {
    "latest_m3s": 20.38,

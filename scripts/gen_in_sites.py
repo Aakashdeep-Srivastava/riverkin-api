@@ -105,6 +105,9 @@ def main() -> None:
                 or a.get("objectid")
             )
             code = f"IN-{sid}"
+            # Slug-safe: external_id is used directly in URLs (/sites/{code},
+            # /missions/{code}), so strip spaces/dots to avoid invalid URLs.
+            code = re.sub(r"-{2,}", "-", re.sub(r"[^A-Za-z0-9-]+", "-", code)).strip("-")
             pt = (round(lat, 3), round(lng, 3))
             if code in seen_codes or pt in seen_pts:
                 continue

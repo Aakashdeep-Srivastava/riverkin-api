@@ -180,7 +180,7 @@
       "lng": 77.715
     },
     {
-      "code": "IN-T. BEKUPPE",
+      "code": "IN-T-BEKUPPE",
       "name": "T. Bekuppe",
       "waterbody": "Cauvery",
       "city": "Cauvery Basin",
@@ -333,7 +333,7 @@
       "lng": 79.8
     },
     {
-      "code": "IN-01 02 15 030",
+      "code": "IN-01-02-15-030",
       "name": "Garudeshwar",
       "waterbody": "Narmada",
       "city": "Narmada Basin",
@@ -342,7 +342,7 @@
       "lng": 73.65
     },
     {
-      "code": "IN-01 02 15 032",
+      "code": "IN-01-02-15-032",
       "name": "Chandwada",
       "waterbody": "Narmada",
       "city": "Narmada Basin",
@@ -351,7 +351,7 @@
       "lng": 73.425
     },
     {
-      "code": "IN-01 02 15 034",
+      "code": "IN-01-02-15-034",
       "name": "Bharuch",
       "waterbody": "Narmada",
       "city": "Narmada Basin",
@@ -360,7 +360,7 @@
       "lng": 73.0072
     },
     {
-      "code": "IN-NCA SITE",
+      "code": "IN-NCA-SITE",
       "name": "Bamni Banjar",
       "waterbody": "Narmada",
       "city": "Narmada Basin",
@@ -396,7 +396,7 @@
       "lng": 77.309722
     },
     {
-      "code": "IN-N.C.A. PATI",
+      "code": "IN-N-C-A-PATI",
       "name": "Pati",
       "waterbody": "Narmada",
       "city": "Narmada Basin",
@@ -405,7 +405,7 @@
       "lng": 74.744722
     },
     {
-      "code": "IN-NCA JOBAT",
+      "code": "IN-NCA-JOBAT",
       "name": "Jobat",
       "waterbody": "Narmada",
       "city": "Narmada Basin",
@@ -549,7 +549,7 @@
       "lng": 79.342222
     },
     {
-      "code": "IN-NCA DHULSAR",
+      "code": "IN-NCA-DHULSAR",
       "name": "Dhulsar",
       "waterbody": "Narmada",
       "city": "Narmada Basin",
@@ -585,7 +585,7 @@
       "lng": 77.975
     },
     {
-      "code": "IN-NCA - 2",
+      "code": "IN-NCA-2",
       "name": "Ghodadongari",
       "waterbody": "Narmada",
       "city": "Narmada Basin",
