@@ -11,7 +11,7 @@ flagged to the verifier. Each vote recomputes observation trust + state.
 from __future__ import annotations
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
-from sqlalchemy import select
+from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db import get_session
@@ -19,7 +19,7 @@ from app.experiment import assign_arm
 from app.models.observation import Observation
 from app.models.site import Site
 from app.models.verify import VerifyItem, Vote
-from app.schemas import VerifyCard, VerifyNextOut, VoteIn, VoteResult
+from app.schemas import VerifyCard, VerifyCountOut, VerifyNextOut, VoteIn, VoteResult
 from app.services import recompute_trust
 
 router = APIRouter(prefix="/verify", tags=["verify"])
@@ -51,10 +51,15 @@ async def next_verify_items(
     )
     rows = (await session.execute(stmt)).all()
     cards: list[VerifyCard] = []
-    for item, _obs, site in rows:
+    for item, obs, site in rows:
         # AI-assist lift experiment: the control arm is a human-only decision, so
         # withhold the AI box. Assignment is stable per (voter, item).
         arm = assign_arm(voter_id, item.id)
+        # The actual evidence to judge: the processed photo served by the
+        # observations router. None when the check had no photo.
+        photo_url = (
+            f"/api/v1/observations/{obs.id}/photo" if obs is not None and obs.photo_path else None
+        )
         cards.append(
             VerifyCard(
                 item_id=item.id,
@@ -63,10 +68,35 @@ async def next_verify_items(
                 field_code=item.field_code,
                 question=item.question,
                 ai_box=None if arm == "control" else item.ai_box,
+                photo_url=photo_url,
                 arm=arm,
             )
         )
     return VerifyNextOut(cards=cards, simulated=len(cards) == 0)
+
+
+@router.get("/count", response_model=VerifyCountOut)
+async def verify_count(
+    voter_id: str = Query(default="demo-keeper"),
+    session: AsyncSession = Depends(get_session),
+) -> VerifyCountOut:
+    """Count the checks (observations) still awaiting this voter's verification.
+
+    Same filter as ``/next`` — open verify items on still-open observations the
+    voter hasn't voted on — but counts distinct observations, not cards, so the
+    number reads as 'N checks need your eyes'.
+    """
+    already = select(Vote.verify_item_id).where(Vote.voter_id == voter_id)
+    stmt = (
+        select(func.count(func.distinct(VerifyItem.observation_id)))
+        .select_from(VerifyItem)
+        .join(Observation, VerifyItem.observation_id == Observation.id)
+        .where(VerifyItem.resolved.is_(False))
+        .where(Observation.status.in_(("in_verify", "pending", "expert")))
+        .where(VerifyItem.id.not_in(already))
+    )
+    count = (await session.execute(stmt)).scalar() or 0
+    return VerifyCountOut(count=int(count))
 
 
 @router.post("/{item_id}/vote", response_model=VoteResult)

@@ -15,17 +15,27 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
-from fastapi import APIRouter, Depends, File, Form, HTTPException, Request, UploadFile, status
+from fastapi import (
+    APIRouter,
+    BackgroundTasks,
+    Depends,
+    File,
+    Form,
+    HTTPException,
+    Request,
+    UploadFile,
+    status,
+)
 from fastapi.responses import FileResponse, Response
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette.concurrency import run_in_threadpool
 
-from app import authenticity, receipts, scoring, storage, vision_fields
+from app import authenticity, push, receipts, scoring, storage, vision_fields
 from app.ai import vision
 from app.ai.questions import FIELD_SPECS, build_verify_items
 from app.config import settings
-from app.db import get_session
+from app.db import SessionLocal, get_session
 from app.models.observation import Observation
 from app.models.site import Site
 from app.models.user import User
@@ -131,11 +141,31 @@ def _build_receipt(obs: Observation, site: Site, verifier_count: int) -> Receipt
     )
 
 
+async def _notify_new_verification(site_name: str, exclude_user_id: int | None) -> None:
+    """Background task: nudge the community that a check needs peer verification.
+
+    Opens its own session (the request's is already closed) and is a no-op when
+    web push isn't configured. Never raises into the request path.
+    """
+    try:
+        async with SessionLocal() as session:
+            await push.broadcast(
+                session,
+                title="A check needs your eyes 👀",
+                body=f"A new check at {site_name} is ready for peer verification.",
+                url="/verify",
+                exclude_user_id=exclude_user_id,
+            )
+    except Exception:  # noqa: BLE001 — a failed nudge must never surface to the user
+        pass
+
+
 @router.post("", response_model=ObservationCreated, status_code=status.HTTP_201_CREATED)
 @limiter.limit(WRITE_LIMIT)
 async def create_observation(
     request: Request,
     payload: ObservationIn,
+    background: BackgroundTasks,
     session: AsyncSession = Depends(get_session),
     author: User | None = Depends(current_user),
 ) -> ObservationCreated:
@@ -202,6 +232,16 @@ async def create_observation(
     obs.fhir_bundle_id = receipts.fhir_short_id(obs.id)
     await session.commit()
     await session.refresh(obs)
+
+    # Peer-verification checks go to the community; nudge subscribers (not the
+    # submitter) that there's something to verify. Pipe/expert-routed checks skip
+    # this — they're for the expert queue, not peer verification.
+    if obs.status == "in_verify":
+        background.add_task(
+            _notify_new_verification,
+            site_name=site.name,
+            exclude_user_id=author.id if author else None,
+        )
 
     receipt = _build_receipt(obs, site, verifier_count=0)
     return ObservationCreated(

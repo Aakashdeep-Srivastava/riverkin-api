@@ -225,6 +225,10 @@ class VerifyCard(BaseModel):
     field_code: str
     question: str
     ai_box: str | None = None
+    # The submitter's processed (EXIF-stripped, face-blurred) photo — the
+    # evidence the verifier is being asked to judge. None when the check had no
+    # photo, in which case C5 falls back to the illustrative placeholder.
+    photo_url: str | None = None
     # AI-assist verification-lift experiment arm: "control" cards withhold the
     # AI box (human-only); "assisted" cards show it. See app/experiment.py.
     arm: str = "assisted"
@@ -233,6 +237,13 @@ class VerifyCard(BaseModel):
 class VerifyNextOut(BaseModel):
     cards: list[VerifyCard]
     simulated: bool = True
+
+
+class VerifyCountOut(BaseModel):
+    """How many checks are waiting for this voter to verify (drives the live
+    'N checks need your eyes' nudge)."""
+
+    count: int
 
 
 class VoteIn(BaseModel):

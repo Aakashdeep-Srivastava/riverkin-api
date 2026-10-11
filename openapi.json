@@ -470,6 +470,50 @@
         }
       }
     },
+    "/api/v1/verify/count": {
+      "get": {
+        "tags": [
+          "verify"
+        ],
+        "summary": "Verify Count",
+        "description": "Count the checks (observations) still awaiting this voter's verification.\n\nSame filter as ``/next`` \u2014 open verify items on still-open observations the\nvoter hasn't voted on \u2014 but counts distinct observations, not cards, so the\nnumber reads as 'N checks need your eyes'.",
+        "operationId": "verify_count_api_v1_verify_count_get",
+        "parameters": [
+          {
+            "name": "voter_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "demo-keeper",
+              "title": "Voter Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VerifyCountOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/verify/{item_id}/vote": {
       "post": {
         "tags": [
@@ -4354,6 +4398,17 @@
             ],
             "title": "Ai Box"
           },
+          "photo_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Photo Url"
+          },
           "arm": {
             "type": "string",
             "title": "Arm",
@@ -4370,6 +4425,20 @@
         ],
         "title": "VerifyCard",
         "description": "One verify card for C5. Submitter, tally and gold status are hidden."
+      },
+      "VerifyCountOut": {
+        "properties": {
+          "count": {
+            "type": "integer",
+            "title": "Count"
+          }
+        },
+        "type": "object",
+        "required": [
+          "count"
+        ],
+        "title": "VerifyCountOut",
+        "description": "How many checks are waiting for this voter to verify (drives the live\n'N checks need your eyes' nudge)."
       },
       "VerifyNextOut": {
         "properties": {

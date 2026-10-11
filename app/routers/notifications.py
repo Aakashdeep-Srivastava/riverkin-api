@@ -16,7 +16,7 @@ from datetime import UTC, datetime
 
 from fastapi import APIRouter, Depends, Query
 from pydantic import BaseModel
-from sqlalchemy import select
+from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db import get_session
@@ -31,7 +31,7 @@ RAIN_MM = 20.0
 
 class Notification(BaseModel):
     id: str
-    kind: str  # verified | after-rain | orphan | coverage
+    kind: str  # to-verify | verified | after-rain | orphan | coverage
     icon: str  # frontend maps to an icon
     title: str
     body: str
@@ -47,6 +47,30 @@ async def notifications(
 ) -> list[Notification]:
     now = datetime.now(UTC)
     out: list[Notification] = []
+
+    # 0) Checks awaiting peer verification — a live, actionable count. Lead with
+    #    it so people see there's something to do right now.
+    to_verify = (
+        await session.execute(
+            select(func.count())
+            .select_from(Observation)
+            .where(Observation.status == "in_verify")
+        )
+    ).scalar() or 0
+    if to_verify:
+        out.append(Notification(
+            id="to-verify",
+            kind="to-verify",
+            icon="eye",
+            title="Checks need your eyes 👀",
+            body=(
+                f"{to_verify} {'check is' if to_verify == 1 else 'checks are'} waiting for "
+                "peer verification. 20-second rounds."
+            ),
+            href="/verify",
+            accent="#0052FF",
+            at=now.isoformat(),
+        ))
 
     # 1) Recent community-verified / final checks — celebrate real wins.
     verified_rows = (

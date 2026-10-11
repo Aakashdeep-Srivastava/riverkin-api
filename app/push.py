@@ -63,11 +63,27 @@ def _send_one(sub: PushSubscription, payload: dict) -> bool:
         return True
 
 
-async def broadcast(session: AsyncSession, *, title: str, body: str, url: str = "/") -> int:
-    """Send a nudge to every subscription; prune the dead ones. Returns #sent."""
+async def broadcast(
+    session: AsyncSession,
+    *,
+    title: str,
+    body: str,
+    url: str = "/",
+    exclude_user_id: int | None = None,
+) -> int:
+    """Send a nudge to every subscription; prune the dead ones. Returns #sent.
+
+    ``exclude_user_id`` skips subscriptions owned by that user (e.g. don't ask
+    the submitter to verify their own check). Anonymous (NULL-owner) and
+    other-user subscriptions are always kept.
+    """
     if not enabled():
         return 0
-    subs = (await session.execute(select(PushSubscription))).scalars().all()
+    stmt = select(PushSubscription)
+    if exclude_user_id is not None:
+        # IS DISTINCT FROM keeps NULL-owner subs (NULL IS DISTINCT FROM id → true).
+        stmt = stmt.where(PushSubscription.user_id.is_distinct_from(exclude_user_id))
+    subs = (await session.execute(stmt)).scalars().all()
     payload = {"title": title, "body": body, "url": url}
     sent = 0
     dead: list[str] = []
