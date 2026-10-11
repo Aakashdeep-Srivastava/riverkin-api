@@ -11,16 +11,17 @@ scheduled job uses these to send after-rain / coverage nudges (app/push.py).
 from __future__ import annotations
 
 from fastapi import APIRouter, Depends
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from sqlalchemy import delete
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app import push as push_sender
 from app.config import settings
 from app.db import get_session
 from app.models.push import PushSubscription
 from app.models.user import User
-from app.routers.auth import current_user
+from app.routers.auth import current_user, require_role
 
 router = APIRouter(prefix="/push", tags=["push"])
 
@@ -75,3 +76,22 @@ async def unsubscribe(
     )
     await session.commit()
     return {"unsubscribed": True}
+
+
+class BroadcastIn(BaseModel):
+    title: str = Field(min_length=1, max_length=120)
+    body: str = Field(min_length=1, max_length=300)
+    url: str = "/"
+
+
+@router.post("/broadcast", dependencies=[Depends(require_role("researcher"))])
+async def broadcast_push(
+    payload: BroadcastIn, session: AsyncSession = Depends(get_session)
+) -> dict:
+    """Send a push to every subscriber. Gated to researchers (no admin role
+    exists) so it can't be used to spam. No-op (sent=0) when push is unconfigured.
+    """
+    sent = await push_sender.broadcast(
+        session, title=payload.title, body=payload.body, url=payload.url or "/"
+    )
+    return {"sent": sent}

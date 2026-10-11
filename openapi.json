@@ -2058,6 +2058,68 @@
         }
       }
     },
+    "/api/v1/push/broadcast": {
+      "post": {
+        "tags": [
+          "push"
+        ],
+        "summary": "Broadcast Push",
+        "description": "Send a push to every subscriber. Gated to researchers (no admin role\nexists) so it can't be used to spam. No-op (sent=0) when push is unconfigured.",
+        "operationId": "broadcast_push_api_v1_push_broadcast_post",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BroadcastIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Broadcast Push Api V1 Push Broadcast Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/events": {
       "post": {
         "tags": [
@@ -2581,6 +2643,33 @@
           "file"
         ],
         "title": "Body_upload_photo_api_v1_observations__observation_id__photos_post"
+      },
+      "BroadcastIn": {
+        "properties": {
+          "title": {
+            "type": "string",
+            "maxLength": 120,
+            "minLength": 1,
+            "title": "Title"
+          },
+          "body": {
+            "type": "string",
+            "maxLength": 300,
+            "minLength": 1,
+            "title": "Body"
+          },
+          "url": {
+            "type": "string",
+            "title": "Url",
+            "default": "/"
+          }
+        },
+        "type": "object",
+        "required": [
+          "title",
+          "body"
+        ],
+        "title": "BroadcastIn"
       },
       "Challenge": {
         "properties": {

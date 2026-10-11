@@ -34,6 +34,7 @@ FUNNEL = [
 
 ALLOWED = set(FUNNEL) | {
     "guest_entered",
+    "guest_visit",
     "map_engaged",
     "question_answered",
     "camera_opened",
@@ -119,5 +120,12 @@ async def funnel(session: AsyncSession = Depends(get_session)) -> dict:
             "community_discovery_pct": ratio("community_opened", "mission_submitted"),
         },
         "counts": counts,
+        # Guest reach: distinct guest sessions that reached the app (guest_visit,
+        # incl. returning guests) and first-time guest choices (guest_entered).
+        "guests": {
+            "visits": counts.get("guest_visit", 0),
+            "first_time": counts.get("guest_entered", 0),
+            "sessions": counts.get("session_started", 0),
+        },
         "note": "Real product funnel (distinct client sessions). Not AI-simulated.",
     }
