@@ -5,6 +5,7 @@ Alembic autogenerate and ``create_all`` see the full schema.
 """
 
 from app.models.challenge import Challenge, ChallengeParticipant, Referral
+from app.models.community_post import CommunityPost
 from app.models.crew import Adoption, Checkin, Crew, CrewMember
 from app.models.observation import Observation
 from app.models.site import Site
@@ -17,6 +18,7 @@ __all__ = [
     "Challenge",
     "ChallengeParticipant",
     "Checkin",
+    "CommunityPost",
     "Crew",
     "CrewMember",
     "Observation",

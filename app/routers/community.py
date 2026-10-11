@@ -13,14 +13,18 @@ from __future__ import annotations
 
 from datetime import UTC, datetime, timedelta
 
-from fastapi import APIRouter, Depends, Query
-from pydantic import BaseModel
+from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
+from pydantic import BaseModel, Field
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db import get_session
+from app.models.community_post import CommunityPost
 from app.models.observation import Observation
 from app.models.site import Site
+from app.models.user import User
+from app.ratelimit import limiter
+from app.routers.auth import current_user
 
 router = APIRouter(prefix="/community", tags=["community"])
 
@@ -161,3 +165,99 @@ async def challenges(
             target=len(needing), progress=0, kind="coverage",
         ))
     return out
+
+
+# ---- Community feed (short, public, pseudonymous notes) --------------------
+
+MAX_POST = 300
+
+
+class CommunityPostIn(BaseModel):
+    author_key: str = Field(min_length=1, max_length=64)
+    author_name: str | None = Field(default=None, max_length=80)
+    body: str = Field(min_length=1, max_length=MAX_POST)
+    site_code: str | None = Field(default=None, max_length=64)
+
+
+class CommunityPostOut(BaseModel):
+    id: int
+    author_name: str
+    body: str
+    site_name: str | None = None
+    site_code: str | None = None
+    created_at: str  # ISO8601
+
+
+@router.get("/posts", response_model=list[CommunityPostOut])
+async def list_posts(
+    limit: int = Query(default=30, ge=1, le=100),
+    session: AsyncSession = Depends(get_session),
+) -> list[CommunityPostOut]:
+    """The shared community feed — recent short notes, newest first."""
+    rows = (
+        await session.execute(
+            select(CommunityPost, Site)
+            .join(Site, CommunityPost.site_id == Site.id, isouter=True)
+            .order_by(CommunityPost.created_at.desc())
+            .limit(limit)
+        )
+    ).all()
+    return [
+        CommunityPostOut(
+            id=p.id,
+            author_name=p.author_name or "Guest",
+            body=p.body,
+            site_name=site.name if site is not None else None,
+            site_code=site.external_id if site is not None else None,
+            created_at=(p.created_at.isoformat() if p.created_at else ""),
+        )
+        for p, site in rows
+    ]
+
+
+@router.post("/posts", response_model=CommunityPostOut, status_code=status.HTTP_201_CREATED)
+@limiter.limit("8/minute")
+async def create_post(
+    request: Request,
+    payload: CommunityPostIn,
+    session: AsyncSession = Depends(get_session),
+    author: User | None = Depends(current_user),
+) -> CommunityPostOut:
+    """Post a short note to the community feed. Pseudonymous and rate-limited;
+    text only (no images) so moderation stays light."""
+    body = payload.body.strip()
+    if not body:
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_CONTENT, detail="empty post")
+
+    site: Site | None = None
+    if payload.site_code:
+        site = (
+            await session.execute(select(Site).where(Site.external_id == payload.site_code))
+        ).scalar_one_or_none()
+
+    # Signed-in author's display name wins; else the provided name, else Guest.
+    name = (
+        (author.display_name if author else None)
+        or (payload.author_name or "").strip()
+        or "Guest"
+    )
+
+    post = CommunityPost(
+        author_key=payload.author_key[:64],
+        author_name=name[:80],
+        body=body[:MAX_POST],
+        site_id=site.id if site else None,
+        user_id=author.id if author else None,
+    )
+    session.add(post)
+    await session.commit()
+    await session.refresh(post)
+
+    return CommunityPostOut(
+        id=post.id,
+        author_name=post.author_name,
+        body=post.body,
+        site_name=site.name if site else None,
+        site_code=site.external_id if site else None,
+        created_at=post.created_at.isoformat() if post.created_at else "",
+    )

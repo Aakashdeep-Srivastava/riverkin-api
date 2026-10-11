@@ -1645,6 +1645,114 @@
         }
       }
     },
+    "/api/v1/community/posts": {
+      "get": {
+        "tags": [
+          "community"
+        ],
+        "summary": "List Posts",
+        "description": "The shared community feed \u2014 recent short notes, newest first.",
+        "operationId": "list_posts_api_v1_community_posts_get",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "default": 30,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CommunityPostOut"
+                  },
+                  "title": "Response List Posts Api V1 Community Posts Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "community"
+        ],
+        "summary": "Create Post",
+        "description": "Post a short note to the community feed. Pseudonymous and rate-limited;\ntext only (no images) so moderation stays light.",
+        "operationId": "create_post_api_v1_community_posts_post",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CommunityPostIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommunityPostOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/challenges": {
       "get": {
         "tags": [
@@ -2854,6 +2962,102 @@
           "rank"
         ],
         "title": "CityStanding"
+      },
+      "CommunityPostIn": {
+        "properties": {
+          "author_key": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Author Key"
+          },
+          "author_name": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 80
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Author Name"
+          },
+          "body": {
+            "type": "string",
+            "maxLength": 300,
+            "minLength": 1,
+            "title": "Body"
+          },
+          "site_code": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 64
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Site Code"
+          }
+        },
+        "type": "object",
+        "required": [
+          "author_key",
+          "body"
+        ],
+        "title": "CommunityPostIn"
+      },
+      "CommunityPostOut": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "author_name": {
+            "type": "string",
+            "title": "Author Name"
+          },
+          "body": {
+            "type": "string",
+            "title": "Body"
+          },
+          "site_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Site Name"
+          },
+          "site_code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Site Code"
+          },
+          "created_at": {
+            "type": "string",
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "author_name",
+          "body",
+          "created_at"
+        ],
+        "title": "CommunityPostOut"
       },
       "CommunityProfile": {
         "properties": {
