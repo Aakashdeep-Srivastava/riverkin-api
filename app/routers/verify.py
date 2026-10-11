@@ -18,8 +18,17 @@ from app.db import get_session
 from app.experiment import assign_arm
 from app.models.observation import Observation
 from app.models.site import Site
+from app.models.user import User
 from app.models.verify import VerifyItem, Vote
-from app.schemas import VerifyCard, VerifyCountOut, VerifyNextOut, VoteIn, VoteResult
+from app.schemas import (
+    VerifyCard,
+    VerifyCountOut,
+    VerifyNextOut,
+    VerifyPendingItem,
+    VerifyPendingOut,
+    VoteIn,
+    VoteResult,
+)
 from app.services import recompute_trust
 
 router = APIRouter(prefix="/verify", tags=["verify"])
@@ -31,12 +40,16 @@ VALID_ANSWERS = {"yes", "no", "cant_tell"}
 async def next_verify_items(
     n: int = Query(default=5, ge=1, le=20),
     voter_id: str = Query(default="demo-keeper"),
+    observation_id: int | None = Query(default=None),
     session: AsyncSession = Depends(get_session),
 ) -> VerifyNextOut:
     """Return the next verify cards for this voter.
 
     Skips items the voter already voted on and items whose observation is no
     longer open. Gold items are included but never marked as gold in the payload.
+    When ``observation_id`` is given (deep-link from a pending-verification
+    notification), only that check's cards are returned, so tapping a specific
+    submission verifies exactly that one.
     """
     already = select(Vote.verify_item_id).where(Vote.voter_id == voter_id)
     stmt = (
@@ -46,9 +59,10 @@ async def next_verify_items(
         .where(VerifyItem.resolved.is_(False))
         .where(Observation.status.in_(("in_verify", "pending", "expert")))
         .where(VerifyItem.id.not_in(already))
-        .order_by(VerifyItem.created_at.asc())
-        .limit(n)
     )
+    if observation_id is not None:
+        stmt = stmt.where(VerifyItem.observation_id == observation_id)
+    stmt = stmt.order_by(VerifyItem.created_at.asc()).limit(n)
     rows = (await session.execute(stmt)).all()
     cards: list[VerifyCard] = []
     for item, obs, site in rows:
@@ -97,6 +111,51 @@ async def verify_count(
     )
     count = (await session.execute(stmt)).scalar() or 0
     return VerifyCountOut(count=int(count))
+
+
+@router.get("/pending", response_model=VerifyPendingOut)
+async def pending_verifications(
+    n: int = Query(default=6, ge=1, le=20),
+    session: AsyncSession = Depends(get_session),
+) -> VerifyPendingOut:
+    """Recent submissions awaiting peer verification, with their photo and who
+    submitted them — the notification feed renders these as tappable cards.
+
+    Only checks that carry a photo are returned (so each card has a thumbnail).
+    The submitter is the Keeper's display name, or "Guest" for anonymous checks.
+    """
+    stmt = (
+        select(Observation, Site, User)
+        .join(Site, Observation.site_id == Site.id, isouter=True)
+        .join(User, Observation.user_id == User.id, isouter=True)
+        .where(Observation.status == "in_verify")
+        .where(Observation.photo_path.is_not(None))
+        .order_by(Observation.created_at.desc())
+        .limit(n)
+    )
+    rows = (await session.execute(stmt)).all()
+    items: list[VerifyPendingItem] = []
+    for obs, site, user in rows:
+        field_count = (
+            await session.execute(
+                select(func.count())
+                .select_from(VerifyItem)
+                .where(VerifyItem.observation_id == obs.id)
+                .where(VerifyItem.resolved.is_(False))
+            )
+        ).scalar() or 0
+        submitter = (user.display_name if user and user.display_name else None) or "Guest"
+        items.append(
+            VerifyPendingItem(
+                observation_id=obs.id,
+                site_name=(site.name if site is not None else "A monitored stream"),
+                photo_url=f"/api/v1/observations/{obs.id}/photo" if obs.photo_path else None,
+                submitter=submitter,
+                submitted_at=(obs.created_at.isoformat() if obs.created_at else ""),
+                field_count=int(field_count),
+            )
+        )
+    return VerifyPendingOut(items=items)
 
 
 @router.post("/{item_id}/vote", response_model=VoteResult)

@@ -246,6 +246,22 @@ class VerifyCountOut(BaseModel):
     count: int
 
 
+class VerifyPendingItem(BaseModel):
+    """One submission awaiting peer verification, shown in the notification
+    feed with its photo so a verifier can jump straight to it."""
+
+    observation_id: int
+    site_name: str
+    photo_url: str | None = None
+    submitter: str  # the Keeper's display name, or "Guest" for anonymous checks
+    submitted_at: str  # ISO8601
+    field_count: int  # how many questions this check needs verified
+
+
+class VerifyPendingOut(BaseModel):
+    items: list[VerifyPendingItem]
+
+
 class VoteIn(BaseModel):
     answer: str  # yes | no | cant_tell
     ms_taken: int | None = None

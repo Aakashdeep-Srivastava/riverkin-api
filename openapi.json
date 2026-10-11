@@ -420,7 +420,7 @@
           "verify"
         ],
         "summary": "Next Verify Items",
-        "description": "Return the next verify cards for this voter.\n\nSkips items the voter already voted on and items whose observation is no\nlonger open. Gold items are included but never marked as gold in the payload.",
+        "description": "Return the next verify cards for this voter.\n\nSkips items the voter already voted on and items whose observation is no\nlonger open. Gold items are included but never marked as gold in the payload.\nWhen ``observation_id`` is given (deep-link from a pending-verification\nnotification), only that check's cards are returned, so tapping a specific\nsubmission verifies exactly that one.",
         "operationId": "next_verify_items_api_v1_verify_next_get",
         "parameters": [
           {
@@ -443,6 +443,22 @@
               "type": "string",
               "default": "demo-keeper",
               "title": "Voter Id"
+            }
+          },
+          {
+            "name": "observation_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Observation Id"
             }
           }
         ],
@@ -497,6 +513,52 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/VerifyCountOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/verify/pending": {
+      "get": {
+        "tags": [
+          "verify"
+        ],
+        "summary": "Pending Verifications",
+        "description": "Recent submissions awaiting peer verification, with their photo and who\nsubmitted them \u2014 the notification feed renders these as tappable cards.\n\nOnly checks that carry a photo are returned (so each card has a thumbnail).\nThe submitter is the Keeper's display name, or \"Guest\" for anonymous checks.",
+        "operationId": "pending_verifications_api_v1_verify_pending_get",
+        "parameters": [
+          {
+            "name": "n",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 20,
+              "minimum": 1,
+              "default": 6,
+              "title": "N"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VerifyPendingOut"
                 }
               }
             }
@@ -4460,6 +4522,67 @@
           "cards"
         ],
         "title": "VerifyNextOut"
+      },
+      "VerifyPendingItem": {
+        "properties": {
+          "observation_id": {
+            "type": "integer",
+            "title": "Observation Id"
+          },
+          "site_name": {
+            "type": "string",
+            "title": "Site Name"
+          },
+          "photo_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Photo Url"
+          },
+          "submitter": {
+            "type": "string",
+            "title": "Submitter"
+          },
+          "submitted_at": {
+            "type": "string",
+            "title": "Submitted At"
+          },
+          "field_count": {
+            "type": "integer",
+            "title": "Field Count"
+          }
+        },
+        "type": "object",
+        "required": [
+          "observation_id",
+          "site_name",
+          "submitter",
+          "submitted_at",
+          "field_count"
+        ],
+        "title": "VerifyPendingItem",
+        "description": "One submission awaiting peer verification, shown in the notification\nfeed with its photo so a verifier can jump straight to it."
+      },
+      "VerifyPendingOut": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/VerifyPendingItem"
+            },
+            "type": "array",
+            "title": "Items"
+          }
+        },
+        "type": "object",
+        "required": [
+          "items"
+        ],
+        "title": "VerifyPendingOut"
       },
       "VoteIn": {
         "properties": {

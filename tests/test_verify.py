@@ -122,6 +122,38 @@ async def test_verify_count_reflects_open_checks_and_excludes_voted():
         assert done == start
 
 
+async def test_pending_verifications_lists_submission_and_deeplinks():
+    """/verify/pending surfaces a photo-bearing submission (with submitter +
+    photo), and /verify/next?observation_id deep-links to only that check."""
+    await seed()
+    async with await _client() as client:
+        code = (await client.get("/api/v1/sites")).json()[0]["id"]
+        obs = (
+            await client.post(
+                "/api/v1/observations",
+                json={"site_code": code, "answers": {"q-water": "clear"}, "photo_count": 0},
+            )
+        ).json()["id"]
+        up = await client.post(
+            f"/api/v1/observations/{obs}/photos",
+            files={"file": ("a.jpg", _sharp_jpeg(21), "image/jpeg")},
+        )
+        assert up.status_code == 200
+
+        pending = (await client.get("/api/v1/verify/pending?n=10")).json()["items"]
+        mine = next(p for p in pending if p["observation_id"] == obs)
+        assert mine["submitter"] == "Guest"  # anonymous submit → no name
+        assert mine["photo_url"] == f"/api/v1/observations/{obs}/photo"
+        assert mine["field_count"] >= 1
+        assert mine["site_name"]
+
+        # Deep-link: the round is scoped to just this submission.
+        cards = (
+            await client.get(f"/api/v1/verify/next?n=20&voter_id=dl&observation_id={obs}")
+        ).json()["cards"]
+        assert cards and all(c["observation_id"] == obs for c in cards)
+
+
 async def test_three_yes_votes_reach_community_verified():
     await seed()
     async with await _client() as client:
