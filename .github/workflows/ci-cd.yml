@@ -33,7 +33,7 @@ jobs:
       VLM_PROVIDER: none
     steps:
       - uses: actions/checkout@v5
-      - uses: astral-sh/setup-uv@v10
+      - uses: astral-sh/setup-uv@v10.3.0
       - run: uv sync --frozen
       - run: uv run ruff check .
       - run: uv run alembic upgrade head
@@ -49,7 +49,7 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@v5
-      - uses: astral-sh/setup-uv@v10
+      - uses: astral-sh/setup-uv@v10.3.0
       - run: uv sync --frozen
       - name: Build a representative FHIR Bundle
         run: uv run python scripts/export_fhir_sample.py
