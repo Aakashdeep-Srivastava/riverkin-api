@@ -12,7 +12,7 @@ concurrency:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
     services:
@@ -32,7 +32,7 @@ jobs:
       APP_ENV: test
       VLM_PROVIDER: none
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: astral-sh/setup-uv@v6
       - run: uv sync --frozen
       - run: uv run ruff check .
@@ -44,16 +44,16 @@ jobs:
   # tests/test_fhir_validation.py (part of `test`, which gates deploy); this job
   # is the heavier HL7-validator pass and runs independently of the deploy gate.
   fhir-validate:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: astral-sh/setup-uv@v6
       - run: uv sync --frozen
       - name: Build a representative FHIR Bundle
         run: uv run python scripts/export_fhir_sample.py
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: "17"
@@ -65,7 +65,7 @@ jobs:
   deploy:
     if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
     needs: test
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     environment: production
     permissions:
       contents: read
@@ -73,7 +73,7 @@ jobs:
     env:
       IMAGE: ${{ vars.ACR_NAME }}.azurecr.io/riverkin-api:${{ github.sha }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - uses: azure/login@v2
         with:
